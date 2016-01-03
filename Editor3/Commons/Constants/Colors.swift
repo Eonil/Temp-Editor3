@@ -17,6 +17,3 @@ let EditorCodeForegroundColor			= NSColor.controlTextColor()
 
 let EditorSelectedCodeBackgroundColor		= NSColor.alternateSelectedControlColor()
 let EditorSelectedCodeForegroundColor		= NSColor.alternateSelectedControlTextColor()
-
-let EditorInactiveSelectedCodeBackgroundColor	= NSColor.alternateSelectedControlColor().colorWithAlphaComponent(0.5)
-let EditorInactiveSelectedCodeForegroundColor	= NSColor.alternateSelectedControlTextColor().colorWithAlphaComponent(0.5)
