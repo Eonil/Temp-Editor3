@@ -80,7 +80,7 @@ final class Workspace: OwnerWorkspace {
 extension Workspace {
 	func synchronizeWithOwnerDocument() {
 		assert(ownerDocument != nil)
-		guard let ownerDocument = ownerDocument else { return }
+//		guard let ownerDocument = ownerDocument else { return }
 //		locationURL = ownerDocument.fileURL
 
 		// Test.

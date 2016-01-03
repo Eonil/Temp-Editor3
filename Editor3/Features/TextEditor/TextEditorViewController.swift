@@ -50,7 +50,7 @@ extension TextEditorViewController {
         private func render() {
                 guard let textEditor = textEditor else { return }
                 installer.installIfNeeded {
-			view.addSubview(issueSignboard)
+//			view.addSubview(issueSignboard)
                         view.addSubview(scrollView)
                         scrollView.documentView = textView
                         textView.delegate = self

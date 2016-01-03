@@ -38,7 +38,22 @@ final class NavigatorViewController: CommonViewController {
 	}
 }
 extension NavigatorViewController {
-
+	override func viewDidLayout() {
+		super.viewDidLayout()
+		render()
+	}
+	override func becomeFirstResponder() -> Bool {
+		guard let workspace = workspace else { return super.becomeFirstResponder() }
+		renderModeSelection()
+		switch workspace.selectedNavigationPane {
+		case .File:
+			return view.window!.makeFirstResponder(_fileTreeUI)
+		case .Issue:
+			return view.window!.makeFirstResponder(_issueListUI)
+		case .Debug:
+			return view.window!.makeFirstResponder(_debuggingNavigatorUI)
+		}
+	}
 }
 private extension NavigatorViewController {
 	func _onTapProjectPaneButton() {
@@ -67,10 +82,11 @@ private extension NavigatorViewController {
 	}
 
 	func render() {
-		guard let workspace = workspace else { return }
+		assert(workspace != nil)
+		checkAndReportFailureToDevelopers(workspace != nil)
+		guard let _ = workspace else { return }
 		installer.installIfNeeded {
-
-			_bottomLine.position		=	.MinY
+			_bottomLine.position =	.MinY
 			_bottomLine.lineColor		=	NSColor.gridColor()
 			view.addSubview(_bottomLine)
 
@@ -121,26 +137,15 @@ private extension NavigatorViewController {
 		switch workspace.selectedNavigationPane {
 		case .File:
 			setVisibility(_fileTreeToolButton, visibleViewController: _fileTreeUI)
-			view.window!.makeFirstResponder(_fileTreeUI)
 		case .Issue:
 			setVisibility(_issueListToolButton, visibleViewController: _issueListUI)
-			view.window!.makeFirstResponder(_issueListUI)
 		case .Debug:
 			setVisibility(_debuggingToolButton, visibleViewController: _debuggingNavigatorUI)
-			view.window!.makeFirstResponder(_debuggingNavigatorUI)
 		}
 	}
 	
 
 }
-extension NavigatorViewController {
-	override func viewDidLayout() {
-		super.viewDidLayout()
-		render()
-	}
-}
-
-
 
 
 

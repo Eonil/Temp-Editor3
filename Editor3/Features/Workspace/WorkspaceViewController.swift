@@ -13,6 +13,8 @@ final class WorkspaceViewController: CommonViewController {
 
         weak var workspace: Workspace? {
                 didSet {
+			navigatorViewController.workspace = workspace
+			fileNavigatorViewController.fileNavigator = workspace?.fileNavigator
                         render()
                 }
         }
@@ -26,6 +28,7 @@ final class WorkspaceViewController: CommonViewController {
         // MARK: -
         private let outerSplitViewController = NSSplitViewController()
         private let innerSplitViewController = NSSplitViewController()
+	private let navigatorViewController = NavigatorViewController()
         private let fileNavigatorViewController = FileNavigatorViewController()
         private let textEditorViewController = TextEditorViewController()
         private var installer = ViewInstaller()
@@ -36,7 +39,7 @@ final class WorkspaceViewController: CommonViewController {
 //                        innerSplitViewController.splitView.wantsLayer = true
                         addChildViewAndControllerImmediately(outerSplitViewController)
                         outerSplitViewController.splitViewItems = [
-                                NSSplitViewItem(sidebarWithViewController: fileNavigatorViewController),
+                                NSSplitViewItem(sidebarWithViewController: navigatorViewController),
                                 NSSplitViewItem(viewController: innerSplitViewController),
                         ]
                         innerSplitViewController.splitView.vertical = true
@@ -44,7 +47,6 @@ final class WorkspaceViewController: CommonViewController {
                                 NSSplitViewItem(viewController: textEditorViewController),
                         ]
                 }
-		fileNavigatorViewController.fileNavigator = workspace.fileNavigator
                 textEditorViewController.textEditor = workspace.textEditor
                 outerSplitViewController.view.frame = view.bounds
         }
