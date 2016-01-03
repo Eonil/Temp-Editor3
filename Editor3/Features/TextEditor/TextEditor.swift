@@ -177,9 +177,13 @@ private extension TextEditor {
 			guard let string = NSString(data: data, encoding: NSUTF8StringEncoding) else {
 				throw Error.UnableToDecodeFileContentWithUTF8
 			}
-			let astring = NSAttributedString(string: string as String)
+			let astring = NSAttributedString(string: string as String, attributes: [
+				NSFontAttributeName:		CommonFont.codeFontOfSize(12),
+				NSForegroundColorAttributeName:	EditorCodeForegroundColor,
+				])
 			let storage = NSTextStorage(attributedString: astring)
 			internalState.storage = storage
+			debugLog(storage)
 		}
 	}
 	private func saveStringToFile() throws {

@@ -17,10 +17,10 @@ public struct CommonViewFactory {
                 return instanatiateCommonScrollViewForNavigators()
         }
 	public static func instantiateOutlineViewForUseInSidebar() -> NSOutlineView {
-		let	c	=	NSTableColumn()
-		let	v	=	NSOutlineView()
-		v.rowSizeStyle	=	NSTableViewRowSizeStyle.Small		//<	This is REQUIRED. Otherwise, cell icon/text layout won't work.
+		let c = NSTableColumn()
+		let v = NSOutlineView()
 		v.addTableColumn(c)
+		v.rowSizeStyle				=	NSTableViewRowSizeStyle.Small		//<	This is REQUIRED. Otherwise, cell icon/text layout won't work.
 		v.outlineTableColumn			=	c
 		v.headerView				=	nil
 		v.backgroundColor			=	NSColor.clearColor()
@@ -32,14 +32,21 @@ public struct CommonViewFactory {
 		return	v
         }
 	public static func instantiateTextViewForCodeDisplay<T: NSTextView>() -> T {
-		let	v	=	T()
-		v.verticallyResizable	=	true
-		v.horizontallyResizable	=	true
-		v.backgroundColor	=	NSColor.controlBackgroundColor()
-		v.font			=	_codeFont()
-		v.typingAttributes	=	[
+		let v = T()
+		v.verticallyResizable			=	true
+		v.horizontallyResizable			=	true
+//		v.drawsBackground			=	false
+		v.backgroundColor			=	EditorCodeBackgroundColor
+		v.font					=	_codeFont()
+		v.typingAttributes			=	[
 			NSFontAttributeName		:	_codeFont(),
-			NSForegroundColorAttributeName	:	NSColor.controlTextColor(),
+//			NSBackgroundColorAttributeName	:	EditorCodeBackgroundColor,
+			NSForegroundColorAttributeName	:	EditorCodeForegroundColor,
+		]
+		v.selectedTextAttributes		=	[
+			NSFontAttributeName		:	_codeFont(),
+			NSBackgroundColorAttributeName	:	EditorSelectedCodeBackgroundColor,
+			NSForegroundColorAttributeName	:	EditorSelectedCodeForegroundColor,
 		]
 		v.textContainer!.widthTracksTextView	=	true
 		v.textContainer!.heightTracksTextView	=	false
