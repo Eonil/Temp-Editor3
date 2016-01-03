@@ -20,11 +20,11 @@ final class TextEditorViewController: CommonViewController {
                         render()
                 }
         }
-
-        override func viewDidLayout() {
-                super.viewDidLayout()
-                render()
-        }
+	
+	override func layoutSubcomponents() {
+		super.layoutSubcomponents()
+		render()
+	}
 
         // MARK: -
 	private let issueSignboard = CommonSignboardView()
@@ -50,7 +50,7 @@ extension TextEditorViewController {
         private func render() {
                 guard let textEditor = textEditor else { return }
                 installer.installIfNeeded {
-//			view.addSubview(issueSignboard)
+			view.addSubview(issueSignboard)
                         view.addSubview(scrollView)
                         scrollView.documentView = textView
                         textView.delegate = self

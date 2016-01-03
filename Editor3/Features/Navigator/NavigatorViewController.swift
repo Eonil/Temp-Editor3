@@ -10,6 +10,14 @@ import Foundation
 import AppKit
 
 final class NavigatorViewController: CommonViewController {
+
+	deinit {
+		installer.deinstallIfNeeded {
+			Workspace.Event.Notification.deregister(self)
+		}
+	}
+
+	// MARK: -
 	weak var workspace: Workspace? {
 		didSet {
 			_fileTreeUI.fileNavigator = workspace?.fileNavigator
@@ -19,6 +27,7 @@ final class NavigatorViewController: CommonViewController {
 		}
 	}
 
+	// MARK: -
 	private let _fileTreeToolButton		=	_instantiateScopeButton("Files")
 	private let _issueListToolButton	=	_instantiateScopeButton("Issues")
 	private let _debuggingToolButton	=	_instantiateScopeButton("Debug")
@@ -31,15 +40,10 @@ final class NavigatorViewController: CommonViewController {
 
 	private var installer = ViewInstaller()
 
-	deinit {
-		installer.deinstallIfNeeded {
-			Workspace.Event.Notification.deregister(self)
-		}
-	}
 }
 extension NavigatorViewController {
-	override func viewDidLayout() {
-		super.viewDidLayout()
+	override func layoutSubcomponents() {
+		super.layoutSubcomponents()
 		render()
 	}
 	override func becomeFirstResponder() -> Bool {
@@ -86,12 +90,12 @@ private extension NavigatorViewController {
 		checkAndReportFailureToDevelopers(workspace != nil)
 		guard let _ = workspace else { return }
 		installer.installIfNeeded {
-			_bottomLine.position =	.MinY
-			_bottomLine.lineColor		=	NSColor.gridColor()
+			_bottomLine.position = .MinY
+			_bottomLine.lineColor = EditorWindowDivisionSplitDividerColor
 			view.addSubview(_bottomLine)
 
-			_modeSelector.interButtonGap	=	2
-			_modeSelector.toolButtons	=	[
+			_modeSelector.interButtonGap = 2
+			_modeSelector.toolButtons = [
 				_fileTreeToolButton,
 				_issueListToolButton,
 				_debuggingToolButton,

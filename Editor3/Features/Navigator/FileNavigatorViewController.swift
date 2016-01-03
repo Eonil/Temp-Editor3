@@ -28,6 +28,11 @@ final class FileNavigatorViewController: CommonViewController {
                 }
         }
 
+	// MARK: -
+	override func layoutSubcomponents() {
+		super.layoutSubcomponents()
+		render()
+	}
 
         // MARK: -
         private let scrollView = CommonViewFactory.instantiateScrollViewForFileNavigator()
@@ -58,10 +63,6 @@ final class FileNavigatorViewController: CommonViewController {
 
 // MARK: -
 extension FileNavigatorViewController: NSOutlineViewDataSource, NSOutlineViewDelegate {
-	override func viewDidLayout() {
-		super.viewDidLayout()
-		render()
-	}
 	@objc
 	func outlineView(outlineView: NSOutlineView, numberOfChildrenOfItem item: AnyObject?) -> Int {
 		guard let fileNavigator = fileNavigator else { return 0 }

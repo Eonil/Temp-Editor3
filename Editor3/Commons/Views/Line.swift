@@ -35,11 +35,11 @@ final class Line: CommonView {
 	}
 
 	// MARK: -
-	private let _lineView = CommonView()
+	private let lineShapeView = ColorView()
 	private var installer = ViewInstaller()
 	private func render() {
 		installer.installIfNeeded {
-			addSubview(_lineView)
+			addSubview(lineShapeView)
 		}
 		let lineBox: SilentBox = {
 			let box = bounds.toBox().toSilentBox()
@@ -50,8 +50,8 @@ final class Line: CommonView {
 			case .MaxY: return box.maxYEdge().minYDisplacedBy(-1)
 			}
 		}()
-		_lineView.frame = lineBox.toCGRect()
-		_lineView.layer!.backgroundColor	=	lineColor.CGColor
+		lineShapeView.frame = lineBox.toCGRect()
+		lineShapeView.backgroundColor = lineColor
 	}
 }
 

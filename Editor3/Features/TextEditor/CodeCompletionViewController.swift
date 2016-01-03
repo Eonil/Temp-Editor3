@@ -18,12 +18,12 @@ final class CodeCompletionViewController: CommonViewController {
                 }
         }
 
-        // MARK: -
-        override func viewDidLayout() {
-                super.viewDidLayout()
-                installIfNeeded()
-                render()
-        }
+	// MARK: -
+	override func layoutSubcomponents() {
+		super.layoutSubcomponents()
+		installIfNeeded()
+		render()
+	}
         override func moveUp(sender: AnyObject?) {
                 // Do not call `super` because it does not have actual implementation.
                 let selidx = tableView.selectedRow

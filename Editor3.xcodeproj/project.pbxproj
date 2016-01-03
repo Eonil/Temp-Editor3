@@ -34,7 +34,6 @@
 		45296D531C36434E00AB0A51 /* OwnerChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45296D521C36434E00AB0A51 /* OwnerChain.swift */; };
 		45296D551C36452200AB0A51 /* WorkspaceItemPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45296D541C36452200AB0A51 /* WorkspaceItemPath.swift */; };
 		45296D571C3647E700AB0A51 /* Markers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45296D561C3647E700AB0A51 /* Markers.swift */; };
-		45296D5A1C36488D00AB0A51 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45296D591C36488D00AB0A51 /* Errors.swift */; };
 		45296D601C36511000AB0A51 /* MainMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45296D5B1C36511000AB0A51 /* MainMenuController.swift */; };
 		45296D611C36511000AB0A51 /* MainMenuController+Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45296D5C1C36511000AB0A51 /* MainMenuController+Utility.swift */; };
 		45296D621C36511000AB0A51 /* MainMenuProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45296D5D1C36511000AB0A51 /* MainMenuProcessor.swift */; };
@@ -62,6 +61,11 @@
 		452F5EDD1C39318D00B3A5FB /* CoreGraphicsExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F5EDC1C39318D00B3A5FB /* CoreGraphicsExtensions.swift */; };
 		452F5EDF1C3931F800B3A5FB /* ScopeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F5EDE1C3931F800B3A5FB /* ScopeButton.swift */; };
 		452F5EE11C39323D00B3A5FB /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F5EE01C39323D00B3A5FB /* Line.swift */; };
+		452F5EE31C39429000B3A5FB /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F5EE21C39429000B3A5FB /* Colors.swift */; };
+		452F5EE61C3946F300B3A5FB /* PaneSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F5EE41C3946F300B3A5FB /* PaneSplitView.swift */; };
+		452F5EE71C3946F300B3A5FB /* PaneSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F5EE51C3946F300B3A5FB /* PaneSplitViewController.swift */; };
+		452F5EEB1C39543300B3A5FB /* TransparentLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F5EEA1C39543300B3A5FB /* TransparentLayer.swift */; };
+		452F5EED1C3955C500B3A5FB /* ColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F5EEC1C3955C500B3A5FB /* ColorView.swift */; };
 		45CACA271C365D5E00A74463 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CACA261C365D5E00A74463 /* main.swift */; };
 		45CACA2A1C365E9700A74463 /* Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CACA291C365E9700A74463 /* Debugging.swift */; };
 		45CACA311C365F1800A74463 /* FileNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CACA2F1C365F1800A74463 /* FileNavigator.swift */; };
@@ -155,7 +159,6 @@
 		45296D521C36434E00AB0A51 /* OwnerChain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OwnerChain.swift; sourceTree = "<group>"; };
 		45296D541C36452200AB0A51 /* WorkspaceItemPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceItemPath.swift; sourceTree = "<group>"; };
 		45296D561C3647E700AB0A51 /* Markers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Markers.swift; sourceTree = "<group>"; };
-		45296D591C36488D00AB0A51 /* Errors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		45296D5B1C36511000AB0A51 /* MainMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuController.swift; sourceTree = "<group>"; };
 		45296D5C1C36511000AB0A51 /* MainMenuController+Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MainMenuController+Utility.swift"; sourceTree = "<group>"; };
 		45296D5D1C36511000AB0A51 /* MainMenuProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuProcessor.swift; sourceTree = "<group>"; };
@@ -183,6 +186,11 @@
 		452F5EDC1C39318D00B3A5FB /* CoreGraphicsExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreGraphicsExtensions.swift; sourceTree = "<group>"; };
 		452F5EDE1C3931F800B3A5FB /* ScopeButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScopeButton.swift; sourceTree = "<group>"; };
 		452F5EE01C39323D00B3A5FB /* Line.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
+		452F5EE21C39429000B3A5FB /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		452F5EE41C3946F300B3A5FB /* PaneSplitView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaneSplitView.swift; sourceTree = "<group>"; };
+		452F5EE51C3946F300B3A5FB /* PaneSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaneSplitViewController.swift; sourceTree = "<group>"; };
+		452F5EEA1C39543300B3A5FB /* TransparentLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransparentLayer.swift; sourceTree = "<group>"; };
+		452F5EEC1C3955C500B3A5FB /* ColorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorView.swift; sourceTree = "<group>"; };
 		45CACA261C365D5E00A74463 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		45CACA291C365E9700A74463 /* Debugging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Debugging.swift; sourceTree = "<group>"; };
 		45CACA2F1C365F1800A74463 /* FileNavigator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileNavigator.swift; sourceTree = "<group>"; };
@@ -324,10 +332,10 @@
 		45296CFF1C361B2A00AB0A51 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				45CC90AC1C36A58A00B0BEC3 /* CommonWindowController.swift */,
-				45296D391C362BD900AB0A51 /* CommonViewController.swift */,
-				45296D461C363C1F00AB0A51 /* CommonViewFactory.swift */,
 				452F5EDA1C39309500B3A5FB /* CommonView.swift */,
+				45296D391C362BD900AB0A51 /* CommonViewController.swift */,
+				45CC90AC1C36A58A00B0BEC3 /* CommonWindowController.swift */,
+				45296D461C363C1F00AB0A51 /* CommonViewFactory.swift */,
 				45296D481C363C6F00AB0A51 /* CommonFont.swift */,
 				45296D3D1C362DBF00AB0A51 /* ViewInstaller.swift */,
 				45296D411C36367F00AB0A51 /* LayoutUtility.swift */,
@@ -336,7 +344,11 @@
 				452F5ED41C3926B000B3A5FB /* CommonSignboardView.swift */,
 				452F5ED81C392E4600B3A5FB /* ToolButtonStrip.swift */,
 				452F5EDE1C3931F800B3A5FB /* ScopeButton.swift */,
+				452F5EE41C3946F300B3A5FB /* PaneSplitView.swift */,
+				452F5EE51C3946F300B3A5FB /* PaneSplitViewController.swift */,
 				452F5EE01C39323D00B3A5FB /* Line.swift */,
+				452F5EEA1C39543300B3A5FB /* TransparentLayer.swift */,
+				452F5EEC1C3955C500B3A5FB /* ColorView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -446,7 +458,7 @@
 		45296D581C36488500AB0A51 /* Constants */ = {
 			isa = PBXGroup;
 			children = (
-				45296D591C36488D00AB0A51 /* Errors.swift */,
+				452F5EE21C39429000B3A5FB /* Colors.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -651,9 +663,11 @@
 				45296D571C3647E700AB0A51 /* Markers.swift in Sources */,
 				45CACA421C36608500A74463 /* Atomics.swift in Sources */,
 				45296D0C1C361B8200AB0A51 /* Workspace.swift in Sources */,
+				452F5EEB1C39543300B3A5FB /* TransparentLayer.swift in Sources */,
 				452F5ED51C3926B000B3A5FB /* CommonSignboardView.swift in Sources */,
 				45296D301C36220C00AB0A51 /* Driver.swift in Sources */,
 				45CACA3E1C36605600A74463 /* StringStreamProcessing.swift in Sources */,
+				452F5EE71C3946F300B3A5FB /* PaneSplitViewController.swift in Sources */,
 				45CACA401C36605600A74463 /* RacerTool.swift in Sources */,
 				45296D361C36276F00AB0A51 /* WorkspaceWindowController.swift in Sources */,
 				452F5EE11C39323D00B3A5FB /* Line.swift in Sources */,
@@ -662,17 +676,19 @@
 				45CC90C11C36C51700B0BEC3 /* SilentBox.swift in Sources */,
 				45CACA2A1C365E9700A74463 /* Debugging.swift in Sources */,
 				45CACA4A1C36614400A74463 /* Logging.swift in Sources */,
+				452F5EE61C3946F300B3A5FB /* PaneSplitView.swift in Sources */,
 				45CC90AF1C36A6B600B0BEC3 /* CodeCompletionViewController.swift in Sources */,
 				45CACA321C365F1800A74463 /* FileNavigatorViewController.swift in Sources */,
+				452F5EE31C39429000B3A5FB /* Colors.swift in Sources */,
 				45296D451C36369A00AB0A51 /* AppKitExtensions.swift in Sources */,
 				45CC90AD1C36A58A00B0BEC3 /* CommonWindowController.swift in Sources */,
 				452F5EC71C38E47400B3A5FB /* CargoShellExecutor.swift in Sources */,
 				45296D291C361EF200AB0A51 /* Events.swift in Sources */,
-				45296D5A1C36488D00AB0A51 /* Errors.swift in Sources */,
 				45296D421C36367F00AB0A51 /* LayoutUtility.swift in Sources */,
 				45CC90C31C36C51C00B0BEC3 /* BoxType.swift in Sources */,
 				45CACA4C1C36849200A74463 /* NotificationUtility.swift in Sources */,
 				45296D401C3635F300AB0A51 /* TextEditorViewController.swift in Sources */,
+				452F5EED1C3955C500B3A5FB /* ColorView.swift in Sources */,
 				452F5ED31C3924AC00B3A5FB /* TextEditorIssue.swift in Sources */,
 				45296D2A1C361EF200AB0A51 /* Multicasting.swift in Sources */,
 				452F5E951C38335500B3A5FB /* RacerOutputParser.swift in Sources */,

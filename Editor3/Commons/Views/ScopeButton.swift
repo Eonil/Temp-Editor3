@@ -112,9 +112,10 @@ final class ScopeButton: CommonView {
 		_visibleTA	= nil
 	}
 	private func _triggerRedrawing() {
-		needsDisplay	= true
+		setNeedsDisplay()
 	}
 	private func _drawShapes() {
+		debugLog("DRAW")
 		enum RenderingState {
 			case AsMouseHoveringWhileSelected
 			case AsMouseHoveringWhileUnselected

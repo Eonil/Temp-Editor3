@@ -16,3 +16,4 @@ func debugLog<T>(@autoclosure value: ()->T, file: String = __FILE__, line: Int =
                 return true
         }())
 }
+

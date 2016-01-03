@@ -47,3 +47,24 @@ extension NSEdgeInsets {
 prefix func - (a: NSEdgeInsets) -> NSEdgeInsets {
 	return NSEdgeInsets(top: -a.top, left: -a.left, bottom: -a.bottom, right: -a.right)
 }
+
+
+// MARK: -
+extension NSColor {
+	func colorCodeStirng() -> String {
+		let c1 = colorUsingColorSpace(NSColorSpace.deviceRGBColorSpace())!
+		var (r,g,b,a): (CGFloat, CGFloat, CGFloat, CGFloat) = (0,0,0,0)
+		c1.getRed(&r, green: &g, blue: &b, alpha: &a)
+		let (x,y,z,w) = (Int(r * 255), Int(g * 255), Int(b * 255), Int(a * 255))
+		return "\(x,y,z,w)"
+//		return "(NSColor: (\((r,g,b,a)))"
+	}
+}
+
+
+
+
+
+
+
+
