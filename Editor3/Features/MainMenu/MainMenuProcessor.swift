@@ -58,13 +58,31 @@ final class MainMenuProcessor {
 				workspace.fileNavigator.createNewFolder()
 			}
 
-                case ~~mainMenuController.fileDelete:
+		case ~~mainMenuController.fileDelete:
 			do {
 				assert(editor.mainWorkspace != nil)
 				assert(editor.mainWorkspace!.fileNavigator.canDelete())
 				checkAndReportFailureToDevelopers(editor.mainWorkspace != nil)
 				guard let workspace = editor.mainWorkspace else { return }
 				workspace.fileNavigator.delete()
+			}
+
+		case ~~mainMenuController.fileShowInFinder:
+			do {
+				assert(editor.mainWorkspace != nil)
+				assert(editor.mainWorkspace!.fileNavigator.canShowInFinder())
+				checkAndReportFailureToDevelopers(editor.mainWorkspace != nil)
+				guard let workspace = editor.mainWorkspace else { return }
+				workspace.fileNavigator.showInFinder()
+			}
+
+		case ~~mainMenuController.fileShowInTerminal:
+			do {
+				assert(editor.mainWorkspace != nil)
+				assert(editor.mainWorkspace!.fileNavigator.canShowInTerminal())
+				checkAndReportFailureToDevelopers(editor.mainWorkspace != nil)
+				guard let workspace = editor.mainWorkspace else { return }
+				workspace.fileNavigator.showInTerminal()
 			}
 
 //                case ~~mainMenuController.fileOpenWorkspace: do {

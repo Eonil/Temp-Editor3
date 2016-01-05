@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import AppKit
 
 final class FileNavigator: OwnerfileNavigator {
 	weak var ownerWorkspace: OwnerWorkspace?
@@ -48,9 +49,13 @@ final class FileNavigator: OwnerfileNavigator {
 	func canCreateNewFile() -> Bool { return canCreateNewFileImpl() }
 	func canCreateNewFolder() -> Bool { return canCreateNewFolderImpl() }
 	func canDelete() -> Bool { return canDeleteImpl() }
+	func canShowInFinder() -> Bool { return canShowInFinderImpl() }
+	func canShowInTerminal() -> Bool { return canShowInTerminalImpl() }
 	func createNewFile() { return createNewFileImpl() }
 	func createNewFolder() { return createNewFolderImpl() }
 	func delete() { return deleteImpl() }
+	func showInFinder() { return showInFinderImpl() }
+	func showInTerminal() { return showInTerminalImpl() }
 }
 extension FileNavigator {
 	enum Event {
@@ -89,7 +94,7 @@ private extension FileNavigator {
 				let workspaceFileListURL = try getWorkspaceFileListURL()
 				let data = try NSData(contentsOfURL: workspaceFileListURL, options: [])
 				guard let snapshot = NSString(data: data, encoding: NSUTF8StringEncoding) else { throw Error.SnapshotDecodingFailureFromUTF8 }
-				tree = try FileNode(snapshot: snapshot as String)
+				tree = try FileNode(ownerFileNavigator: self, snapshot: snapshot as String)
 			}()
 			issues.cannotReloadFileList = false
 		}
@@ -134,16 +139,12 @@ private extension FileNavigator {
 		guard node.rootNode() === tree else { return false }
 		return true
 	}
-	private func canDeleteImpl() -> Bool {
-		guard selection.contains({ $0 === tree }) == false else { return false }
-		return selection.count > 0
-	}
 	private func createNewFileImpl() {
 		// Catch errors and convert into issues.
 		// Do not throw errors out.
 		assert(canCreateNewFile())
 		guard let parentNode = getFirstSelectedGroupNode() else { return reportToDevelopers() }
-		let newSubnode = FileNode(name: "file0.rs")
+		let newSubnode = FileNode(ownerFileNavigator: self, name: "file0.rs")
 		parentNode.appendSubnode(newSubnode)
 		persistFileList()
 	}
@@ -155,23 +156,49 @@ private extension FileNavigator {
 		// Do not throw errors out.
 		assert(canCreateNewFolder())
 		guard let parentNode = getFirstSelectedGroupNode() else { return reportToDevelopers() }
-		let newSubnode = FileNode(name: "folder0.rs", isGroup: true)
+		let newSubnode = FileNode(ownerFileNavigator: self, name: "folder0.rs", isGroup: true)
 		parentNode.appendSubnode(newSubnode)
 		persistFileList()
 	}
+	private func canDeleteImpl() -> Bool {
+		guard selection.contains({ $0 === tree }) == false else { return false }
+		return selection.count > 0
+	}
 	private func deleteImpl() {
 		assert(canDelete())
-//		typealias Pair = (path: WorkspaceItemPath, node: FileNode)
-//		func checkWhetherSubtree(a: FileNode, contains b: FileNode) -> Bool {
-//			if a === b { return true }
-//			guard let b1 = b.supernode else { return false }
-//			return checkWhetherSubtree(a, contains: b1)
-//		}
+		// Deletes top containers only.
 		for node in selection {
 			guard node !== tree else { continue } 			//< Cannot remove root node.
 			guard let supernode = node.supernode else { continue }
 			guard node.rootNode() === tree else { continue }	//< Cannot remove detached node.
 			supernode.removeSubnode(node)
+		}
+		persistFileList()
+	}
+	private func canShowInFinderImpl() -> Bool {
+		return selection.count > 0
+	}
+	private func showInFinderImpl() {
+		assert(canShowInFinder())
+		assert(ownerWorkspace != nil)
+		guard let ownerWorkspace = ownerWorkspace else { return }
+		var urls = [NSURL]()
+		for node in selection {
+			guard let url = node.resolvePath().absoluteFileURLForWorkspace(ownerWorkspace) else { continue }
+			urls.append(url)
+		}
+		NSWorkspace.sharedWorkspace().activateFileViewerSelectingURLs(urls)
+	}
+	private func canShowInTerminalImpl() -> Bool {
+		return canShowInFinder()
+	}
+	private func showInTerminalImpl() {
+		assert(canShowInTerminal())
+		assert(ownerWorkspace != nil)
+		guard let ownerWorkspace = ownerWorkspace else { return }
+		for node in selection {
+			guard let url = node.resolvePath().absoluteFileURLForWorkspace(ownerWorkspace) else { continue }
+			system("open -a \"Terminal\" \"\(url)\"")
 		}
 	}
 }

@@ -17,8 +17,9 @@ extension FileNavigatorViewController {
 final class FileNavigatorViewController: CommonViewController {
 
         deinit {
-                installer.deinstallIfNeeded {
-
+		installer.deinstallIfNeeded {
+			FileNode.Event.Notification.deregister(self)
+			FileNavigator.Event.Notification.deregister(self)
                 }
         }
 
@@ -38,18 +39,52 @@ final class FileNavigatorViewController: CommonViewController {
         private let scrollView = CommonViewFactory.instantiateScrollViewForFileNavigator()
         private let outlineView = CommonViewFactory.instantiateOutlineViewForUseInSidebar()
 	private var installer = ViewInstaller()
-	func processOutlineSelectionDidChange() {
-		guard let fileNavigator = fileNavigator else { return }
-		guard outlineView.selectedRow != NSNotFound else { return }
-		guard let selectedFileNode = outlineView.itemAtRow(outlineView.selectedRow) as? FileNode else { return }
-		fileNavigator.selection = [selectedFileNode]
+	private func process(n: FileNavigator.Event.Notification) {
+		assert(fileNavigator != nil)
+		guard n.sender === fileNavigator else { return }
+		switch n.event {
+		case .DidChangeIssues:
+			render()
+		case .DidChangeSelection:
+			break
+		case .DidChangeTree:
+			render()
+		}
 	}
-	func render() {
+	private func process(n: FileNode.Event.Notification) {
+		assert(fileNavigator != nil)
+		assert(n.sender.ownerFileNavigator != nil)
+		guard n.sender.ownerFileNavigator === fileNavigator else { return }
+		switch n.event {
+		case .DidChange:
+			render()
+		}
+	}
+	private func processOutlineSelectionDidChange() {
+		guard let fileNavigator = fileNavigator else { return }
+		var nodes = [FileNode]()
+		for idx in outlineView.selectedRowIndexes {
+			checkAndReportFailureToDevelopers(idx != NSNotFound)
+			checkAndReportFailureToDevelopers(outlineView.itemAtRow(idx) is FileNode)
+			guard idx != NSNotFound else { continue }
+			guard let node = outlineView.itemAtRow(idx) as? FileNode else { continue }
+			nodes.append(node)
+		}
+		fileNavigator.selection = nodes
+
+//		guard let fileNavigator = fileNavigator else { return }
+//		guard outlineView.selectedRow != NSNotFound else { return }
+//		guard let selectedFileNode = outlineView.itemAtRow(outlineView.selectedRow) as? FileNode else { return }
+//		fileNavigator.selection = [selectedFileNode]
+	}
+	private func render() {
 		installer.installIfNeeded {
 			view.addSubview(scrollView)
 			scrollView.documentView = outlineView
 			outlineView.setDataSource(self)
 			outlineView.setDelegate(self)
+			FileNavigator.Event.Notification.register(self, self.dynamicType.process)
+			FileNode.Event.Notification.register(self, self.dynamicType.process)
 		}
 		scrollView.frame = view.bounds
 //		let newOutlineViewEnabledSTate = fileNavigator != nil

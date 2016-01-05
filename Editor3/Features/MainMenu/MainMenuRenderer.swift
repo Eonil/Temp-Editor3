@@ -85,6 +85,8 @@ final class MainMenuRenderer {
 		mainMenuController.fileOpenWorkspace.enabled		=	true
 		mainMenuController.fileCloseCurrentWorkspace.enabled	=	editor.mainWorkspace != nil
 		mainMenuController.fileDelete.enabled			=	(editor.mainWorkspace?.fileNavigator.selection.count ?? 0) > 0
+		mainMenuController.fileShowInFinder.enabled		=	editor.mainWorkspace?.fileNavigator.canShowInFinder() ?? false
+		mainMenuController.fileShowInTerminal.enabled		=	editor.mainWorkspace?.fileNavigator.canShowInTerminal() ?? false
 	}
 	private func renderViewMenu() {
                 guard let editor = editor else { fatalErrorDueToInconsistentInternalStateWithReportingToDevelopers() }

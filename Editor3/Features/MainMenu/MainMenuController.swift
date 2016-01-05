@@ -38,6 +38,8 @@ final class MainMenuController {
 	let	fileCloseCurrentFile		=	_instantiateCommandMenuItem("Close File",		Command+Shift+"W"		)
 	let	fileCloseCurrentWorkspace	=	_instantiateCommandMenuItem("Close Workspace",		Command+"W"			)
 	let	fileDelete			=	_instantiateCommandMenuItem("Delete",			Command+Delete			)
+	let	fileShowInFinder		=	_instantiateCommandMenuItem("Show in Finder", 		nil				)
+	let	fileShowInTerminal		=	_instantiateCommandMenuItem("Show in Terminal",		nil				)
 
 	let	view				=	_instantiateGroupMenuItem("View")
 	let	viewEditor			=	_instantiateCommandMenuItem("Editor",			Command+"\n"			)
@@ -87,6 +89,8 @@ final class MainMenuController {
 			fileCloseCurrentWorkspace,
 			_instantiateSeparatorMenuItem(),
 			fileDelete,
+			fileShowInFinder,
+			fileShowInTerminal,
 			])
 		fileNew.addSubmenuItems([
 			fileNewWorkspace,

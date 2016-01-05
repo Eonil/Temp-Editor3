@@ -34,7 +34,8 @@ final class FileNode {
 		}
 	}
 
-	init(name: String, isGroup: Bool = false) {
+	init(ownerFileNavigator: OwnerfileNavigator, name: String, isGroup: Bool = false) {
+		self.ownerFileNavigator = ownerFileNavigator
 		self.name = name
 		self.isGroup = isGroup
 	}
@@ -77,15 +78,17 @@ extension FileNode {
 		}
 	}
 	func searchSubnodeWithPath(path: WorkspaceItemPath) -> FileNode? {
-		guard rootNode() === self else { return rootNode().searchSubnodeWithPath(path) }
+		let resolvedRootNode = rootNode()
+		guard resolvedRootNode === self else { return resolvedRootNode.searchSubnodeWithPath(path) }
 		return searchSubnodeWithSubpath(path)
 	}
 }
 // MARK: - Snapshot with WorkspaceItemPath
 extension FileNode {
 	/// Strict snapshot deserializer. No error tolerance.
-	convenience init(snapshot: String) throws {
-		self.init(name: "Workspace")
+	/// Newrly created node becomes root.
+	convenience init(ownerFileNavigator: OwnerfileNavigator, snapshot: String) throws {
+		self.init(ownerFileNavigator: ownerFileNavigator, name: "Workspace")
 		let list = try WorkspaceItemSerialization.deserializeList(snapshot)
 		for item in list {
 			func reconfigureNode(node: FileNode) {
@@ -104,8 +107,9 @@ extension FileNode {
 				guard item.path.parts.count >= 1 else { throw Error.SnapshotSubitemWithBadPath(item.path) }
 				let parentPath = item.path.lastPartDeleted()
 				guard let parent = searchSubnodeWithPath(parentPath) else { throw Error.SnapshotSubitemWithNoOwner(item.path) }
+				assert(parent.resolvePath() == parentPath)
 				guard let name = item.path.lastPart else { throw Error.SnapshotSubitemWithNoName(item.path) }
-				let child = FileNode(name: name)
+				let child = FileNode(ownerFileNavigator: ownerFileNavigator, name: name)
 				parent.appendSubnode(child)
 				child.comment = item.comment
 				child.isGroup = item.group
@@ -131,7 +135,7 @@ private extension FileNode {
 		guard let firstPart = subpath.parts.first else { return self }
 		for node in subnodes.reverse() {
 			if node.name == firstPart {
-				return node.searchSubnodeWithPath(subpath.firstPartDeleted())
+				return node.searchSubnodeWithSubpath(subpath.firstPartDeleted())
 			}
 		}
 		return nil
