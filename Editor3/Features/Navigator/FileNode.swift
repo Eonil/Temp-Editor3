@@ -7,7 +7,7 @@
 //
 
 final class FileNode {
-	private(set) weak var ownerfileNavigator: OwnerfileNavigator?
+	private(set) weak var ownerFileNavigator: OwnerfileNavigator?
 	private(set) weak var supernode: FileNode?
 
 	private(set) var name: String {
@@ -34,8 +34,9 @@ final class FileNode {
 		}
 	}
 
-	init(name: String) {
+	init(name: String, isGroup: Bool = false) {
 		self.name = name
+		self.isGroup = isGroup
 	}
 }
 extension FileNode {
@@ -63,6 +64,9 @@ extension FileNode {
 		preconditionAndReportFailureToDevelopers(subnode.supernode === nil)
 		subnode.supernode = self
 		subnodes.append(subnode)
+	}
+	func removeSubnode(subnode: FileNode) {
+		subnodes = subnodes.filter({ $0 !== subnode })
 	}
 	func resolvePath() -> WorkspaceItemPath {
 		if let supernode = supernode {

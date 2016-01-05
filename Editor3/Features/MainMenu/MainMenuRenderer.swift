@@ -79,10 +79,9 @@ final class MainMenuRenderer {
         private func renderFileMenu() {
                 guard let editor = editor else { fatalErrorDueToInconsistentInternalStateWithReportingToDevelopers() }
                 guard let mainMenuController = mainMenuController else { fatalErrorDueToInconsistentInternalStateWithReportingToDevelopers() }
-                let hasAnySelectedFile = (editor.mainWorkspace?.fileNavigator.selection.count ?? 0) > 0
 		mainMenuController.fileNewWorkspace.enabled		=	true
-		mainMenuController.fileNewFile.enabled			=	hasAnySelectedFile
-		mainMenuController.fileNewFolder.enabled		=	hasAnySelectedFile
+		mainMenuController.fileNewFile.enabled			=	editor.mainWorkspace?.fileNavigator.canCreateNewFile() ?? false
+		mainMenuController.fileNewFolder.enabled		=	editor.mainWorkspace?.fileNavigator.canCreateNewFolder() ?? false
 		mainMenuController.fileOpenWorkspace.enabled		=	true
 		mainMenuController.fileCloseCurrentWorkspace.enabled	=	editor.mainWorkspace != nil
 		mainMenuController.fileDelete.enabled			=	(editor.mainWorkspace?.fileNavigator.selection.count ?? 0) > 0

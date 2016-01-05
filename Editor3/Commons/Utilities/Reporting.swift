@@ -35,7 +35,7 @@ func fatalErrorDueToInconsistentInternalStateWithReportingToDevelopers(message: 
 func reportToDevelopers(error: ErrorType) {
 	reportToDevelopers("\(error)")
 }
-func reportToDevelopers(message: String) {
+func reportToDevelopers(message: String = "") {
 	debugLog(message)
 }
 

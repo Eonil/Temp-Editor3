@@ -35,7 +35,6 @@
 		45296D551C36452200AB0A51 /* WorkspaceItemPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45296D541C36452200AB0A51 /* WorkspaceItemPath.swift */; };
 		45296D571C3647E700AB0A51 /* Markers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45296D561C3647E700AB0A51 /* Markers.swift */; };
 		45296D601C36511000AB0A51 /* MainMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45296D5B1C36511000AB0A51 /* MainMenuController.swift */; };
-		45296D611C36511000AB0A51 /* MainMenuController+Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45296D5C1C36511000AB0A51 /* MainMenuController+Utility.swift */; };
 		45296D621C36511000AB0A51 /* MainMenuProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45296D5D1C36511000AB0A51 /* MainMenuProcessor.swift */; };
 		45296D631C36511000AB0A51 /* MainMenuRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45296D5E1C36511000AB0A51 /* MainMenuRenderer.swift */; };
 		45296D641C36511000AB0A51 /* MenuShortcutKeyCombination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45296D5F1C36511000AB0A51 /* MenuShortcutKeyCombination.swift */; };
@@ -160,7 +159,6 @@
 		45296D541C36452200AB0A51 /* WorkspaceItemPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceItemPath.swift; sourceTree = "<group>"; };
 		45296D561C3647E700AB0A51 /* Markers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Markers.swift; sourceTree = "<group>"; };
 		45296D5B1C36511000AB0A51 /* MainMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuController.swift; sourceTree = "<group>"; };
-		45296D5C1C36511000AB0A51 /* MainMenuController+Utility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MainMenuController+Utility.swift"; sourceTree = "<group>"; };
 		45296D5D1C36511000AB0A51 /* MainMenuProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuProcessor.swift; sourceTree = "<group>"; };
 		45296D5E1C36511000AB0A51 /* MainMenuRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuRenderer.swift; sourceTree = "<group>"; };
 		45296D5F1C36511000AB0A51 /* MenuShortcutKeyCombination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuShortcutKeyCombination.swift; sourceTree = "<group>"; };
@@ -385,7 +383,6 @@
 			isa = PBXGroup;
 			children = (
 				45296D5B1C36511000AB0A51 /* MainMenuController.swift */,
-				45296D5C1C36511000AB0A51 /* MainMenuController+Utility.swift */,
 				45296D5E1C36511000AB0A51 /* MainMenuRenderer.swift */,
 				45296D5D1C36511000AB0A51 /* MainMenuProcessor.swift */,
 				45296D651C36522200AB0A51 /* MenuItemController.swift */,
@@ -700,7 +697,6 @@
 				45CC90C51C36C8C800B0BEC3 /* BoxTypeCoreGraphicsExtensions.swift in Sources */,
 				45296D661C36522200AB0A51 /* MenuItemController.swift in Sources */,
 				45296D551C36452200AB0A51 /* WorkspaceItemPath.swift in Sources */,
-				45296D611C36511000AB0A51 /* MainMenuController+Utility.swift in Sources */,
 				45296D2B1C361EF200AB0A51 /* Notification.swift in Sources */,
 				45CACA3B1C36605600A74463 /* CargoTool3.swift in Sources */,
 				45296D321C36226A00AB0A51 /* Reporting.swift in Sources */,

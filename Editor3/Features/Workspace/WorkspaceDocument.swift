@@ -19,7 +19,7 @@ final class WorkspaceDocument: NSDocument {
 		
 		assert(workspace != nil)
 		guard let workspace = workspace else { return }
-		workspace.synchronizeWithOwnerDocument()
+		workspace.reloadFileTree()
         }
         deinit {
                 guard let driver = Driver.theDriver else { fatalErrorDueToInconsistentInternalStateWithReportingToDevelopers() }
@@ -51,7 +51,7 @@ final class WorkspaceDocument: NSDocument {
         override func readFromData(data: NSData, ofType typeName: String) throws {
                 // Insert code here to read your document from the given data of the specified type. If outError != nil, ensure that you create and set an appropriate error when returning false.
                 // You can also choose to override readFromFileWrapper:ofType:error: or readFromURL:ofType:error: instead.
-                // If you override either of these, you should also override -isEntireFileLoaded to return false if the contents are lazily loaded.
+                // If you override either of these, you .should also override -isEntireFileLoaded to return false if the contents are lazily loaded.
                 throw NSError(domain: NSOSStatusErrorDomain, code: unimpErr, userInfo: nil)
         }
 }
@@ -59,7 +59,7 @@ private extension WorkspaceDocument {
 	func processDocumentDidMove(error: NSError?) {
 		checkAndReportFailureToDevelopers(workspace != nil)
 		if let workspace = workspace {
-			workspace.synchronizeWithOwnerDocument()
+			workspace.reloadFileTree()
 		}
 	}
 }

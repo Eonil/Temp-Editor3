@@ -67,7 +67,7 @@ final class Workspace: OwnerWorkspace {
 		builder.ownerWorkspace = self
                 FileNavigator.Event.Notification.register(self, self.dynamicType.process)
 
-		synchronizeWithOwnerDocument()
+		reloadFileTree()
 //                // Test.
 //                let u = NSURL(string: "file:///Users/Eonil/Temp/a2/a.txt")!
 //                try! textEditor.setEditingFileURL(u)
@@ -78,7 +78,7 @@ final class Workspace: OwnerWorkspace {
 
 }
 extension Workspace {
-	func synchronizeWithOwnerDocument() {
+	func reloadFileTree() {
 		assert(ownerDocument != nil)
 //		guard let ownerDocument = ownerDocument else { return }
 //		locationURL = ownerDocument.fileURL

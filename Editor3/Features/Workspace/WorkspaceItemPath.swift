@@ -90,6 +90,13 @@ extension WorkspaceItemPath {
 			return parts.last
 		}
 	}
+	func startsWith(path: WorkspaceItemPath) -> Bool {
+		guard parts.count >= path.parts.count else { return false }
+		for i in 0..<path.parts.count {
+			guard parts[i] == path.parts[i] else { return false }
+		}
+		return true
+	}
 	func firstPartDeleted() -> WorkspaceItemPath {
 		precondition(parts.count > 0)
 		return	WorkspaceItemPath(parts: Array(parts[parts.startIndex.successor()..<parts.endIndex]))

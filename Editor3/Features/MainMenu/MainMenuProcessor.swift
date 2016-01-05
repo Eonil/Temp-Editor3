@@ -42,29 +42,31 @@ final class MainMenuProcessor {
 //                        }
                         }
 
-//                case ~~mainMenuController.fileNewFile: do {
-//                        if let workspace = editor.keyWorkspace {
-//                                if let node = MainMenuController.hostFileNodeForNewFileSubentryOperationInFileTree(workspace.file) {
-//                                        try! editor.keyWorkspace?.file.newFileInNode(node, atIndex: 0)
-//                                }
-//                        }
-//                        }
-//
-//                case ~~mainMenuController.fileNewFolder: do {
-//                        if let workspace = editor.keyWorkspace {
-//                                if let node = MainMenuController.hostFileNodeForNewFileSubentryOperationInFileTree(workspace.file) {
-//                                        try! editor.keyWorkspace?.file.newFolderInNode(node, atIndex: 0)
-//                                }
-//                        }
-//                        }
-//
-//                case ~~mainMenuController.fileDelete: do {
-//                        assertAndReportFailure(editor.keyWorkspace != nil)
-//                        if let workspace = editor.keyWorkspace {
-//                                try! workspace.file.deleteNodes(workspace.file.projectUIState.sustainingFileSelection)
-//                        }
-//                        }
-//
+                case ~~mainMenuController.fileNewFile:
+			do {
+				assert(editor.mainWorkspace != nil)
+				assert(editor.mainWorkspace!.fileNavigator.canCreateNewFile())
+				guard let workspace = editor.mainWorkspace else { return }
+				workspace.fileNavigator.createNewFile()
+			}
+
+		case ~~mainMenuController.fileNewFolder:
+			do {
+				assert(editor.mainWorkspace != nil)
+				assert(editor.mainWorkspace!.fileNavigator.canCreateNewFolder())
+				guard let workspace = editor.mainWorkspace else { return }
+				workspace.fileNavigator.createNewFolder()
+			}
+
+                case ~~mainMenuController.fileDelete:
+			do {
+				assert(editor.mainWorkspace != nil)
+				assert(editor.mainWorkspace!.fileNavigator.canDelete())
+				checkAndReportFailureToDevelopers(editor.mainWorkspace != nil)
+				guard let workspace = editor.mainWorkspace else { return }
+				workspace.fileNavigator.delete()
+			}
+
 //                case ~~mainMenuController.fileOpenWorkspace: do {
 //                        Dialogue.runOpeningWorkspace() { [weak self] in
 //                                guard self != nil else {
@@ -213,6 +215,10 @@ final class MainMenuProcessor {
                 default:
                         fatalError("A menu command `\(n.sender)` has not been implemented.")
                 }
+
+		// Do not code anythig after the switch. 
+		// Because this switch is intended to `return` control flow
+		// for quick exit.
         }
 }
 
