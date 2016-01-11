@@ -35,7 +35,7 @@ final class TextEditorViewController: CommonViewController {
 }
 extension TextEditorViewController {
         private func process(n: TextEditor.Event.Notification) {
-                guard textEditor === n.sender else { return }
+                guard n.sender ==== textEditor else { return }
                 switch n.event {
                 case .DidChangeTextStorage:
                         render()

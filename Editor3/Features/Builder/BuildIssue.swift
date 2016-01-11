@@ -9,5 +9,6 @@
 import Foundation
 
 enum BuildIssue {
-	case CargoISsue(CargoIssue)
+	case CannotRunCargoDueToError(ErrorType)
+	case CargoIssue(Editor3.CargoIssue)
 }

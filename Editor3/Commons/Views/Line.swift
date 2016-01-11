@@ -29,8 +29,8 @@ final class Line: CommonView {
 			render()
 		}
 	}
-	override func resizeSubviewsWithOldSize(oldSize: NSSize) {
-		super.resizeSubviewsWithOldSize(oldSize)
+	override func layoutSubcomponents() {
+		super.layoutSubcomponents()
 		render()
 	}
 

@@ -39,7 +39,7 @@ final class Driver {
 
         // MARK: -
         private func process(n: Editor.Event.Notification) {
-                guard n.sender === editor else { return }
+                guard n.sender ==== editor else { return }
                 renderWorkspacesForEvent(n.event)
         }
 

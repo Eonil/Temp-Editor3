@@ -44,24 +44,24 @@ final class MainMenuProcessor {
 
                 case ~~mainMenuController.fileNewFile:
 			do {
-				assert(editor.mainWorkspace != nil)
-				assert(editor.mainWorkspace!.fileNavigator.canCreateNewFile())
+				assertMenuExecutabilityByChecking(editor.mainWorkspace != nil)
+				assertMenuExecutabilityByChecking(editor.mainWorkspace!.fileNavigator.canCreateNewFile())
 				guard let workspace = editor.mainWorkspace else { return }
 				workspace.fileNavigator.createNewFile()
 			}
 
 		case ~~mainMenuController.fileNewFolder:
 			do {
-				assert(editor.mainWorkspace != nil)
-				assert(editor.mainWorkspace!.fileNavigator.canCreateNewFolder())
+				assertMenuExecutabilityByChecking(editor.mainWorkspace != nil)
+				assertMenuExecutabilityByChecking(editor.mainWorkspace!.fileNavigator.canCreateNewFolder())
 				guard let workspace = editor.mainWorkspace else { return }
 				workspace.fileNavigator.createNewFolder()
 			}
 
 		case ~~mainMenuController.fileDelete:
 			do {
-				assert(editor.mainWorkspace != nil)
-				assert(editor.mainWorkspace!.fileNavigator.canDelete())
+				assertMenuExecutabilityByChecking(editor.mainWorkspace != nil)
+				assertMenuExecutabilityByChecking(editor.mainWorkspace!.fileNavigator.canDelete())
 				checkAndReportFailureToDevelopers(editor.mainWorkspace != nil)
 				guard let workspace = editor.mainWorkspace else { return }
 				workspace.fileNavigator.delete()
@@ -69,8 +69,8 @@ final class MainMenuProcessor {
 
 		case ~~mainMenuController.fileShowInFinder:
 			do {
-				assert(editor.mainWorkspace != nil)
-				assert(editor.mainWorkspace!.fileNavigator.canShowInFinder())
+				assertMenuExecutabilityByChecking(editor.mainWorkspace != nil)
+				assertMenuExecutabilityByChecking(editor.mainWorkspace!.fileNavigator.canShowInFinder())
 				checkAndReportFailureToDevelopers(editor.mainWorkspace != nil)
 				guard let workspace = editor.mainWorkspace else { return }
 				workspace.fileNavigator.showInFinder()
@@ -78,8 +78,8 @@ final class MainMenuProcessor {
 
 		case ~~mainMenuController.fileShowInTerminal:
 			do {
-				assert(editor.mainWorkspace != nil)
-				assert(editor.mainWorkspace!.fileNavigator.canShowInTerminal())
+				assertMenuExecutabilityByChecking(editor.mainWorkspace != nil)
+				assertMenuExecutabilityByChecking(editor.mainWorkspace!.fileNavigator.canShowInTerminal())
 				checkAndReportFailureToDevelopers(editor.mainWorkspace != nil)
 				guard let workspace = editor.mainWorkspace else { return }
 				workspace.fileNavigator.showInTerminal()
@@ -96,13 +96,14 @@ final class MainMenuProcessor {
 //                        }
 //                        }
 //
-                case ~~mainMenuController.fileCloseCurrentWorkspace: do {
-                        assert(editor.mainWorkspace != nil)
-                        guard let workspace = editor.mainWorkspace else { return }
-                        guard let workspaceDocument = workspace.ownerDocument else { return }
-                        workspaceDocument.close()
-//                        NSDocumentController.sharedDocumentController().removeDocument(document)
-                        }
+                case ~~mainMenuController.fileCloseCurrentWorkspace:
+			do {
+				assertMenuExecutabilityByChecking(editor.mainWorkspace != nil)
+				guard let workspace = editor.mainWorkspace else { return }
+				guard let workspaceDocument = workspace.ownerDocument else { return }
+				workspaceDocument.close()
+				//                        NSDocumentController.sharedDocumentController().removeDocument(document)
+			}
 
 
 //                case ~~mainMenuController.viewEditor: do {
@@ -142,15 +143,16 @@ final class MainMenuProcessor {
 //                        NSApplication.sharedApplication().mainWindow?.toggleFullScreen(self)
 //                        }
 
-		case ~~mainMenuController.editorShowCompletions: do {
-			assert(editor.mainWorkspace != nil, "This menu must be disabled when inappropriate.")
-                        guard let workspace = editor.mainWorkspace else { return }
+		case ~~mainMenuController.editorShowCompletions:
 			do {
-				try workspace.textEditor.showCompletion()
-			}
-			catch let error {
-				debugLog(error)
-			}
+				assert(editor.mainWorkspace != nil, "This menu must be disabled when inappropriate.")
+				guard let workspace = editor.mainWorkspace else { return }
+				do {
+					try workspace.textEditor.showCompletion()
+				}
+				catch let error {
+					debugLog(error)
+				}
                         }
 
 //                case ~~mainMenuController.productRun: do {
@@ -177,27 +179,38 @@ final class MainMenuProcessor {
 //                        workspace.debug.currentTarget!.launch(NSURL(fileURLWithPath: "."))
 //                        }
 //                        
-                case ~~mainMenuController.productBuild: do {
-			assertMenuExecutability(editor.mainWorkspace != nil)
-			assertMenuExecutability(editor.mainWorkspace!.builder.state == .Ready)
+                case ~~mainMenuController.productBuild:
+			do {
+			assertMenuExecutabilityByChecking(editor.mainWorkspace != nil)
+			assertMenuExecutabilityByChecking(editor.mainWorkspace!.builder.state != .Running)
 			guard let workspace = editor.mainWorkspace else { return }
-			guard workspace.builder.state == .Ready else { return }
+			guard workspace.builder.state != .Running else { return }
 			workspace.builder.runBuilding()
 			}
-//
-//                case ~~mainMenuController.productClean: do {
-//                        assert(editor.keyWorkspace!.build.busy == false)
-//                        editor.keyWorkspace!.build.runClean()
-//                        }
-//                        
-//                case ~~mainMenuController.productStop: do {
+
+                case ~~mainMenuController.productClean:
+			do {
+				assertMenuExecutabilityByChecking(editor.mainWorkspace != nil)
+				assertMenuExecutabilityByChecking(editor.mainWorkspace!.builder.state == .Ready)
+				guard let workspace = editor.mainWorkspace else { return }
+				guard workspace.builder.state == .Ready else { return }
+				workspace.builder.runCleaning()
+                        }
+                        
+                case ~~mainMenuController.productStop:
+			do {
+				assertMenuExecutabilityByChecking(editor.mainWorkspace != nil)
+				assertMenuExecutabilityByChecking(editor.mainWorkspace!.builder.state == .Running)
+				guard let workspace = editor.mainWorkspace else { return }
+				guard workspace.builder.state == .Running else { return }
+				workspace.builder.cancelRunningAnyway()
 //                        assert(editor.keyWorkspace!.build.busy == false)
 //                        editor.keyWorkspace!.debug.currentTarget!.halt()
 //                        editor.keyWorkspace!.build.stop()
-//                        }
-//                        
-//                        
-//                        
+                        }
+                        
+                        
+                        
 //                case ~~mainMenuController.debugPause: do {
 //                        editor.keyWorkspace!.debug.currentTarget!.execution!.runCommand(.Pause)
 //                        }
@@ -245,7 +258,7 @@ final class MainMenuProcessor {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-private func assertMenuExecutability(@autoclosure condition: ()->Bool) {
+private func assertMenuExecutabilityByChecking(@autoclosure condition: ()->Bool) {
 	assert(condition(), "The menu must be executable. Or must be disabled if inexecutable.")
 }
 prefix operator ~~ {

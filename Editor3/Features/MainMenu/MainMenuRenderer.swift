@@ -63,7 +63,7 @@ final class MainMenuRenderer {
                 renderProductMenu()
 	}
         private func process(n: Debugger.Event.Notification) {
-                guard n.sender === editor?.mainWorkspace?.debugger else { return }
+                guard n.sender ==== editor?.mainWorkspace?.debugger else { return }
                 renderDebuggingMenu()
                 renderProductMenu()
 	}

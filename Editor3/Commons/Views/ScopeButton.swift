@@ -115,7 +115,6 @@ final class ScopeButton: CommonView {
 		setNeedsDisplay()
 	}
 	private func _drawShapes() {
-		debugLog("DRAW")
 		enum RenderingState {
 			case AsMouseHoveringWhileSelected
 			case AsMouseHoveringWhileUnselected

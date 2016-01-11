@@ -17,3 +17,11 @@ See "Text System Defaults and Key Bindings" to override text system defaults and
 Naming Convention
 -----------------
 Types ends with `~Tool` are one-time use only objects.
+
+
+
+
+Swift Compiler Bug Workaround
+-----------------------------
+Currently, Swift compiler cannot handle overriding methods in `extension`. 
+If you're having trouble related to it, try to move it into class body.

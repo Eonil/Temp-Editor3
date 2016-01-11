@@ -50,7 +50,8 @@ class CommonViewController: NSViewController {
 
         // MARK: -
         override func loadView() {
-                self.view = CommonView()
+		let v = CommonView()
+                self.view = v
         }
 
 	// MARK: -
@@ -78,6 +79,7 @@ class CommonViewController: NSViewController {
 		assert(_calledViewDidLoadOnceFlag == false)
 		_calledViewDidLoadOnceFlag = true
 //		view.addSubview(_installationEventRoutingView)
+		view.identifier = "(of: \(self))"
 	}
 	@available(*,unavailable,message="Do not use this method to take view resizing event. This sometimes get called asynchronously which triggers a view layout tearing. Use `layoutSubcomponents` method instead of.")
 	override func viewDidLayout() {

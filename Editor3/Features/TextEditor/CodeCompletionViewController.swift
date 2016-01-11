@@ -100,7 +100,7 @@ extension CodeCompletionViewController: NSTableViewDelegate {
 // MARK: -
 extension CodeCompletionViewController {
         private func process(n: CodeCompletion.Event.Notification) {
-                guard n.sender === codeCompletion else { return }
+                guard n.sender ==== codeCompletion else { return }
                 render()
         }
 }

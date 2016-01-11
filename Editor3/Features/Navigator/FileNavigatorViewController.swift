@@ -36,12 +36,12 @@ final class FileNavigatorViewController: CommonViewController {
 	}
 
         // MARK: -
-        private let scrollView = CommonViewFactory.instantiateScrollViewForFileNavigator()
+        private let scrollView = CommonViewFactory.instantiateScrollViewForNavigators()
         private let outlineView = CommonViewFactory.instantiateOutlineViewForUseInSidebar()
 	private var installer = ViewInstaller()
 	private func process(n: FileNavigator.Event.Notification) {
 		assert(fileNavigator != nil)
-		guard n.sender === fileNavigator else { return }
+		guard n.sender ==== fileNavigator else { return }
 		switch n.event {
 		case .DidChangeIssues:
 			render()
@@ -116,8 +116,8 @@ extension FileNavigatorViewController: NSOutlineViewDataSource, NSOutlineViewDel
 		assert(fileNavigator != nil)
 		assert(fileNavigator!.tree != nil)
 		assert(item == nil || item is FileNode)
-		guard let fileNavigator = fileNavigator else { return false }
-		guard let tree = fileNavigator.tree else { return false }
+		guard let fileNavigator = fileNavigator else { fatalErrorDueToInconsistentInternalStateWithReportingToDevelopers() }
+		guard let tree = fileNavigator.tree else { fatalErrorDueToInconsistentInternalStateWithReportingToDevelopers() }
 		guard let fileNode = item as? FileNode else { return tree }
 		return fileNode.subnodes[index]
 	}

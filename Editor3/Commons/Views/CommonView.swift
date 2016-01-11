@@ -98,8 +98,12 @@ class CommonView: NSView {
 		}
 		super.viewWillMoveToWindow(newWindow)
 	}
-	override func resizeSubviewsWithOldSize(oldSize: NSSize) {
-		super.resizeSubviewsWithOldSize(oldSize)
+//	override func resizeSubviewsWithOldSize(oldSize: NSSize) {
+//		super.resizeSubviewsWithOldSize(oldSize)
+//		_layout()
+//	}
+	override func resizeWithOldSuperviewSize(oldSize: NSSize) {
+		super.resizeWithOldSuperviewSize(oldSize)
 		_layout()
 	}
 

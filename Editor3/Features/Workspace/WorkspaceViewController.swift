@@ -11,10 +11,15 @@ import AppKit
 
 final class WorkspaceViewController: CommonViewController {
 
+	deinit {
+		installer.deinstallIfNeeded {
+			NotificationUtility.deregister(self)
+		}
+	}
+
         weak var workspace: Workspace? {
                 didSet {
 			navigatorViewController.workspace = workspace
-			fileNavigatorViewController.fileNavigator = workspace?.fileNavigator
                         render()
                 }
         }
@@ -29,10 +34,9 @@ final class WorkspaceViewController: CommonViewController {
         private let outerSplitViewController = PaneSplitViewController()
         private let innerSplitViewController = PaneSplitViewController()
 	private let navigatorViewController = NavigatorViewController()
-        private let fileNavigatorViewController = FileNavigatorViewController()
         private let textEditorViewController = TextEditorViewController()
 	private let inspectorViewController = CommonViewController()
-	private let consoleViewController = CommonViewController()
+	private let consoleViewController = ConsoleViewController()
         private var installer = ViewInstaller()
         private func render() {
                 guard let workspace = workspace else { return }
@@ -100,13 +104,26 @@ final class WorkspaceViewController: CommonViewController {
                         innerSplitViewController.splitViewItems = [
                                 editItem(),
 				consoleItem(),
-                        ]
+			]
+
+			NotificationUtility.register(outerSplitViewController, NSSplitViewDidResizeSubviewsNotification) { [weak self] in
+				self?.process($0)
+			}
                 }
                 textEditorViewController.textEditor = workspace.textEditor
                 outerSplitViewController.view.frame = view.bounds
         }
 }
-
+extension WorkspaceViewController: NSSplitViewDelegate {
+	private func process(n: NSNotification) {
+		switch n.name {
+		case NSSplitViewDidResizeSubviewsNotification:
+			render()
+		default:
+			reportToDevelopers("Unintended notification received.")
+		}
+	}
+}
 
 
 

@@ -85,7 +85,7 @@ extension WorkspaceWindowController {
                 }
         }
         private func process(n: Workspace.Event.Notification) {
-                guard n.sender === self else { return }
+                guard n.sender ==== workspace else { return }
                 switch n.event {
                 case .DidChangeLocation:
                         MARK_unimplemented()

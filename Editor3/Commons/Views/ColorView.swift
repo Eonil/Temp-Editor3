@@ -13,6 +13,8 @@ import AppKit
 /// This is required because `CommonView` prohibited resetting 
 /// `backgroudColor` of its layer.
 final class ColorView: CommonView {
+
+	// MARK: -
 	var backgroundColor: NSColor? {
 		didSet {
 			guard backgroundColor != oldValue else { return }
@@ -23,12 +25,16 @@ final class ColorView: CommonView {
 		super.layoutSubcomponents()
 		render(true)
 	}
+	override func resizeWithOldSuperviewSize(oldSize: NSSize) {
+		super.resizeWithOldSuperviewSize(oldSize)
+		render(true)
+	}
+
+	// MARK: -
 	private let colorLayer = CALayer()
 	private func render(layoutOnly: Bool) {
 		checkAndReportFailureToDevelopers(layer != nil)
 		guard let layer = layer else { return }
-		CATransaction.begin()
-		CATransaction.disableActions()
 		if layoutOnly == false {
 			if let backgroundColor = backgroundColor {
 				colorLayer.backgroundColor = backgroundColor.CGColor
@@ -39,6 +45,8 @@ final class ColorView: CommonView {
 				colorLayer.backgroundColor = nil
 			}
 		}
+		CATransaction.begin()
+		CATransaction.setDisableActions(true)
 		colorLayer.frame = layer.bounds
 		CATransaction.commit()
 	}

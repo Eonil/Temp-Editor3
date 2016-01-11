@@ -10,7 +10,7 @@ import Foundation
 import AppKit
 
 public struct CommonViewFactory {
-        public static func instantiateScrollViewForFileNavigator() -> NSScrollView {
+        public static func instantiateScrollViewForNavigators() -> NSScrollView {
                 return instanatiateCommonScrollViewForNavigators()
         }
         public static func instantiateScrollViewForCodeDisplayTextView() -> NSScrollView {

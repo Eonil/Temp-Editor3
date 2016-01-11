@@ -1,5 +1,5 @@
 //
-//  CargoShellExecutor.swift
+//  ShellCommandExecutor.swift
 //  Editor3
 //
 //  Created by Hoon H. on 2016/01/03.
@@ -8,9 +8,28 @@
 
 import Foundation
 
-final class CargoShellExecutor {
+final class ShellCommandExecutor {
+	// MARK: -
+	init() {
+		transition.onEvent = { [weak self] in
+			guard let ssss = self else { return }
+			ssss.onEvent?($0)
+		}
+	}
+	deinit {
+		cleanup()
+	}
+
 	var onEvent: (Event->())?
-	private let transition		=	Transition(.Ready, CargoTool3.defaultTransitionRules())
+
+	var state: State {
+		get {
+			return transition.state
+		}
+	}
+
+	// MARK: -
+	private let transition		=	Transition(State.Ready, ShellCommandExecutor.defaultTransitionRules())
 	private let shell		=	ShellTaskExecutionController()
 	private var stdoutUTF8Decoder	=	_UTF8Decoder()
 	private var stderrUTF8Decoder	=	_UTF8Decoder()
@@ -19,28 +38,42 @@ final class CargoShellExecutor {
 	private var stdoutEOF		=	AtomicBool(false)
 	private var stderrEOF		=	AtomicBool(false)
 	private let waitSema		=	dispatch_semaphore_create(0)!
-	private var shouldBeStateDone	=	AtomicBool(false)
+	private var stateShouldBeDone	=	AtomicBool(false)
 
-	init() {
-	}
-	deinit {
-		cleanup()
-	}
 }
-extension CargoShellExecutor {
+extension ShellCommandExecutor {
+
+	enum State {
+		case Ready
+		case Running
+		case Cleaning		//<	Death declared, but not yet actually dead.
+		case Done
+	}
+
 	enum Event {
+		case Launch		//<	Ready -> Running
+		case Clean		//<	Running -> Cleaning
+		case Exit		//<	Cleaning -> Done
+
 		/// It's guaranteed that this won't be called anymore since `onTermination` has been called.
 		case StandardOutput(String)
 		/// It's guaranteed that this won't be called anymore since `onTermination` has been called.
 		case StandardError(String)
-		case Done
+	}
+
+	private static func defaultTransitionRules() -> [Transition<State, Event>.Rule] {
+		return	[
+			(.Ready,	.Running,	.Launch),
+			(.Running,	.Cleaning,	.Clean),
+			(.Cleaning,	.Done,		.Exit),
+		]
 	}
 }
-extension CargoShellExecutor {
+extension ShellCommandExecutor {
 	func launch(workingDirectoryPath: String) {
 		assertMainThread()
 		precondition(transition.state == .Ready)
-		transition.state =  .Running
+		transition.state = .Running
 		shell.terminationHandler = { [weak self] in
 			dispatchToNonMainQueueAsynchronously { [weak self] in
 				assert(self != nil)
@@ -66,18 +99,18 @@ extension CargoShellExecutor {
 	func wait() {
 		assertMainThread()
 		dispatch_semaphore_wait(waitSema, DISPATCH_TIME_FOREVER)
-		if shouldBeStateDone.state {
+		if stateShouldBeDone.state {
 			if transition.state == .Running {
 				transition.state = .Cleaning
 				transition.state = .Done
 				assert(onEvent != nil)
-				onEvent?(.Done)
+				onEvent?(.Exit)
 			}
 		}
 	}
 	func execute(command: String) {
 		assertMainThread()
-		precondition(transition.state == .Running, "You can execute only on a running executor.")
+		precondition(transition.state == .Running, "You can execute only on executor that is in running state.")
 		shell.standardInput.writeUTF8String(command)
 		shell.standardInput.writeUTF8String("\n")
 	}
@@ -94,12 +127,12 @@ extension CargoShellExecutor {
 		shell.kill()
 	}
 }
-private extension CargoShellExecutor {
-	func fireEvent(event: Event) {
+extension ShellCommandExecutor {
+	private func fireEvent(event: Event) {
 		assert(onEvent != nil)
 		onEvent?(event)
 	}
-	func runReadingStandardOutputOnNonMainThread() {
+	private func runReadingStandardOutputOnNonMainThread() {
 		assertNonMainThread()
 		while true {
 			var s = ""
@@ -123,7 +156,7 @@ private extension CargoShellExecutor {
 			self!.stdoutEOF.state = true
 		}
 	}
-	func runReadingStandardErrorOnNonMainThread() {
+	private func runReadingStandardErrorOnNonMainThread() {
 		assertNonMainThread()
 		while true {
 			var s = ""
@@ -147,14 +180,14 @@ private extension CargoShellExecutor {
 			self!.stderrEOF.state	=	true
 		}
 	}
-	func onShellTerminationOnNonMainThread() {
+	private func onShellTerminationOnNonMainThread() {
 		assertNonMainThread()
 		dispatchToNonMainQueueAsynchronously { [weak self] in
 			// We cannot roun-trip to main thread because it can be blocked by `wait` at this point.
 			// So, we made all flags atomic.
 			self!.isShellTerminated.state = true
 			if self!.stdoutEOF.state && self!.stderrEOF.state {
-				self!.shouldBeStateDone.state = true //< We need this because main thread can be blocked by `wait` call.
+				self!.stateShouldBeDone.state = true //< We need this because main thread can be blocked by `wait` call.
 				dispatch_semaphore_signal(self!.waitSema)
 				dispatchToMainQueueAsynchronously { [weak self] in
 					if self!.transition.state == .Running {
@@ -175,7 +208,7 @@ private extension CargoShellExecutor {
 			}
 		}
 	}
-	func cleanup() {
+	private func cleanup() {
 		// Buffer state can be dirty if the remote process exited by crash.
 		let MSG = "You're responsible to keep this object alive until this remote shell exits."
 		assert(isShellTerminated.state == true, MSG)

@@ -33,6 +33,7 @@ final class Workspace: OwnerWorkspace {
 	weak var ownerEditor: OwnerEditor?
 	let textEditor = TextEditor()
 	let fileNavigator = FileNavigator()
+	let issueNavigator = IssueNavigator()
 	let builder = Builder()
 	let debugger = Debugger()
 
@@ -64,6 +65,7 @@ final class Workspace: OwnerWorkspace {
                 self.ownerDocument = ownerDocument
                 textEditor.ownerWorkspace = self
                 fileNavigator.ownerWorkspace = self
+		issueNavigator.ownerWorkspace = self
 		builder.ownerWorkspace = self
                 FileNavigator.Event.Notification.register(self, self.dynamicType.process)
 
@@ -89,7 +91,7 @@ extension Workspace {
 }
 private extension Workspace {
         func process(n: FileNavigator.Event.Notification) {
-                guard self === n.sender.ownerWorkspace else { return }
+                guard n.sender.ownerWorkspace is Workspace && n.sender.ownerWorkspace === self else { return }
                 switch n.event {
                 case .DidChangeTree:
                         break

@@ -11,12 +11,14 @@ import Foundation
 struct ViewInstaller {
         private(set) var isInstalled = false
         mutating func installIfNeeded(@noescape install: ()->()) {
+		assertMainThread()
                 if isInstalled == false {
                         install()
                         isInstalled = true
                 }
         }
-        mutating func deinstallIfNeeded(@noescape deinstall: ()->()) {
+	mutating func deinstallIfNeeded(@noescape deinstall: ()->()) {
+		assertMainThread()
                 if isInstalled == true {
                         deinstall()
                         isInstalled = false

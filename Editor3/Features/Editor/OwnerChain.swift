@@ -10,13 +10,19 @@ import Foundation
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// Owner protocols provies identity of owner and read-only informations about owners.
+// Owner protocols provides identity of owner and read-only informations about owners.
 // These do not provide any mutators.
+//
+// You cannot query model subnode through owner node protocol.
+// You cannot mutate existing data field through owner node protocol.
+// Owner node protocol may provide some read-only data fields of owner node.
+// 
+// Owner node protocols are not intended to be used to query every node of the model graph.
+// It is provided only to identify some informations and very limited data set.
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 protocol OwnerEditor: class {
-
 }
 //protocol OwnerDocument: class {
 //	var fileURL: NSURL? { get }
@@ -37,6 +43,25 @@ protocol OwnerBuilder: class {
 protocol OwnerDebugger: class {
         weak var ownerWorkspace: OwnerWorkspace? { get }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

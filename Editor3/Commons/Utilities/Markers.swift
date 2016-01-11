@@ -8,5 +8,5 @@
 
 import Foundation
 
-func MARK_unimplemented() {
-}
+func MARK_unimplemented() {}
+func MARK_adHoc() {}
