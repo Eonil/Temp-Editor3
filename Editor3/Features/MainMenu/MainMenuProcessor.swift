@@ -181,19 +181,19 @@ final class MainMenuProcessor {
 //                        
                 case ~~mainMenuController.productBuild:
 			do {
-			assertMenuExecutabilityByChecking(editor.mainWorkspace != nil)
-			assertMenuExecutabilityByChecking(editor.mainWorkspace!.builder.state != .Running)
-			guard let workspace = editor.mainWorkspace else { return }
-			guard workspace.builder.state != .Running else { return }
-			workspace.builder.runBuilding()
+				assertMenuExecutabilityByChecking(editor.mainWorkspace != nil)
+				assertMenuExecutabilityByChecking(editor.mainWorkspace!.builder.state != .Running)
+				guard let workspace = editor.mainWorkspace else { return }
+				guard workspace.builder.state != .Running else { return }
+				workspace.builder.runBuilding()
 			}
 
                 case ~~mainMenuController.productClean:
 			do {
 				assertMenuExecutabilityByChecking(editor.mainWorkspace != nil)
-				assertMenuExecutabilityByChecking(editor.mainWorkspace!.builder.state == .Ready)
+				assertMenuExecutabilityByChecking(editor.mainWorkspace!.builder.state != .Running)
 				guard let workspace = editor.mainWorkspace else { return }
-				guard workspace.builder.state == .Ready else { return }
+				guard workspace.builder.state != .Running else { return }
 				workspace.builder.runCleaning()
                         }
                         

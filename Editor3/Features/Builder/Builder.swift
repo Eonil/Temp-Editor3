@@ -73,6 +73,7 @@ extension Builder {
 	}
 	func runCleaning() {
 		resetIfDone()
+		removeAllIssues()
 		assert(state == .Ready)
 		assert(cargo == nil)
 		assert(ownerWorkspace != nil)
@@ -85,6 +86,7 @@ extension Builder {
 		cargo = CargoTool()
 		guard let cargo = cargo else { return }
 		do {
+			cargo.onEvent = { [weak self] in self?.process($0) }
 			try cargo.runCleanCommand(locationURL)
 		}
 		catch let error {
