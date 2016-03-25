@@ -14,7 +14,7 @@ final class RacerTool {
         func queryWithFullyQualifiedName(namePart: String) -> [RacerMatch] {
 		let shell = ShellTaskExecutionController()
 		shell.launch(workingDirectoryPath: "/")
-		shell.standardInput.writeUTF8String("export RUST_SRC_PATH=\"$HOME/Temp/rustc-1.5.0/src\"\n")
+		shell.standardInput.writeUTF8String("export RUST_SRC_PATH=\"$HOME/Temp/rustc-1.7.0/src\"\n")
 		shell.standardInput.writeUTF8String("racer complete \(namePart)\n")
 		shell.standardInput.writeUTF8String("exit\n")
 		let output = shell.standardOutput.readUTF8StringToEndOfFile()
@@ -58,7 +58,7 @@ final class RacerTool {
         func queryWithLineNumber(lineNumber: Int, characterNumber: Int, filePath: String) -> [RacerMatch] {
 		let shell = ShellTaskExecutionController()
 		shell.launch(workingDirectoryPath: "/")
-		shell.standardInput.writeUTF8String("export RUST_SRC_PATH=\"$HOME/Temp/rustc-1.5.0/src\"\n")
+		shell.standardInput.writeUTF8String("export RUST_SRC_PATH=\"$HOME/Temp/rustc-1.7.0/src\"\n")
 		shell.standardInput.writeUTF8String("racer --interface tab-text complete \(lineNumber) \(characterNumber) \(filePath)\n")
 		shell.standardInput.writeUTF8String("exit\n")
 		let output = shell.standardOutput.readUTF8StringToEndOfFile()

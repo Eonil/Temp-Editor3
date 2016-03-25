@@ -7,21 +7,70 @@
 //
 
 import Foundation
+import LLDBWrapper
 
 final class Debugger {
         enum Event {
         	typealias Notification = EventNotification<Debugger,Event>
                 case DidChangeState
+		case DidChangeSelectedThread
+		case DidChangeSelectedFrame
         }
 
         enum State {
                 case Ready
-                case Running
+		case Running
+		case Pause
+		/// Process exited.
+		case Done
         }
 
         private(set) var state: State = .Ready {
                 didSet {
-			Event.Notification(sender: self, event: .DidChangeState).broadcast()
+			if state != oldValue {
+				Event.Notification(sender: self, event: .DidChangeState).broadcast()
+			}
                 }
         }
+
+
+
+	var selectedTarget: DebuggingTarget? {
+		didSet {
+			guard selectedTarget !== oldValue else { return }
+		}
+	}
+	var selectedThread: LLDBThread? {
+		didSet {
+			guard selectedThread !== oldValue else { return }
+			Event.Notification(sender: self, event: .DidChangeSelectedThread).broadcast()
+		}
+	}
+	var selectedFrame: LLDBFrame? {
+		didSet {
+			guard selectedThread !== oldValue else { return }
+			Event.Notification(sender: self, event: .DidChangeSelectedFrame).broadcast()
+		}
+	}
+//	var selectedValue: LLDBValue? {
+//
+//	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

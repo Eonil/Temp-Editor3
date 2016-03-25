@@ -238,7 +238,7 @@ final class MainMenuProcessor {
 //                case ~~mainMenuController.debugClearConsole: do {
 //                        editor.keyWorkspace!.console.clear()
 //                        }
-//                        
+//                        q
 //                case ~~mainMenuController.DEV_test1: do {
 //                        
 //                        }

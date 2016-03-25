@@ -29,9 +29,11 @@ final class TransparentLayer: CALayer {
 				"Accepts only transparent color.")
 		}
 	}
-	override func copy() -> AnyObject {
-		return self
-	}
+
+    // I don't know why we cannot override this method...
+//	override func copy() -> AnyObject {
+//		return self
+//	}
 }
 
 private let TRANSPARENT_COLOR = NSColor.clearColor().CGColor

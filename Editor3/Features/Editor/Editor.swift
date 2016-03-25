@@ -26,6 +26,7 @@ final class Editor {
         }
 
         // MARK: -
+    
         /// A `Workspace` that is connected to main window.
         private(set) weak var mainWorkspace: Workspace? {
                 didSet {

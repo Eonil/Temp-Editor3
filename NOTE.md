@@ -1,4 +1,5 @@
 
+This is 3rd re-architectured version of Editor.
 
 When you create and add a document to controller, don't forget this.
 Or just use `openUntitledDocumentAndDisplay`.
@@ -16,7 +17,7 @@ See "Text System Defaults and Key Bindings" to override text system defaults and
 
 Naming Convention
 -----------------
-Types ends with `~Tool` are one-time use only objects.
+Types ends with `~Tool` are one-time use only state-ful objects.
 
 
 
@@ -25,3 +26,21 @@ Swift Compiler Bug Workaround
 -----------------------------
 Currently, Swift compiler cannot handle overriding methods in `extension`. 
 If you're having trouble related to it, try to move it into class body.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

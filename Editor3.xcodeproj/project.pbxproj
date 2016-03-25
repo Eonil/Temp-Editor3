@@ -74,6 +74,10 @@
 		4558E4831C43F39B000C5A65 /* IssueTypeImplementations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558E4821C43F39B000C5A65 /* IssueTypeImplementations.swift */; };
 		4558E4851C43F3EA000C5A65 /* IssueTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558E4841C43F3EA000C5A65 /* IssueTypes.swift */; };
 		459477781C3EB88400F08F10 /* ListMutationEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459477771C3EB88400F08F10 /* ListMutationEvent.swift */; };
+		4596BC601C46A89F00C671CA /* LLDBWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4596BC551C46A89300C671CA /* LLDBWrapper.framework */; };
+		4596BC611C46A89F00C671CA /* LLDBWrapper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4596BC551C46A89300C671CA /* LLDBWrapper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4596BC6F1C46AD3100C671CA /* DebuggingNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4596BC6E1C46AD3100C671CA /* DebuggingNodes.swift */; };
+		4596BC711C46AEC900C671CA /* DebuggingTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4596BC701C46AEC900C671CA /* DebuggingTarget.swift */; };
 		45CACA271C365D5E00A74463 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CACA261C365D5E00A74463 /* main.swift */; };
 		45CACA2A1C365E9700A74463 /* Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CACA291C365E9700A74463 /* Debugging.swift */; };
 		45CACA311C365F1800A74463 /* FileNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CACA2F1C365F1800A74463 /* FileNavigator.swift */; };
@@ -120,6 +124,55 @@
 			remoteGlobalIDString = 45296CC81C361AB900AB0A51;
 			remoteInfo = Editor3;
 		};
+		4596BC541C46A89300C671CA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4596BC4B1C46A89200C671CA /* LLDBWrapper.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 45A0FB76199FBA9C0020D59D;
+			remoteInfo = LLDBWrapper;
+		};
+		4596BC561C46A89300C671CA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4596BC4B1C46A89200C671CA /* LLDBWrapper.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 45C993271A6E5D4A00BA2BC4;
+			remoteInfo = Workbench1;
+		};
+		4596BC581C46A89300C671CA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4596BC4B1C46A89200C671CA /* LLDBWrapper.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 45C9934E1A6E5DF700BA2BC4;
+			remoteInfo = SampleProgram3;
+		};
+		4596BC5A1C46A89300C671CA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4596BC4B1C46A89200C671CA /* LLDBWrapper.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 45AED2C51A751B35002F83AB;
+			remoteInfo = SampleProgram4;
+		};
+		4596BC5C1C46A89300C671CA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4596BC4B1C46A89200C671CA /* LLDBWrapper.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 45C511511A7954F20055DC1D;
+			remoteInfo = Workbench2;
+		};
+		4596BC5E1C46A89300C671CA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4596BC4B1C46A89200C671CA /* LLDBWrapper.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 45E5EF211A7E6817009967D2;
+			remoteInfo = TestdriveApp;
+		};
+		4596BC621C46A89F00C671CA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4596BC4B1C46A89200C671CA /* LLDBWrapper.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 45A0FB75199FBA9C0020D59D;
+			remoteInfo = LLDBWrapper;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -129,6 +182,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				4596BC611C46A89F00C671CA /* LLDBWrapper.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -209,6 +263,9 @@
 		4558E4821C43F39B000C5A65 /* IssueTypeImplementations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IssueTypeImplementations.swift; sourceTree = "<group>"; };
 		4558E4841C43F3EA000C5A65 /* IssueTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IssueTypes.swift; sourceTree = "<group>"; };
 		459477771C3EB88400F08F10 /* ListMutationEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListMutationEvent.swift; sourceTree = "<group>"; };
+		4596BC4B1C46A89200C671CA /* LLDBWrapper.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LLDBWrapper.xcodeproj; path = submodules/LLDBWrapper/LLDBWrapper.xcodeproj; sourceTree = "<group>"; };
+		4596BC6E1C46AD3100C671CA /* DebuggingNodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebuggingNodes.swift; sourceTree = "<group>"; };
+		4596BC701C46AEC900C671CA /* DebuggingTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebuggingTarget.swift; sourceTree = "<group>"; };
 		45CACA261C365D5E00A74463 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		45CACA291C365E9700A74463 /* Debugging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Debugging.swift; sourceTree = "<group>"; };
 		45CACA2F1C365F1800A74463 /* FileNavigator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileNavigator.swift; sourceTree = "<group>"; };
@@ -246,6 +303,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4596BC601C46A89F00C671CA /* LLDBWrapper.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,6 +339,7 @@
 			children = (
 				45CC90A61C36A25600B0BEC3 /* NOTE.md */,
 				45296CCB1C361AB900AB0A51 /* Editor3 */,
+				4596BC4B1C46A89200C671CA /* LLDBWrapper.xcodeproj */,
 				45296CE01C361ABA00AB0A51 /* Editor3Tests */,
 				45296CEB1C361ABA00AB0A51 /* Editor3UITests */,
 				45296CCA1C361AB900AB0A51 /* Products */,
@@ -505,10 +564,25 @@
 			path = Builder;
 			sourceTree = "<group>";
 		};
+		4596BC4C1C46A89200C671CA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4596BC551C46A89300C671CA /* LLDBWrapper.framework */,
+				4596BC571C46A89300C671CA /* Workbench1.app */,
+				4596BC591C46A89300C671CA /* SampleProgram3 */,
+				4596BC5B1C46A89300C671CA /* SampleProgram4.app */,
+				4596BC5D1C46A89300C671CA /* Workbench2.app */,
+				4596BC5F1C46A89300C671CA /* TestdriveApp.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		45CACA281C365E9700A74463 /* Debugger */ = {
 			isa = PBXGroup;
 			children = (
 				45CACA291C365E9700A74463 /* Debugging.swift */,
+				4596BC701C46AEC900C671CA /* DebuggingTarget.swift */,
+				4596BC6E1C46AD3100C671CA /* DebuggingNodes.swift */,
 			);
 			path = Debugger;
 			sourceTree = "<group>";
@@ -559,6 +633,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				4596BC631C46A89F00C671CA /* PBXTargetDependency */,
 			);
 			name = Editor3;
 			productName = Editor3;
@@ -635,6 +710,12 @@
 			mainGroup = 45296CC01C361AB900AB0A51;
 			productRefGroup = 45296CCA1C361AB900AB0A51 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 4596BC4C1C46A89200C671CA /* Products */;
+					ProjectRef = 4596BC4B1C46A89200C671CA /* LLDBWrapper.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				45296CC81C361AB900AB0A51 /* Editor3 */,
@@ -643,6 +724,51 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		4596BC551C46A89300C671CA /* LLDBWrapper.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = LLDBWrapper.framework;
+			remoteRef = 4596BC541C46A89300C671CA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4596BC571C46A89300C671CA /* Workbench1.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = Workbench1.app;
+			remoteRef = 4596BC561C46A89300C671CA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4596BC591C46A89300C671CA /* SampleProgram3 */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = SampleProgram3;
+			remoteRef = 4596BC581C46A89300C671CA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4596BC5B1C46A89300C671CA /* SampleProgram4.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = SampleProgram4.app;
+			remoteRef = 4596BC5A1C46A89300C671CA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4596BC5D1C46A89300C671CA /* Workbench2.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = Workbench2.app;
+			remoteRef = 4596BC5C1C46A89300C671CA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4596BC5F1C46A89300C671CA /* TestdriveApp.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = TestdriveApp.app;
+			remoteRef = 4596BC5E1C46A89300C671CA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		45296CC71C361AB900AB0A51 /* Resources */ = {
@@ -674,6 +800,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4596BC711C46AEC900C671CA /* DebuggingTarget.swift in Sources */,
 				45296D3E1C362DBF00AB0A51 /* ViewInstaller.swift in Sources */,
 				45296D471C363C1F00AB0A51 /* CommonViewFactory.swift in Sources */,
 				45CACA461C3660C200A74463 /* Assertions.swift in Sources */,
@@ -734,6 +861,7 @@
 				45296D421C36367F00AB0A51 /* LayoutUtility.swift in Sources */,
 				45CC90C31C36C51C00B0BEC3 /* BoxType.swift in Sources */,
 				45CACA4C1C36849200A74463 /* NotificationUtility.swift in Sources */,
+				4596BC6F1C46AD3100C671CA /* DebuggingNodes.swift in Sources */,
 				45296D401C3635F300AB0A51 /* TextEditorViewController.swift in Sources */,
 				45E47A0B1C3E885500A81204 /* IssueNavigator.swift in Sources */,
 				452F5EED1C3955C500B3A5FB /* ColorView.swift in Sources */,
@@ -798,6 +926,11 @@
 			isa = PBXTargetDependency;
 			target = 45296CC81C361AB900AB0A51 /* Editor3 */;
 			targetProxy = 45296CE91C361ABA00AB0A51 /* PBXContainerItemProxy */;
+		};
+		4596BC631C46A89F00C671CA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = LLDBWrapper;
+			targetProxy = 4596BC621C46A89F00C671CA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -889,7 +1022,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = Editor3/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks $(SYSTEM_APPS_DIR)/Xcode.app/Contents/SharedFrameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Eonil.Editor3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -902,7 +1035,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = Editor3/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks $(SYSTEM_APPS_DIR)/Xcode.app/Contents/SharedFrameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Eonil.Editor3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

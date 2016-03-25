@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "B977DCB647192C4C272C581D7D954F4E42704FDA",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "48B9C1DE76C8BEA5F768021CB65ADA820F587B93" : 0,
+    "B977DCB647192C4C272C581D7D954F4E42704FDA" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "317818EB-5D7E-4246-A15A-D15E046F3C0B",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "48B9C1DE76C8BEA5F768021CB65ADA820F587B93" : "Editor3\/submodules\/LLDBWrapper\/",
+    "B977DCB647192C4C272C581D7D954F4E42704FDA" : "Editor3\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Editor3",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Editor3.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Eonil\/LLDBWrapper",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "48B9C1DE76C8BEA5F768021CB65ADA820F587B93"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Eonil\/Temp-Editor3",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "B977DCB647192C4C272C581D7D954F4E42704FDA"
+    }
+  ]
+}
