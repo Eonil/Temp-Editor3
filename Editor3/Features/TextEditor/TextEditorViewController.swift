@@ -95,7 +95,7 @@ extension TextEditorViewController: NSTextViewDelegate {
 
 		debugLog(commandSelector)
 
-		if commandSelector == Selector("complete:") {
+		if commandSelector == #selector(NSTextView.complete(_:)) {
 			textEditor.hideCompletion()
 			return true
 		}
@@ -109,10 +109,10 @@ extension TextEditorViewController: NSTextViewDelegate {
 }
 
 private let codeCompletingCommands: [Selector] = [
-        "moveUp:",
-        "moveDown:",
-        "moveLeft:",
-        "moveRight:",
+        #selector(NSResponder.moveUp(_:)),
+        #selector(NSResponder.moveDown(_:)),
+        #selector(NSResponder.moveLeft(_:)),
+        #selector(NSResponder.moveRight(_:)),
 ]
 
 

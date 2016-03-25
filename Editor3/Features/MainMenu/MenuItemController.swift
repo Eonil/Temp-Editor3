@@ -42,7 +42,7 @@ public class MenuItemController {
 		_cocoaMenuItem.enabled	=	false
 		_cocoaMenuAgent.owner	=	self
 		_cocoaMenuItem.target	=	_cocoaMenuAgent
-		_cocoaMenuItem.action	=	Selector("EDITOR_onClick:")
+		_cocoaMenuItem.action	=	#selector(_MenuItemAgent.EDITOR_onClick(_:))
 	}
 	deinit {
 		_cocoaMenuItem.target	=	nil

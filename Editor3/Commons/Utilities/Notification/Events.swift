@@ -7,5 +7,5 @@
 //
 
 public protocol EventType {
-	typealias Notification
+	associatedtype Notification
 }

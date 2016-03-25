@@ -21,7 +21,7 @@ struct ObjectSet<T: AnyObject>: SequenceType {
         }
         func generate() -> AnyGenerator<T> {
 		var g = set.generate()
-                return anyGenerator {
+                return AnyGenerator {
 			return g.next()?.object
 		}
         }

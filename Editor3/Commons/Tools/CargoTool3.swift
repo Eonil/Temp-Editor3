@@ -426,7 +426,7 @@ private func _readBytes(count: Int, fromFileHandle: NSFileHandle) -> _ReadingRes
 	buffer.reserveCapacity(d.length)
 	for _ in 0..<d.length {
 		buffer.append(p.memory)
-		p++
+		p = p.successor()
 	}
 	return	.Bytes(buffer)
 }

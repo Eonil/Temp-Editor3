@@ -8,7 +8,7 @@
 
 import Foundation
 
-func debugLog<T>(@autoclosure value: ()->T, file: String = __FILE__, line: Int = __LINE__) {
+func debugLog<T>(@autoclosure value: ()->T, file: String = #file, line: Int = #line) {
         assert({ () -> Bool in
                 let name = NSURL(fileURLWithPath: file).lastPathComponent ?? "????"
                 let message = "\(name) (\(line)): \(value())"

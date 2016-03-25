@@ -7,7 +7,7 @@
 //
 
 protocol BoxType {
-        typealias Scalar: BoxScalarType
+        associatedtype Scalar: BoxScalarType
         var min: (x: Scalar, y: Scalar) { get }
         var max: (x: Scalar, y: Scalar) { get }
         var center: (x: Scalar, y: Scalar) { get }
