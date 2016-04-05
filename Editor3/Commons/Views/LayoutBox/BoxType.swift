@@ -19,7 +19,7 @@ protocol BoxScalarType: FloatingPointType, FloatLiteralConvertible, IntegerLiter
         func + (a: Self, b: Self) -> Self
         func - (a: Self, b: Self) -> Self
         func * (a: Self, b: Self) -> Self
-        func / (a: Self, b: Self) -> Self
+	func / (a: Self, b: Self) -> Self
 }
 extension BoxType {
         typealias Point = (x: Scalar, y: Scalar)
@@ -51,10 +51,10 @@ extension BoxType {
                         min: min * ratio,
                         max: max * ratio)
         }
-	func resizeTo(size: (x: Scalar, y: Scalar)) -> Self {
-		return Self(
-			center: center,
-			size: size)
+	/// Returns a new box with new size that resized around center.
+	func resizedTo(size: (x: Scalar, y: Scalar)) -> Self {
+		return Self(center: center,
+		            size: size)
 	}
         func splitAtX(x: Scalar) -> (min: Self, max: Self) {
                 precondition(x >= min.x)

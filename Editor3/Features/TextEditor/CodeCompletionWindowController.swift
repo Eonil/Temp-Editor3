@@ -16,9 +16,9 @@ final class CodeCompletionWindowController: NSWindowController {
                 newWindow.styleMask &= ~NSClosableWindowMask
                 newWindow.styleMask &= ~NSTitledWindowMask
                 newWindow.styleMask &= ~NSMiniaturizableWindowMask
+		newWindow.appearance = NSAppearance(named: NSAppearanceNameVibrantDark)
 		self.init(window: newWindow) // Instance of `self` can be changed at here.
 		codeCompletionViewController = newCodeCompletionViewController // So we set it to instance var later.
-                installIfNeeded()
                 render()
         }
 
@@ -28,20 +28,22 @@ final class CodeCompletionWindowController: NSWindowController {
                 }
         }
         private(set) var codeCompletionViewController: CodeCompletionViewController?
+
+	/// Whether the window is displayed or not.
         private(set) var isFloating: Bool = false
 
         /// Floats window around rect in screen space.
+	/// You can call this again just to adjust window position.
         func floatAroundRectInScreenSpace(rectInScreenSpace: CGRect) {
                 assert(window != nil)
                 guard let window = window else { return }
-                installIfNeeded()
                 render()
 		let rectInScreen = rectInScreenSpace
 			.toBox()
 			.toSilentBox()
 			.minYEdge()
-			.resizeTo((300,100))
-			.translatedBy((150,50))
+			.resizedTo((300,100))
+			.translatedBy((+150,-50))
 			.toCGRect()
                 window.setFrame(rectInScreen, display: true)
 		window.orderFront(self)
@@ -57,21 +59,24 @@ final class CodeCompletionWindowController: NSWindowController {
 
         // MARK: -
         private var installer = ViewInstaller()
-        private func installIfNeeded() {
-                installer.installIfNeeded {
-                        assert(window != nil)
-                        guard let window = window else { return }
-                        let newWindowLevel = CGWindowLevelKey.FloatingWindowLevelKey.rawValue
-                        guard IntMax(newWindowLevel) <= IntMax(Int.max) else { return }
-                        guard IntMax(newWindowLevel) >= IntMax(Int.min) else { return }
+        private func process(n: NSNotification) {
+		render()
+        }
+        private func render() {
+		installer.installIfNeeded {
+			assert(window != nil)
+			guard let window = window else { return }
+			let newWindowLevel = CGWindowLevelKey.FloatingWindowLevelKey.rawValue
+			guard IntMax(newWindowLevel) <= IntMax(Int.max) else { return }
+			guard IntMax(newWindowLevel) >= IntMax(Int.min) else { return }
 			// Make title-less round cornered window with shadow.
 			do {
 				window.backgroundColor	=	NSColor.whiteColor()
 				window.opaque		=	false
 				window.hasShadow	=	true
 				window.styleMask	=	NSResizableWindowMask
-							|	NSTitledWindowMask
-							|	NSFullSizeContentViewWindowMask
+					|	NSTitledWindowMask
+					|	NSFullSizeContentViewWindowMask
 				window.movableByWindowBackground	=	true
 				window.titlebarAppearsTransparent	=	true
 				window.titleVisibility			=	.Hidden
@@ -81,21 +86,17 @@ final class CodeCompletionWindowController: NSWindowController {
 				window.standardWindowButton(.CloseButton)?.hidden	=	true
 				window.standardWindowButton(.ZoomButton)?.hidden	=	true
 			}
-                        window.level = Int(newWindowLevel)
-                        window.delegate = self
-                        NotificationUtility.register(self, [
-                                NSWindowDidResizeNotification,
-                                ], { [weak self] (n: NSNotification) -> () in
-                                        self?.process(n)
-                                })
-                        window.makeFirstResponder(codeCompletionViewController)
-                        assert(window.firstResponder === codeCompletionViewController)
-                }
-        }
-        private func process(n: NSNotification) {
-		render()
-        }
-        private func render() {
+			window.level = Int(newWindowLevel)
+			window.delegate = self
+			NotificationUtility.register(self, [
+				NSWindowDidResizeNotification,
+				], { [weak self] (n: NSNotification) -> () in
+					self?.process(n)
+				})
+			window.makeFirstResponder(codeCompletionViewController)
+			assert(window.firstResponder === codeCompletionViewController)
+		}
+
                 assert(window != nil)
                 assert(codeCompletionViewController != nil)
                 guard let codeCompletionViewController = codeCompletionViewController else { return }

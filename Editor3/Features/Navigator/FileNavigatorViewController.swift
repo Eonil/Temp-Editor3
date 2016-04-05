@@ -16,18 +16,18 @@ extension FileNavigatorViewController {
 }
 final class FileNavigatorViewController: CommonViewController {
 
-        deinit {
-		installer.deinstallIfNeeded {
-			FileNode.Event.Notification.deregister(self)
-			FileNavigator.Event.Notification.deregister(self)
-                }
+    deinit {
+        installer.deinstallIfNeeded {
+            FileNode.Event.Notification.deregister(self)
+            FileNavigator.Event.Notification.deregister(self)
         }
+    }
 
-        weak var fileNavigator: FileNavigator? {
-                didSet {
-			render()
-                }
+    weak var fileNavigator: FileNavigator? {
+        didSet {
+            render()
         }
+    }
 
 	// MARK: -
 	override func layoutSubcomponents() {
@@ -35,9 +35,9 @@ final class FileNavigatorViewController: CommonViewController {
 		render()
 	}
 
-        // MARK: -
-        private let scrollView = CommonViewFactory.instantiateScrollViewForNavigators()
-        private let outlineView = CommonViewFactory.instantiateOutlineViewForUseInSidebar()
+    // MARK: -
+    private let scrollView = CommonViewFactory.instantiateScrollViewForNavigators()
+    private let outlineView = CommonViewFactory.instantiateOutlineViewForUseInSidebar()
 	private var installer = ViewInstaller()
 	private func process(n: FileNavigator.Event.Notification) {
 		assert(fileNavigator != nil)

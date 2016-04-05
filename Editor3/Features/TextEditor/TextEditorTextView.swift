@@ -10,6 +10,7 @@ import Foundation
 import AppKit
 
 final class TextEditorTextView: CommonTextView {
+
 }
 
 

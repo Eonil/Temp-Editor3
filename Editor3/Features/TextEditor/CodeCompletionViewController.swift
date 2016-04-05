@@ -11,6 +11,14 @@ import AppKit
 
 final class CodeCompletionViewController: CommonViewController {
 
+	override init() {
+		super.init()
+		CodeCompletion.Event.Notification.register(self, self.dynamicType.process)
+	}
+	deinit {
+		CodeCompletion.Event.Notification.deregister(self)
+	}
+
         weak var codeCompletion: CodeCompletion? {
                 didSet {
                         installIfNeeded()
@@ -71,32 +79,6 @@ final class CodeCompletionViewController: CommonViewController {
                 }
         }
 }
-extension CodeCompletionViewController: NSTableViewDataSource {
-        @objc
-        func numberOfRowsInTableView(tableView: NSTableView) -> Int {
-		return codeCompletion?.candidates.count ?? 0
-        }
-}
-extension CodeCompletionViewController: NSTableViewDelegate {
-        @objc
-        func tableView(tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
-                let VIEW_ID = NSStringFromClass(CodeCompletionCandidateView)
-                let candidateView: CodeCompletionCandidateView = {
-                        if let candidateView = tableView.makeViewWithIdentifier(VIEW_ID, owner: nil) as? CodeCompletionCandidateView {
-                                return candidateView
-                        }
-                        return CodeCompletionCandidateView()
-                }()
-                candidateView.identifier = VIEW_ID
-                candidateView.candidate = codeCompletion?.candidates[row]
-                return candidateView
-        }
-        @objc
-        func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
-                let rowView = tableView.rowViewAtRow(row, makeIfNecessary: true)
-                return rowView?.viewAtColumn(0) as? NSView
-        }
-}
 // MARK: -
 extension CodeCompletionViewController {
         private func process(n: CodeCompletion.Event.Notification) {
@@ -113,7 +95,46 @@ extension CodeCompletionViewController {
                 window.makeFirstResponder(tableView)
         }
 }
-
+// MARK: -
+extension CodeCompletionViewController: NSTableViewDataSource {
+	@objc
+	func numberOfRowsInTableView(tableView: NSTableView) -> Int {
+		return codeCompletion?.filteredCandidates.count ?? 0
+	}
+}
+extension CodeCompletionViewController: NSTableViewDelegate {
+	@objc
+	func tableView(tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
+		let VIEW_ID = NSStringFromClass(CodeCompletionCandidateView)
+		let candidateView: CodeCompletionCandidateView = {
+			if let candidateView = tableView.makeViewWithIdentifier(VIEW_ID, owner: nil) as? CodeCompletionCandidateView {
+				return candidateView
+			}
+			return CodeCompletionCandidateView()
+		}()
+		candidateView.identifier = VIEW_ID
+		candidateView.candidate = codeCompletion?.filteredCandidates[row]
+		return candidateView
+	}
+	@objc
+	func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
+		let rowView = tableView.rowViewAtRow(row, makeIfNecessary: true)
+		return rowView?.viewAtColumn(0) as? NSView
+	}
+	@objc
+	func tableViewSelectionDidChange(notification: NSNotification) {
+		func getIndex() -> Int? {
+			let idx = tableView.selectedRow
+			guard idx != NSNotFound else { return nil }
+			assert(idx >= 0)
+			assert(idx < tableView.numberOfRows)
+			guard idx >= 0 else { return nil }
+			guard idx < tableView.numberOfRows else { return nil }
+			return idx
+		}
+		codeCompletion?.selectedCandidateIndex = getIndex()
+	}
+}
 
 
 

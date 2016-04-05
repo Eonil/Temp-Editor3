@@ -11,6 +11,7 @@ import AppKit
 
 public struct CommonFont {
 	public static func codeFontOfSize(size: CGFloat) -> NSFont {
-		return	NSFont(name: "Menlo", size: size)!
+		return NSFont(name: "Menlo", size: size)!
 	}
+	public static let codeFontWithSystemSize = CommonFont.codeFontOfSize(NSFont.systemFontSize())
 }

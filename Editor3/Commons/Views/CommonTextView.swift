@@ -9,7 +9,7 @@
 import Foundation
 import AppKit
 
-/// A text view that provides:
+/// A text view which provides:
 /// - Proper background color for selected text when view is not the first responder.
 class CommonTextView: NSTextView {
 	/// Designated initialiser.

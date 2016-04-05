@@ -23,9 +23,9 @@ struct WorkspaceItemPath {
 
         ///
 
-        var parts: [String] {
-                get {
-                        return	_parts
+	var parts: [String] {
+		get {
+			return	_parts
                 }
         }
 

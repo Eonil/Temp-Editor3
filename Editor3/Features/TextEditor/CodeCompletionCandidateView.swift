@@ -24,6 +24,7 @@ extension CodeCompletionCandidateView {
                         backgroundColor = NSColor.clearColor()
                         textField.bordered = false
                         textField.drawsBackground = false
+			textField.font = CommonFont.codeFontWithSystemSize
                         addSubview(textField)
                 }
                 // Reload.
@@ -37,8 +38,8 @@ extension CodeCompletionCandidateView {
                 // Color.
                 do {
 			textField.textColor = selected
-                                ? NSColor.alternateSelectedControlTextColor()
-                                : NSColor.controlTextColor()
+				? CommonColor.collectionItemTextSelected
+				: CommonColor.collectionItemTextNormal
                 }
         }
 }

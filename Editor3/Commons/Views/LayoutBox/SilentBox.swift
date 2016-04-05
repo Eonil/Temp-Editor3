@@ -26,6 +26,35 @@ struct SilentBox: BoxType {
                 }
         }
 }
+// MARK: - Extensions
+extension SilentBox {
+	/// Returns a new resized box, that is only shrinken.
+	/// Larger size input will be clipped to current size.
+	func shrinkenTo(newSize: (x: Scalar, y: Scalar)) -> SilentBox {
+		let a = Swift.min(self.size.x, newSize.x)
+		let b = Swift.min(self.size.y, newSize.y)
+		return resizedTo((a,b))
+	}
+	func shrinkenXTo(newSizeX: Scalar) -> SilentBox {
+		return shrinkenTo((newSizeX, size.y))
+	}
+	func shrinkenYTo(newSizeY: Scalar) -> SilentBox {
+		return shrinkenTo((size.x, newSizeY))
+	}
+	/// Returns a new resized box, that is only grown.
+	/// Smaller size input will be ceiled to current size.
+	func grownTo(newSize: (x: Scalar, y: Scalar)) -> SilentBox {
+		let a = Swift.max(self.size.x, newSize.x)
+		let b = Swift.max(self.size.y, newSize.y)
+		return resizedTo((a,b))
+	}
+	func grownXTo(newSizeX: Scalar) -> SilentBox {
+		return grownTo((newSizeX, size.y))
+	}
+	func grownYTo(newSizeY: Scalar) -> SilentBox {
+		return grownTo((size.x, newSizeY))
+	}
+}
 // MARK: - Overridins
 extension SilentBox {
 	func splitAtX(x: Scalar) -> (min: SilentBox, max: SilentBox) {

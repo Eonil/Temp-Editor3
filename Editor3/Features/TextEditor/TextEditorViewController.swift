@@ -11,8 +11,14 @@ import AppKit
 
 final class TextEditorViewController: CommonViewController {
 
-        deinit {
-		TextEditor.Event.Notification.deregisterAnyway(self)
+	override init() {
+		super.init()
+		TextEditor.Event.Notification.register(self, self.dynamicType.process)
+		CodeCompletion.Event.Notification.register(self, self.dynamicType.process)
+	}
+	deinit {
+		CodeCompletion.Event.Notification.deregister(self)
+		TextEditor.Event.Notification.deregister(self)
         }
 
         weak var textEditor: TextEditor? {
@@ -32,6 +38,7 @@ final class TextEditorViewController: CommonViewController {
         private let textView = CommonViewFactory.instantiateTextViewForCodeDisplay() as TextEditorTextView
         private let codeCompletionWindowController = CodeCompletionWindowController()
         private var installer = ViewInstaller()
+	private var autocompletionStartingPosition: Int?
 }
 extension TextEditorViewController {
         private func process(n: TextEditor.Event.Notification) {
@@ -47,6 +54,17 @@ extension TextEditorViewController {
 			render()
                 }
         }
+	private func process(n: CodeCompletion.Event.Notification) {
+		guard n.sender ==== textEditor?.codeCompletion else { return }
+		switch n.event {
+		case .DidChangeSelectionIndex:
+			renderCodeCompletion()
+		case .DidChangeAllCandidates:
+			break
+		case .DidChangeFilteredCandidates:
+			break
+		}
+	}
         private func render() {
                 guard let textEditor = textEditor else { return }
                 installer.installIfNeeded {
@@ -69,37 +87,69 @@ extension TextEditorViewController {
                 }
         }
         private func renderCodeCompletion() {
-                let newState = textEditor?.codeCompletionRunningState ?? false
-                guard let window = view.window else { return }
-                if newState {
-                        let rectInView = CGRect(x: 100, y: 100, width: 100, height: 100)
-                        let rectInWindow = view.convertRect(rectInView, toView: nil)
-                        let rectInScreen = window.convertRectToScreen(rectInWindow)
-                        codeCompletionWindowController.floatAroundRectInScreenSpace(rectInScreen)
-                }
-                else {
-                        codeCompletionWindowController.sink()
-                }
+		let shouldBeRunning = textEditor?.isCodeCompletionRunning ?? false
+		let isRunning = codeCompletionWindowController.isFloating
+		if shouldBeRunning != isRunning {
+			if shouldBeRunning {
+				autocompletionStartingPosition = textView.selectedRange().location
+				let selectionRectInScreen = textView.firstRectForCharacterRange(textView.selectedRange(), actualRange: nil)
+				codeCompletionWindowController.floatAroundRectInScreenSpace(selectionRectInScreen)
+			}
+			else {
+				codeCompletionWindowController.sink()
+			}
+		}
+
         }
 }
+extension TextEditorViewController {
+	private func getCodeCompletionSearchExpression() -> String? {
+		guard let autocompletionStartingPosition = autocompletionStartingPosition else { return nil }
+		guard let currentSelectionEndPosition = textView.selectedRange().toRange()?.endIndex else { return nil }
+		guard autocompletionStartingPosition <= currentSelectionEndPosition else { return nil }
+		let capturingRange = autocompletionStartingPosition..<currentSelectionEndPosition
+		guard let capturedString = textView.textStorage?.mutableString.substringWithRange(NSRange(capturingRange)) else { return nil }
+		return capturedString
+	}
+}
 extension TextEditorViewController: NSTextViewDelegate {
+	@objc
+	func textDidChange(notification: NSNotification) {
+		textEditor?.codeCompletion.searchExpression = getCodeCompletionSearchExpression() ?? ""
+	}
+	@objc
 	func textViewDidChangeSelection(notification: NSNotification) {
 		assert(textEditor != nil)
 		guard let textEditor = textEditor else { return }
 		let utf16Range = textView.selectedRange()
 		textEditor.setCharacterSelectionWithUTF16Range(utf16Range)
+		if textView.selectedRange().location < autocompletionStartingPosition {
+			textEditor.hideCompletion()
+		}
+//		if let autocompletionStartingPosition = autocompletionStartingPosition {
+//			let range = NSRange(location: autocompletionStartingPosition, length: <#T##Int#>)
+//			textView.textStorage?
+//				.attributedSubstringFromRange(<#T##range: NSRange##NSRange#>)
+//		}
 	}
+	@objc
 	func textView(textView: NSTextView, doCommandBySelector commandSelector: Selector) -> Bool {
 		assert(codeCompletionWindowController.codeCompletionViewController != nil)
 		guard let textEditor = textEditor else { return false }
 
 		debugLog(commandSelector)
 
+		switch commandSelector {
+		case #selector(NSResponder.insertNewline(_:)):
+			break
+		default:
+			break
+		}
 		if commandSelector == #selector(NSTextView.complete(_:)) {
 			textEditor.hideCompletion()
 			return true
 		}
-		if textEditor.codeCompletionRunningState {
+		if textEditor.isCodeCompletionRunning {
 			guard codeCompletingCommands.contains(commandSelector) else { return false }
 			guard let codeCompletionViewController = codeCompletionWindowController.codeCompletionViewController else { return false }
 			return codeCompletionViewController.tryToPerform(commandSelector, with: self)

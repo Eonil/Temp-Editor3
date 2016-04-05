@@ -64,9 +64,9 @@ final class TextEditor: OwnerTextEditor {
 
 		}
 	}
-        private(set) var codeCompletionRunningState: Bool = false {
+        private(set) var isCodeCompletionRunning: Bool = false {
                 didSet {
-//                        guard codeCompletionRunningState != oldValue else { return }
+                        guard isCodeCompletionRunning != oldValue else { return }
 			Event.Notification(sender: self, event: .DidChageCodeCompletionRunningState).broadcast()
                 }
         }
@@ -130,10 +130,11 @@ extension TextEditor {
 		try saveStringToFile() // Required to activate Racer properly.
 		let startPoint = characterSelection.range.start
 		codeCompletion.reloadForFileURL(editingFileURL, point: startPoint)
-                codeCompletionRunningState = true
+                isCodeCompletionRunning = true
         }
         func hideCompletion() {
-		codeCompletionRunningState = false
+		isCodeCompletionRunning = false
+		codeCompletion.removeAllCandidates()
         }
 	func save() throws {
 		try saveStringToFile()

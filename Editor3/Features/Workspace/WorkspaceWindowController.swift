@@ -129,25 +129,26 @@ private func reconfigureWidnow(window: NSWindow) {
 
 	reconfigureWindowDarkMode(window)
 }
+
 private func reconfigureWindowDarkMode(window: NSWindow) {
-//	window.titlebarAppearsTransparent	=	true
-	window.appearance	=	NSAppearance(named: NSAppearanceNameVibrantDark)
+//	window.titlebarAppearsTransparent = true
+	window.appearance = NSAppearance(named: NSAppearanceNameVibrantDark)
 	window.invalidateShadow()
 
 	func makeDark(b:NSButton, _ alpha:CGFloat) {
-		let	f	=	CIFilter(name: "CIColorMonochrome")!
+		let f = CIFilter(name: "CIColorMonochrome")!
 		f.setDefaults()
 //		f.setValue(CIColor(red: 0.5, green: 0.3, blue: 0.5, alpha: alpha), forKey: "inputColor")		//	I got this number accidentally, and I like this tone.
 		f.setValue(CIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: alpha), forKey: "inputColor")
 //
-//		let	f1	=	CIFilter(name: "CIGammaAdjust")!
+//		let f1 = CIFilter(name: "CIGammaAdjust")!
 //		f1.setDefaults()
 //		f1.setValue(0.3, forKey: "inputPower")
 //
-//		let	f2	=	CIFilter(name: "CIColorInvert")!
+//		let f2 = CIFilter(name: "CIColorInvert")!
 //		f2.setDefaults()
 
-		b.contentFilters	=	[f]
+		b.contentFilters = [f]
 	}
 	makeDark(window.standardWindowButton(NSWindowButton.CloseButton)!, 1.0)
 	makeDark(window.standardWindowButton(NSWindowButton.MiniaturizeButton)!, 1.0)

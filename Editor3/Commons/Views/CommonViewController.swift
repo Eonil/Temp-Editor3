@@ -10,7 +10,7 @@ import Foundation
 import AppKit
 
 /// Provides a common feature set for a view-controller.
-/// Removes NIB shits.
+/// Also removes NIB shits.
 ///
 /// This also solves "late layout" of `NSViewController`.
 /// In some cases, `NSViewController.viewDidLayout` get called
