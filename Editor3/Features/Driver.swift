@@ -23,7 +23,6 @@ final class Driver {
                 Driver.theDriver = self
         }
         deinit {
-                Editor.Event.Notification.deregister(self)
                 Driver.theDriver = nil
 		editorUIController.editor = nil
         }

@@ -29,7 +29,7 @@ final class Workspace: OwnerWorkspace {
 	}
 
 	// MARK: -
-//	private(set) weak var ownerDocument: WorkspaceDocument? // Hardly-coupled with `WorkspaceDocument` as an exception due to lack of proper notifications.
+
 	weak var ownerEditor: OwnerEditor?
 	let textEditor = TextEditor()
 	let fileNavigator = FileNavigator()
@@ -62,15 +62,13 @@ final class Workspace: OwnerWorkspace {
 
         /// A `Workspace` will be created as a reaction of AppKit document management.
 	init() {
-//        init(ownerDocument: WorkspaceDocument) {
-//                self.ownerDocument = ownerDocument
                 textEditor.ownerWorkspace = self
                 fileNavigator.ownerWorkspace = self
 		issueNavigator.ownerWorkspace = self
 		builder.ownerWorkspace = self
                 FileNavigator.Event.Notification.register(self, self.dynamicType.process)
 
-		reloadFileTree()
+//		reloadFileTree()
 //                // Test.
 //                let u = NSURL(string: "file:///Users/Eonil/Temp/a2/a.txt")!
 //                try! textEditor.setEditingFileURL(u)
@@ -81,14 +79,14 @@ final class Workspace: OwnerWorkspace {
 
 }
 extension Workspace {
-	func reloadFileTree() {
-//		assert(ownerDocument != nil)
-//		guard let ownerDocument = ownerDocument else { return }
-//		locationURL = ownerDocument.fileURL
-
-		// Test.
-		locationURL = NSURL(string: "file:///Users/Eonil/Temp/a2")
-	}
+//	func reloadFileTree() {
+////		assert(ownerDocument != nil)
+////		guard let ownerDocument = ownerDocument else { return }
+////		locationURL = ownerDocument.fileURL
+//
+//		// Test.
+//		locationURL = NSURL(string: "file:///Users/Eonil/Temp/a2")
+//	}
 }
 private extension Workspace {
         func process(n: FileNavigator.Event.Notification) {

@@ -9,25 +9,21 @@
 import Cocoa
 
 final class WorkspaceDocument: NSDocument {
+	enum Error: ErrorType {
+		case BadDocumentURL
+	}
 
-//        override init() {
-//                super.init()
-//                guard let driver = Driver.theDriver else { fatalErrorDueToInconsistentInternalStateWithReportingToDevelopers() }
-//                let newWorkspace = Workspace()
-//                driver.editor.addWorkspace(newWorkspace)
-//                self.workspace = newWorkspace
-//		
-//		assert(workspace != nil)
-//		guard let workspace = workspace else { return }
-//		workspace.reloadFileTree()
-//        }
-//        deinit {
-//                guard let driver = Driver.theDriver else { fatalErrorDueToInconsistentInternalStateWithReportingToDevelopers() }
-//                guard let workspace = workspace else { fatalErrorDueToInconsistentInternalStateWithReportingToDevelopers("Workspace should not be dead before related WorkspaceDocument object dies.") }
-//                driver.editor.removeWorkspace(workspace)
-//        }
-//
-//        private(set) weak var workspace: Workspace?
+	////////////////////////////////////////////////////////////////
+
+	override init() {
+		super.init()
+		Workspace.Event.Notification.register(self, self.dynamicType.process)
+	}
+	deinit {
+		Workspace.Event.Notification.deregister(self)
+	}
+
+	////////////////////////////////////////////////////////////////
 
 	weak var workspace: Workspace? {
 		didSet {
@@ -36,6 +32,8 @@ final class WorkspaceDocument: NSDocument {
 	}
 	let workspaceWindowController = WorkspaceWindowController()
 
+	////////////////////////////////////////////////////////////////
+
         override func makeWindowControllers() {
                 debugLog("makeWindowControllers")
                 super.makeWindowControllers()
@@ -43,18 +41,18 @@ final class WorkspaceDocument: NSDocument {
 //                assert(workspace != nil)
 //                workspaceWindowController.workspace = workspace
         }
-
         override class func autosavesInPlace() -> Bool {
                 return true
         }
-
         override func dataOfType(typeName: String) throws -> NSData {
                 // Insert code here to write your document to data of the specified type. If outError != nil, ensure that you create and set an appropriate error when returning nil.
                 // You can also choose to override fileWrapperOfType:error:, writeToURL:ofType:error:, or writeToURL:ofType:forSaveOperation:originalContentsURL:error: instead.
                 throw NSError(domain: NSOSStatusErrorDomain, code: unimpErr, userInfo: nil)
         }
-
 	override func readFromURL(url: NSURL, ofType typeName: String) throws {
+		guard url.URLByDeletingLastPathComponent != nil else {
+			throw Error.BadDocumentURL
+		}
 		render()
 	}
 //        override func readFromData(data: NSData, ofType typeName: String) throws {
@@ -64,17 +62,23 @@ final class WorkspaceDocument: NSDocument {
 //                throw NSError(domain: NSOSStatusErrorDomain, code: unimpErr, userInfo: nil)
 //        }
 
-	private func render() {
-		workspace?.reloadFileTree()
-		workspaceWindowController.workspace = workspace
+	////////////////////////////////////////////////////////////////
+
+	private func process(n: Workspace.Event.Notification) {
+		guard n.sender ==== workspace else { return }
+		render()
 	}
-}
-private extension WorkspaceDocument {
-	func processDocumentDidMove(error: NSError?) {
-		checkAndReportFailureToDevelopers(workspace != nil)
-		if let workspace = workspace {
-			workspace.reloadFileTree()
-		}
+	private func processDocumentDidMove(error: NSError?) {
+		render()
+	}
+
+	////////////////////////////////////////////////////////////////
+
+	private func render() {
+		fileURL = workspace?.locationURL?.URLByAppendingPathComponent("Workspace.Editor3FileList")
+		workspaceWindowController.workspace = workspace
+//		if workspaceWindowController.window?.mainWindow == true {
+//		}
 	}
 }
 extension WorkspaceDocument {

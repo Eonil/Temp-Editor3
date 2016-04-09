@@ -23,7 +23,7 @@ final class Editor {
 	weak var mainWorkspace: Workspace? {
                 didSet {
                         guard mainWorkspace !=== oldValue else { return }
-			debugLog("main workspace = \(mainWorkspace?.locationURL)")
+			debugLog("main workspace = \(mainWorkspace) / \(mainWorkspace?.locationURL)")
                         Event.Notification(sender: self, event: .DidChangeMainWorkspace).broadcast()
                 }
         }

@@ -23,8 +23,10 @@ final class EditorUIController {
 			NSWindowDidResignMainNotification,
 		]) { [weak self] in self?.process($0) }
 		Editor.Event.Notification.register(self, self.dynamicType.process)
+		Workspace.Event.Notification.register(self, self.dynamicType.process)
 	}
 	deinit {
+		Workspace.Event.Notification.deregister(self)
 		Editor.Event.Notification.deregister(self)
 		NotificationUtility.deregister(self)
 	}
@@ -41,7 +43,7 @@ final class EditorUIController {
 
 	private weak var trackedMainWindow: NSWindow? {
 		didSet {
-			editor?.mainWorkspace = trackedMainWindow?.getWorkspace()
+			scanMainWorkspace()
 		}
 	}
 
@@ -62,6 +64,8 @@ final class EditorUIController {
 		debugLog(n)
 		switch n.name {
 		case NSWindowDidBecomeMainNotification:
+			debugLog(getWindowFromNotification())
+			debugLog(getWindowFromNotification()?.getWorkspace())
 			trackedMainWindow = getWindowFromNotification()
 
 		case NSWindowDidResignMainNotification:
@@ -70,6 +74,15 @@ final class EditorUIController {
 
 		default:
 			fatalErrorDueToInconsistentInternalStateWithReportingToDevelopers("Received unexpected notification `\(n)`.")
+		}
+	}
+	private func process(n: Workspace.Event.Notification) {
+		switch n.event {
+		case .DidChangeLocation:
+			break
+
+		case .DidChangeNavigationPaneSelection:
+			break
 		}
 	}
         private func process(n: Editor.Event.Notification) {
@@ -85,6 +98,12 @@ final class EditorUIController {
 			renderWorkspaceDocumentsWithMutationEvents(.WillRemove(workspace))
 		}
         }
+
+	////////////////////////////////////////////////////////////////
+
+	private func scanMainWorkspace() {
+		editor?.mainWorkspace = trackedMainWindow?.getWorkspace()
+	}
 
 	////////////////////////////////////////////////////////////////
 
@@ -107,27 +126,50 @@ final class EditorUIController {
 	private func renderWorkspaceDocumentsWithMutationEvents(event: ObjectSetMutationEvent<Workspace>) {
 		switch event {
 		case .DidInsert(let workspace):
+			// Open workspace document if needed and possible.
 			if workspace.findDocument() == nil {
-				// Open workspace document if needed and possible.
-				guard let locationURL = workspace.locationURL else { break }
-				let u1 = locationURL.URLByAppendingPathComponent("Workspace.Editor3FileList")
-				NSDocumentController.sharedDocumentController()
-					.openDocumentWithContentsOfURL(u1, display: true, completionHandler: { [weak self] (newDocument: NSDocument?, _: Bool, error: NSError?) in
-						guard let newWorkspaceDocument = newDocument as? WorkspaceDocument else {
-							if let error = error {
-								reportToDevelopers(error)
-								NSApplication.sharedApplication().presentError(error)
-							}
-							return
-						}
-						newWorkspaceDocument.workspace = workspace
-						for _ in 0...0 {
-							guard let editor = self?.editor else { continue }
-							if newWorkspaceDocument.workspaceWindowController.window?.mainWindow == true {
-								editor.mainWorkspace = workspace
-							}
-						}
-				})
+				do {
+					let newDocument = try NSDocumentController.sharedDocumentController().makeUntitledDocumentOfType("WorkspaceDocument")
+					guard let newWorkspaceDocument = newDocument as? WorkspaceDocument else {
+						reportToDevelopers("Cannot make a new `WorkspaceDocument`.")
+						break
+					}
+					newWorkspaceDocument.workspace = workspace
+					NSDocumentController.sharedDocumentController().addDocument(newWorkspaceDocument)
+					newWorkspaceDocument.makeWindowControllers()
+					newWorkspaceDocument.showWindows()
+				}
+				catch let error as NSError {
+					NSApplication.sharedApplication().presentError(error)
+				}
+				scanMainWorkspace()
+
+				// Test.
+				workspace.locationURL = NSURL(string: "file:///Users/Eonil/Temp/a2")
+
+//				if let locationURL = workspace.locationURL {
+//					let u1 = locationURL.URLByAppendingPathComponent("Workspace.Editor3FileList")
+//					NSDocumentController.sharedDocumentController()
+//						.openDocumentWithContentsOfURL(u1, display: true, completionHandler: { [weak self] (newDocument: NSDocument?, _: Bool, error: NSError?) in
+//							guard let newWorkspaceDocument = newDocument as? WorkspaceDocument else {
+//								if let error = error {
+//									reportToDevelopers(error)
+//									NSApplication.sharedApplication().presentError(error)
+//								}
+//								return
+//							}
+//							newWorkspaceDocument.workspace = workspace
+//							for _ in 0...0 {
+//								guard let editor = self?.editor else { continue }
+//								if newWorkspaceDocument.workspaceWindowController.window?.mainWindow == true {
+//									editor.mainWorkspace = workspace
+//								}
+//							}
+//					})
+//				}
+//				else {
+//					NSDocumentController.sharedDocumentController().openUntitledDocumentAndDisplay(true)
+//				}
 			}
 
 		case .WillRemove(let workspace):
@@ -162,10 +204,19 @@ private extension NSWindow {
 //	}
 //}
 private func getWorkspaceForWindow(window: NSWindow) -> Workspace? {
-	guard let document = NSDocumentController.sharedDocumentController().documentForWindow(window) else { return nil }
-	guard let workspaceDocument = document as? WorkspaceDocument else { return nil }
-	guard let workspace = workspaceDocument.workspace else { return nil }
-	return workspace
+	for document in NSDocumentController.sharedDocumentController().documents {
+		for windowController in document.windowControllers {
+			guard windowController.window ==== window else { continue }
+			guard let workspaceDocument = document as? WorkspaceDocument else { return nil }
+			guard let workspace = workspaceDocument.workspace else { return nil }
+			return workspace
+		}
+	}
+	return nil
+//	guard let document = NSDocumentController.sharedDocumentController().documentForWindow(window) else { return nil }
+//	guard let workspaceDocument = document as? WorkspaceDocument else { return nil }
+//	guard let workspace = workspaceDocument.workspace else { return nil }
+//	return workspace
 }
 
 
@@ -177,8 +228,9 @@ private func getWorkspaceForWindow(window: NSWindow) -> Workspace? {
 private extension Workspace {
 	func findDocument() -> WorkspaceDocument? {
 		for document in NSDocumentController.sharedDocumentController().documents {
-			guard let document = document as? WorkspaceDocument else { continue }
-			return document
+			guard let workspaceDocument = document as? WorkspaceDocument else { continue }
+			guard workspaceDocument.workspace ==== self else { continue }
+			return workspaceDocument
 		}
 		return nil
 	}
