@@ -10,6 +10,7 @@
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>Editor3Workspace</string>
+				<string>Editor3FileList</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string></string>
@@ -22,7 +23,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>LSTypeIsPackage</key>
-			<integer>1</integer>
+			<integer>0</integer>
 			<key>NSDocumentClass</key>
 			<string>$(PRODUCT_MODULE_NAME).WorkspaceDocument</string>
 		</dict>

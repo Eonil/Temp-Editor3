@@ -16,18 +16,21 @@ extension FileNavigatorViewController {
 }
 final class FileNavigatorViewController: CommonViewController {
 
-    deinit {
-        installer.deinstallIfNeeded {
-            FileNode.Event.Notification.deregister(self)
-            FileNavigator.Event.Notification.deregister(self)
-        }
-    }
+	override init() {
+		super.init()
+		FileNavigator.Event.Notification.register(self, self.dynamicType.process)
+		FileNode.Event.Notification.register(self, self.dynamicType.process)
+	}
+	deinit {
+		FileNode.Event.Notification.deregister(self)
+		FileNavigator.Event.Notification.deregister(self)
+	}
 
-    weak var fileNavigator: FileNavigator? {
-        didSet {
-            render()
-        }
-    }
+	weak var fileNavigator: FileNavigator? {
+		didSet {
+			render()
+		}
+	}
 
 	// MARK: -
 	override func layoutSubcomponents() {
@@ -35,12 +38,11 @@ final class FileNavigatorViewController: CommonViewController {
 		render()
 	}
 
-    // MARK: -
-    private let scrollView = CommonViewFactory.instantiateScrollViewForNavigators()
-    private let outlineView = CommonViewFactory.instantiateOutlineViewForUseInSidebar()
+	// MARK: -
+	private let scrollView = CommonViewFactory.instantiateScrollViewForNavigators()
+	private let outlineView = CommonViewFactory.instantiateOutlineViewForUseInSidebar()
 	private var installer = ViewInstaller()
 	private func process(n: FileNavigator.Event.Notification) {
-		assert(fileNavigator != nil)
 		guard n.sender ==== fileNavigator else { return }
 		switch n.event {
 		case .DidChangeIssues:
@@ -52,8 +54,6 @@ final class FileNavigatorViewController: CommonViewController {
 		}
 	}
 	private func process(n: FileNode.Event.Notification) {
-		assert(fileNavigator != nil)
-		assert(n.sender.ownerFileNavigator != nil)
 		guard n.sender.ownerFileNavigator === fileNavigator else { return }
 		switch n.event {
 		case .DidChange:
@@ -83,8 +83,6 @@ final class FileNavigatorViewController: CommonViewController {
 			scrollView.documentView = outlineView
 			outlineView.setDataSource(self)
 			outlineView.setDelegate(self)
-			FileNavigator.Event.Notification.register(self, self.dynamicType.process)
-			FileNode.Event.Notification.register(self, self.dynamicType.process)
 		}
 		scrollView.frame = view.bounds
 //		let newOutlineViewEnabledSTate = fileNavigator != nil

@@ -82,7 +82,7 @@ private extension FileNavigator {
 	private func getWorkspaceFileListURL() throws -> NSURL {
 		guard let ownerWorkspace = ownerWorkspace else { throw Error.MissingOwnerWorkspace }
 		guard let locationURL = ownerWorkspace.locationURL else { throw Error.MissingOwnerWorkspaceLocationURL }
-		let workspaceFileListURL = locationURL.URLByAppendingPathComponent("Workspace.EditorFileList")
+		let workspaceFileListURL = locationURL.URLByAppendingPathComponent("Workspace.Editor3FileList")
 		return workspaceFileListURL
 	}
 	private func reloadFileListImpl() {

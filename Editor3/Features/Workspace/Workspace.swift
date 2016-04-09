@@ -29,7 +29,7 @@ final class Workspace: OwnerWorkspace {
 	}
 
 	// MARK: -
-	private(set) weak var ownerDocument: WorkspaceDocument? // Hardly-coupled with `WorkspaceDocument` as an exception due to lack of proper notifications.
+//	private(set) weak var ownerDocument: WorkspaceDocument? // Hardly-coupled with `WorkspaceDocument` as an exception due to lack of proper notifications.
 	weak var ownerEditor: OwnerEditor?
 	let textEditor = TextEditor()
 	let fileNavigator = FileNavigator()
@@ -61,8 +61,9 @@ final class Workspace: OwnerWorkspace {
 	}
 
         /// A `Workspace` will be created as a reaction of AppKit document management.
-        init(ownerDocument: WorkspaceDocument) {
-                self.ownerDocument = ownerDocument
+	init() {
+//        init(ownerDocument: WorkspaceDocument) {
+//                self.ownerDocument = ownerDocument
                 textEditor.ownerWorkspace = self
                 fileNavigator.ownerWorkspace = self
 		issueNavigator.ownerWorkspace = self
@@ -81,7 +82,7 @@ final class Workspace: OwnerWorkspace {
 }
 extension Workspace {
 	func reloadFileTree() {
-		assert(ownerDocument != nil)
+//		assert(ownerDocument != nil)
 //		guard let ownerDocument = ownerDocument else { return }
 //		locationURL = ownerDocument.fileURL
 

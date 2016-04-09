@@ -7,6 +7,7 @@
 //
 
 // MARK: - Operators
+
 /// Strongly typed reference equality comparison.
 infix operator ==== {}
 /// Performs strongly typed reference equality comparison.
@@ -24,6 +25,25 @@ func ==== <T: AnyObject> (a: T, b: T?) -> Bool {
 /// Performs strongly typed reference equality comparison.
 func ==== <T: AnyObject> (a: T?, b: T?) -> Bool {
 	return a === b
+}
+
+/// Strongly typed reference inequality comparison.
+infix operator !=== {}
+/// Performs strongly typed reference equality comparison.
+func !=== <T: AnyObject> (a: T, b: T) -> Bool {
+	return a !== b
+}
+/// Performs strongly typed reference equality comparison.
+func !=== <T: AnyObject> (a: T?, b: T) -> Bool {
+	return a !== b
+}
+/// Performs strongly typed reference equality comparison.
+func !=== <T: AnyObject> (a: T, b: T?) -> Bool {
+	return a !== b
+}
+/// Performs strongly typed reference equality comparison.
+func !=== <T: AnyObject> (a: T?, b: T?) -> Bool {
+	return a !== b
 }
 
 ////@available(*,unavailable,message="Untyped reference equality comparison disallowed.")

@@ -109,6 +109,8 @@
 		45CC90C31C36C51C00B0BEC3 /* BoxType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CC90C21C36C51C00B0BEC3 /* BoxType.swift */; };
 		45CC90C51C36C8C800B0BEC3 /* BoxTypeCoreGraphicsExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CC90C41C36C8C800B0BEC3 /* BoxTypeCoreGraphicsExtensions.swift */; };
 		45CC90C91C3752F500B0BEC3 /* TextEditorTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CC90C81C3752F500B0BEC3 /* TextEditorTextView.swift */; };
+		45D678CC1CB439FF0057ECD9 /* EditorUIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D678CB1CB439FF0057ECD9 /* EditorUIController.swift */; };
+		45D678CE1CB8B66F0057ECD9 /* ObjectSetMutationEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D678CD1CB8B66F0057ECD9 /* ObjectSetMutationEvent.swift */; };
 		45E47A0B1C3E885500A81204 /* IssueNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E47A0A1C3E885500A81204 /* IssueNavigator.swift */; };
 		45E47A0D1C3E886000A81204 /* IssueNavigatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E47A0C1C3E886000A81204 /* IssueNavigatorViewController.swift */; };
 /* End PBXBuildFile section */
@@ -302,6 +304,8 @@
 		45CC90C21C36C51C00B0BEC3 /* BoxType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxType.swift; sourceTree = "<group>"; };
 		45CC90C41C36C8C800B0BEC3 /* BoxTypeCoreGraphicsExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxTypeCoreGraphicsExtensions.swift; sourceTree = "<group>"; };
 		45CC90C81C3752F500B0BEC3 /* TextEditorTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextEditorTextView.swift; sourceTree = "<group>"; };
+		45D678CB1CB439FF0057ECD9 /* EditorUIController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorUIController.swift; sourceTree = "<group>"; };
+		45D678CD1CB8B66F0057ECD9 /* ObjectSetMutationEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectSetMutationEvent.swift; sourceTree = "<group>"; };
 		45E47A0A1C3E885500A81204 /* IssueNavigator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IssueNavigator.swift; sourceTree = "<group>"; };
 		45E47A0C1C3E886000A81204 /* IssueNavigatorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IssueNavigatorViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -371,8 +375,8 @@
 				45296CD81C361ABA00AB0A51 /* Info.plist */,
 				45CACA261C365D5E00A74463 /* main.swift */,
 				45296CCC1C361AB900AB0A51 /* AppDelegate.swift */,
-				45296CFC1C361B2A00AB0A51 /* Commons */,
 				45296D001C361B2A00AB0A51 /* Features */,
+				45296CFC1C361B2A00AB0A51 /* Commons */,
 			);
 			path = Editor3;
 			sourceTree = "<group>";
@@ -398,11 +402,11 @@
 		45296CFC1C361B2A00AB0A51 /* Commons */ = {
 			isa = PBXGroup;
 			children = (
-				45296D581C36488500AB0A51 /* Constants */,
-				45296D431C36369400AB0A51 /* Extensions */,
-				45296CFE1C361B2A00AB0A51 /* Tools */,
-				45296CFF1C361B2A00AB0A51 /* Views */,
 				45296D111C361C1A00AB0A51 /* Utilities */,
+				45296CFF1C361B2A00AB0A51 /* Views */,
+				45296CFE1C361B2A00AB0A51 /* Tools */,
+				45296D431C36369400AB0A51 /* Extensions */,
+				45296D581C36488500AB0A51 /* Constants */,
 			);
 			path = Commons;
 			sourceTree = "<group>";
@@ -497,6 +501,7 @@
 			isa = PBXGroup;
 			children = (
 				45296D091C361B7100AB0A51 /* Editor.swift */,
+				45D678CB1CB439FF0057ECD9 /* EditorUIController.swift */,
 				45296D521C36434E00AB0A51 /* OwnerChain.swift */,
 			);
 			path = Editor;
@@ -524,6 +529,7 @@
 			isa = PBXGroup;
 			children = (
 				459477771C3EB88400F08F10 /* ListMutationEvent.swift */,
+				45D678CD1CB8B66F0057ECD9 /* ObjectSetMutationEvent.swift */,
 				45CACA431C3660AF00A74463 /* DispatchUtility.swift */,
 				45CACA411C36608500A74463 /* Atomics.swift */,
 				45296D241C361EF200AB0A51 /* Notification */,
@@ -844,6 +850,7 @@
 				452F5ED91C392E4600B3A5FB /* ToolButtonStrip.swift in Sources */,
 				452F5EC51C38E37600B3A5FB /* CargoIssue.swift in Sources */,
 				45296D491C363C6F00AB0A51 /* CommonFont.swift in Sources */,
+				45D678CC1CB439FF0057ECD9 /* EditorUIController.swift in Sources */,
 				45CACA3A1C36605600A74463 /* StateMachine.swift in Sources */,
 				452F5ECD1C39007A00B3A5FB /* FileNavigatorCellView.swift in Sources */,
 				45296D571C3647E700AB0A51 /* Markers.swift in Sources */,
@@ -879,6 +886,7 @@
 				45CACA4C1C36849200A74463 /* NotificationUtility.swift in Sources */,
 				4596BC6F1C46AD3100C671CA /* DebuggingNodes.swift in Sources */,
 				45296D401C3635F300AB0A51 /* TextEditorViewController.swift in Sources */,
+				45D678CE1CB8B66F0057ECD9 /* ObjectSetMutationEvent.swift in Sources */,
 				45E47A0B1C3E885500A81204 /* IssueNavigator.swift in Sources */,
 				452F5EED1C3955C500B3A5FB /* ColorView.swift in Sources */,
 				452F5ED31C3924AC00B3A5FB /* TextEditorIssue.swift in Sources */,

@@ -46,6 +46,7 @@ final class WorkspaceWindowController: NSWindowController {
         // MARK: -
         weak var workspace: Workspace? {
                 didSet {
+			debugLog("WorkspaceWindowController.workspace = \(workspace?.locationURL)")
                         render()
                 }
         }

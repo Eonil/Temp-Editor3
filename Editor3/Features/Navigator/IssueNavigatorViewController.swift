@@ -11,6 +11,10 @@ import AppKit
 
 final class IssueNavigatorViewController: CommonViewController {
 
+	override init() {
+		super.init()
+		IssueNavigator.Event.Notification.register(self, self.dynamicType.process)
+	}
 	deinit {
 		IssueNavigator.Event.Notification.deregister(self)
 	}
@@ -42,7 +46,6 @@ final class IssueNavigatorViewController: CommonViewController {
 			outlineView.setDelegate(self)
 			scrollView.documentView = outlineView
 			view.addSubview(scrollView)
-			IssueNavigator.Event.Notification.register(self, self.dynamicType.process)
 		}
 		scrollView.frame = view.bounds
 	}

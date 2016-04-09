@@ -31,7 +31,9 @@ final class MainMenuProcessor {
                 guard let mainMenuController = mainMenuController else { return }
                 switch ~~n.sender {
                 case ~~mainMenuController.fileNewWorkspace: do {
-                        NSDocumentController.sharedDocumentController().newDocument(self)
+			let newWorkspace = Workspace()
+			editor.addWorkspace(newWorkspace)
+//                        NSDocumentController.sharedDocumentController().newDocument(self)
 //                        Dialogue.runSavingWorkspace { [weak self] in
 //                                guard self != nil else {
 //                                        return
@@ -100,9 +102,7 @@ final class MainMenuProcessor {
 			do {
 				assertMenuExecutabilityByChecking(editor.mainWorkspace != nil)
 				guard let workspace = editor.mainWorkspace else { return }
-				guard let workspaceDocument = workspace.ownerDocument else { return }
-				workspaceDocument.close()
-				//                        NSDocumentController.sharedDocumentController().removeDocument(document)
+				editor.removeWorkspace(workspace)
 			}
 
 

@@ -10,32 +10,38 @@ import Cocoa
 
 final class WorkspaceDocument: NSDocument {
 
-        override init() {
-                super.init()
-                guard let driver = Driver.theDriver else { fatalErrorDueToInconsistentInternalStateWithReportingToDevelopers() }
-                let newWorkspace = Workspace(ownerDocument: self)
-                driver.editor.addWorkspace(newWorkspace, forDocument: self)
-                self.workspace = newWorkspace
-		
-		assert(workspace != nil)
-		guard let workspace = workspace else { return }
-		workspace.reloadFileTree()
-        }
-        deinit {
-                guard let driver = Driver.theDriver else { fatalErrorDueToInconsistentInternalStateWithReportingToDevelopers() }
-                guard let workspace = workspace else { fatalErrorDueToInconsistentInternalStateWithReportingToDevelopers("Workspace should not be dead before related WorkspaceDocument object dies.") }
-                driver.editor.removeWorkspace(workspace, forDocument: self)
-        }
+//        override init() {
+//                super.init()
+//                guard let driver = Driver.theDriver else { fatalErrorDueToInconsistentInternalStateWithReportingToDevelopers() }
+//                let newWorkspace = Workspace()
+//                driver.editor.addWorkspace(newWorkspace)
+//                self.workspace = newWorkspace
+//		
+//		assert(workspace != nil)
+//		guard let workspace = workspace else { return }
+//		workspace.reloadFileTree()
+//        }
+//        deinit {
+//                guard let driver = Driver.theDriver else { fatalErrorDueToInconsistentInternalStateWithReportingToDevelopers() }
+//                guard let workspace = workspace else { fatalErrorDueToInconsistentInternalStateWithReportingToDevelopers("Workspace should not be dead before related WorkspaceDocument object dies.") }
+//                driver.editor.removeWorkspace(workspace)
+//        }
+//
+//        private(set) weak var workspace: Workspace?
 
-        private(set) weak var workspace: Workspace?
+	weak var workspace: Workspace? {
+		didSet {
+			render()
+		}
+	}
 	let workspaceWindowController = WorkspaceWindowController()
 
         override func makeWindowControllers() {
                 debugLog("makeWindowControllers")
                 super.makeWindowControllers()
                 addWindowController(workspaceWindowController)
-                assert(workspace != nil)
-                workspaceWindowController.workspace = workspace
+//                assert(workspace != nil)
+//                workspaceWindowController.workspace = workspace
         }
 
         override class func autosavesInPlace() -> Bool {
@@ -48,12 +54,20 @@ final class WorkspaceDocument: NSDocument {
                 throw NSError(domain: NSOSStatusErrorDomain, code: unimpErr, userInfo: nil)
         }
 
-        override func readFromData(data: NSData, ofType typeName: String) throws {
-                // Insert code here to read your document from the given data of the specified type. If outError != nil, ensure that you create and set an appropriate error when returning false.
-                // You can also choose to override readFromFileWrapper:ofType:error: or readFromURL:ofType:error: instead.
-                // If you override either of these, you .should also override -isEntireFileLoaded to return false if the contents are lazily loaded.
-                throw NSError(domain: NSOSStatusErrorDomain, code: unimpErr, userInfo: nil)
-        }
+	override func readFromURL(url: NSURL, ofType typeName: String) throws {
+		render()
+	}
+//        override func readFromData(data: NSData, ofType typeName: String) throws {
+//                // Insert code here to read your document from the given data of the specified type. If outError != nil, ensure that you create and set an appropriate error when returning false.
+//                // You can also choose to override readFromFileWrapper:ofType:error: or readFromURL:ofType:error: instead.
+//                // If you override either of these, you .should also override -isEntireFileLoaded to return false if the contents are lazily loaded.
+//                throw NSError(domain: NSOSStatusErrorDomain, code: unimpErr, userInfo: nil)
+//        }
+
+	private func render() {
+		workspace?.reloadFileTree()
+		workspaceWindowController.workspace = workspace
+	}
 }
 private extension WorkspaceDocument {
 	func processDocumentDidMove(error: NSError?) {

@@ -11,10 +11,12 @@ import AppKit
 
 final class NavigatorViewController: CommonViewController {
 
+	override init() {
+		super.init()
+		Workspace.Event.Notification.register(self, self.dynamicType.process)
+	}
 	deinit {
-		installer.deinstallIfNeeded {
-			Workspace.Event.Notification.deregister(self)
-		}
+		Workspace.Event.Notification.deregister(self)
 	}
 
 	// MARK: -
@@ -70,7 +72,6 @@ extension NavigatorViewController {
 		workspace.selectedNavigationPane = .Debug
 	}
 	private func process(n: Workspace.Event.Notification) {
-		assert(workspace != nil)
 		guard n.sender ==== workspace else {
 			return
 		}
@@ -111,8 +112,6 @@ extension NavigatorViewController {
 			_fileTreeToolButton.onClick	= { [weak self] in self?._onTapProjectPaneButton() }
 			_issueListToolButton.onClick	= { [weak self] in self?._onTapIssuePaneButton() }
 			_debuggingToolButton.onClick	= { [weak self] in self?._onTapDebugPaneButton() }
-
-			Workspace.Event.Notification.register(self, self.dynamicType.process)
 		}
 
 		let box = view.bounds.toBox().toSilentBox()
