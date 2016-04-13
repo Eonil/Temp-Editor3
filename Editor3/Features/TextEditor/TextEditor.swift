@@ -54,14 +54,9 @@ final class TextEditor: OwnerTextEditor {
                         return internalState.storage
                 }
 	}
-//	/// 0-based index.
-//	var characterSelection: Range<Int>? {
-//		didSet {
-//		}
-//	}
-	private(set) var characterSelection: TextEditorCharacterSelection? {
+	var characterSelectionInUTF16Range: NSRange? {
 		didSet {
-
+			debugLog(characterSelectionInUTF16Range)
 		}
 	}
         private(set) var isCodeCompletionRunning: Bool = false {
@@ -74,14 +69,13 @@ final class TextEditor: OwnerTextEditor {
 	private var internalState = InternalState()
 }
 extension TextEditor {
-	func setCharacterSelectionWithUTF16Range(utf16Range: NSRange) {
+	private func getCharacterSelectionWithUTF16Range(utf16Range: NSRange) -> TextEditorCharacterSelection? {
 		// https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/TextLayout/Tasks/CountLines.html
 		assert(storage != nil)
 		assert(utf16Range.toRange() != nil)
-		characterSelection = nil
-		guard utf16Range.location != NSNotFound else { return }
-		guard utf16Range.length != NSNotFound else { return }
-		guard let storage = storage else { return }
+		guard utf16Range.location != NSNotFound else { return nil }
+		guard utf16Range.length != NSNotFound else { return nil }
+		guard let storage = storage else { return nil }
 //		let maybeLineRange = (storage.string as NSString).lineRangeForRange(utf16Range)
 //		assert(maybeLineRange.toRange() != nil)
 //		guard let lineRange = maybeLineRange.toRange() else { return }
@@ -109,7 +103,7 @@ extension TextEditor {
 		}
 		let start = TextEditorCharacterSelectionPoint(line: selectionLineIndex, bytes: selectionStartingBytes)
 		let end = start
-		characterSelection = TextEditorCharacterSelection(range: (start, end))
+		return TextEditorCharacterSelection(range: (start, end))
 	}
 	func canComplete() -> Bool {
 		return editingFileURL != nil
@@ -124,9 +118,9 @@ extension TextEditor {
 //                        ]
 //                }
 		assert(editingFileURL != nil)
-		assert(characterSelection != nil)
 		guard let editingFileURL = editingFileURL else { return }
-		guard let characterSelection = characterSelection else { return }
+		guard let characterSelectionInUTF16Range = characterSelectionInUTF16Range else { return }
+		guard let characterSelection = getCharacterSelectionWithUTF16Range(characterSelectionInUTF16Range) else { return }
 		try saveStringToFile() // Required to activate Racer properly.
 		let startPoint = characterSelection.range.start
 		codeCompletion.reloadForFileURL(editingFileURL, point: startPoint)
@@ -136,6 +130,15 @@ extension TextEditor {
 		isCodeCompletionRunning = false
 		codeCompletion.removeAllCandidates()
         }
+	func pasteCurrentCodeCompletionCandidate() {
+		guard codeCompletion.filteredCandidates.count > 0 else { return }
+		guard let candidateIndex = codeCompletion.selectedCandidateIndex else { return }
+		let candidate = codeCompletion.filteredCandidates[candidateIndex].signature
+		let signature = candidate.componentsSeparatedByString(" ").first ?? ""
+		let insertionPoint = characterSelectionInUTF16Range?.location ?? 0
+		let insertion = signature.attributed().styledAsCode()
+		storage?.insertAttributedString(insertion, atIndex: insertionPoint)
+	}
 	func save() throws {
 		try saveStringToFile()
 	}
@@ -178,11 +181,8 @@ private extension TextEditor {
 			guard let string = NSString(data: data, encoding: NSUTF8StringEncoding) else {
 				throw Error.UnableToDecodeFileContentWithUTF8
 			}
-			let astring = NSAttributedString(string: string as String, attributes: [
-				NSFontAttributeName:		CommonFont.codeFontOfSize(12),
-				NSForegroundColorAttributeName:	EditorCodeForegroundColor,
-				])
-			let storage = NSTextStorage(attributedString: astring)
+			debugLog(string.attributed().styledAsCode())
+			let storage = NSTextStorage(attributedString: string.attributed().styledAsCode())
 			internalState.storage = storage
 			debugLog(storage)
 		}
@@ -202,7 +202,11 @@ private struct InternalState {
         var storage: NSTextStorage?
 }
 
-
+private extension NSAttributedString {
+	func styledAsCode() -> NSAttributedString {
+		return fonted(CommonFont.codeFontOfSize(12)).colored(EditorCodeForegroundColor)
+	}
+}
 
 
 

@@ -112,7 +112,6 @@
 		45D678CC1CB439FF0057ECD9 /* EditorUIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D678CB1CB439FF0057ECD9 /* EditorUIController.swift */; };
 		45D678CE1CB8B66F0057ECD9 /* ObjectSetMutationEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D678CD1CB8B66F0057ECD9 /* ObjectSetMutationEvent.swift */; };
 		45D678D01CBC0BD60057ECD9 /* StateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D678CF1CBC0BD60057ECD9 /* StateController.swift */; };
-		45D678D21CBDF6650057ECD9 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 45D678D11CBDF6650057ECD9 /* README.md */; };
 		45E47A0B1C3E885500A81204 /* IssueNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E47A0A1C3E885500A81204 /* IssueNavigator.swift */; };
 		45E47A0D1C3E886000A81204 /* IssueNavigatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E47A0C1C3E886000A81204 /* IssueNavigatorViewController.swift */; };
 /* End PBXBuildFile section */
@@ -864,7 +863,6 @@
 				45CACA421C36608500A74463 /* Atomics.swift in Sources */,
 				45296D0C1C361B8200AB0A51 /* Workspace.swift in Sources */,
 				452F5EEB1C39543300B3A5FB /* TransparentLayer.swift in Sources */,
-				45D678D21CBDF6650057ECD9 /* README.md in Sources */,
 				452F5ED51C3926B000B3A5FB /* CommonSignboardView.swift in Sources */,
 				45296D301C36220C00AB0A51 /* Driver.swift in Sources */,
 				45CACA3E1C36605600A74463 /* StringStreamProcessing.swift in Sources */,

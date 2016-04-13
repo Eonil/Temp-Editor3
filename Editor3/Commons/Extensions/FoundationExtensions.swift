@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import AppKit
 
 public extension NSURL {
         public var displayName:String {
@@ -54,7 +55,34 @@ extension NSFileHandle {
         }
 }
 
-
+extension String {
+	func attributed() -> NSAttributedString {
+		return NSAttributedString(string: self)
+	}
+}
+extension NSString {
+	func attributed() -> NSAttributedString {
+		return (self as String).attributed()
+	}
+}
+extension NSAttributedString {
+	func fonted(font: NSFont) -> NSAttributedString {
+		return attributed([
+			NSFontAttributeName: font,
+		])
+	}
+	func colored(color: NSColor) -> NSAttributedString {
+		return attributed([
+			NSForegroundColorAttributeName: color,
+		])
+	}
+	private func attributed(attributes: [String: AnyObject]) -> NSAttributedString {
+		let newAttributedString = NSMutableAttributedString(attributedString: self)
+		let wholeRange = NSRange(location: 0, length: length)
+		newAttributedString.addAttributes(attributes, range: wholeRange)
+		return NSAttributedString(attributedString: newAttributedString)
+	}
+}
 
 
 

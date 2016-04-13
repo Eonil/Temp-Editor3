@@ -121,7 +121,8 @@ extension TextEditorViewController: NSTextViewDelegate {
 		assert(textEditor != nil)
 		guard let textEditor = textEditor else { return }
 		let utf16Range = textView.selectedRange()
-		textEditor.setCharacterSelectionWithUTF16Range(utf16Range)
+//		textEditor.setCharacterSelectionWithUTF16Range(utf16Range)
+		textEditor.characterSelectionInUTF16Range = utf16Range
 		if textView.selectedRange().location < autocompletionStartingPosition {
 			textEditor.hideCompletion()
 		}
@@ -142,7 +143,11 @@ extension TextEditorViewController: NSTextViewDelegate {
 
 		switch commandSelector {
 		case #selector(insertNewline(_:)):
-			return true
+			if textEditor.isCodeCompletionRunning {
+				textEditor.pasteCurrentCodeCompletionCandidate()
+				return true
+			}
+			return false
 
 		case #selector(complete(_:)):
 			textEditor.hideCompletion()
