@@ -86,6 +86,7 @@ final class EditorUIController {
 			w.locationURL = u		// Must set location BEFORE binding workspace to a document. Document rendering logic will scan URL from the workspace.
 			n.sender.workspace = w		// Must bind workspace to the document first before adding it to editor.
 			editor?.addWorkspace(w)
+			scanMainWorkspace()
 		}
 	}
 	private func process(n: Workspace.Event.Notification) {
