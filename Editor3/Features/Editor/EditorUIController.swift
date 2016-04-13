@@ -24,8 +24,10 @@ final class EditorUIController {
 		]) { [weak self] in self?.process($0) }
 		Editor.Event.Notification.register(self, self.dynamicType.process)
 		Workspace.Event.Notification.register(self, self.dynamicType.process)
+		WorkspaceDocument.Event.Notification.register(self, self.dynamicType.process)
 	}
 	deinit {
+		WorkspaceDocument.Event.Notification.deregister(self)
 		Workspace.Event.Notification.deregister(self)
 		Editor.Event.Notification.deregister(self)
 		NotificationUtility.deregister(self)
@@ -76,10 +78,20 @@ final class EditorUIController {
 			fatalErrorDueToInconsistentInternalStateWithReportingToDevelopers("Received unexpected notification `\(n)`.")
 		}
 	}
+	private func process(n: WorkspaceDocument.Event.Notification) {
+		switch n.event {
+		case .DidRestore:
+			let w = Workspace()
+			let u = n.sender.fileURL?.URLByDeletingLastPathComponent
+			w.locationURL = u		// Must set location BEFORE binding workspace to a document. Document rendering logic will scan URL from the workspace.
+			n.sender.workspace = w		// Must bind workspace to the document first before adding it to editor.
+			editor?.addWorkspace(w)
+		}
+	}
 	private func process(n: Workspace.Event.Notification) {
 		switch n.event {
 		case .DidChangeLocation:
-			break
+			scanMainWorkspace()
 
 		case .DidChangeNavigationPaneSelection:
 			break

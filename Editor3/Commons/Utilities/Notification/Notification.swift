@@ -17,20 +17,20 @@ public struct EventNotification<SenderType, EventType>: NotificationType {
 	public let sender: SenderType
 	public let event: EventType
 
-	/// Register if the receiver has not yet been registered.
-	public static func reregisterAnyway<T: AnyObject>(receiver: T, _ method: T->EventNotification->()) {
-		let station = _searchBroadcastingStation(self)
-		if station == nil || station?.containsObserver(receiver) == false {
-			_register(self, receiver, method)
-		}
-	}
-	/// Deregisters if the receiver has been registered.
-	public static func deregisterAnyway<T: AnyObject>(receiver: T) {
-		let station = _searchBroadcastingStation(self)
-		if station != nil && station!.containsObserver(receiver) == true {
-			_deregister(self, receiver)
-		}
-	}
+//	/// Register if the receiver has not yet been registered.
+//	public static func reregisterAnyway<T: AnyObject>(receiver: T, _ method: T->EventNotification->()) {
+//		let station = _searchBroadcastingStation(self)
+//		if station == nil || station?.containsObserver(receiver) == false {
+//			_register(self, receiver, method)
+//		}
+//	}
+//	/// Deregisters if the receiver has been registered.
+//	public static func deregisterAnyway<T: AnyObject>(receiver: T) {
+//		let station = _searchBroadcastingStation(self)
+//		if station != nil && station!.containsObserver(receiver) == true {
+//			_deregister(self, receiver)
+//		}
+//	}
 }
 
 /// Defines subcategory notification type.

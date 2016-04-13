@@ -22,9 +22,6 @@ final class NavigatorViewController: CommonViewController {
 	// MARK: -
 	weak var workspace: Workspace? {
 		didSet {
-			_fileNavigatorVC.fileNavigator	=	workspace?.fileNavigator
-			_issueNavigatorVC.issueNavigator	=	workspace?.issueNavigator
-//			_debuggingNavigatorUI.model	=	workspace?.debug
 			render()
 		}
 	}
@@ -84,9 +81,6 @@ extension NavigatorViewController {
 	}
 
 	private func render() {
-		assert(workspace != nil)
-		checkAndReportFailureToDevelopers(workspace != nil)
-		guard let _ = workspace else { return }
 		installer.installIfNeeded {
 			_separatorLine.position = .MinY
 			_separatorLine.lineColor = EditorWindowDivisionSplitDividerColor
@@ -122,26 +116,30 @@ extension NavigatorViewController {
 		_issueNavigatorVC.view.frame = paneBox.toCGRect()
 		_debuggingNavigatorUI.view.frame = paneBox.toCGRect()
 		renderModeSelection()
+
+		_fileNavigatorVC.fileNavigator = workspace?.fileNavigator
+		_issueNavigatorVC.issueNavigator = workspace?.issueNavigator
+//		_debuggingNavigatorUI.model = workspace?.debug
 	}
 	private func renderModeSelection() {
-		assert(workspace != nil)
-		guard let workspace = workspace else { return }
 		func setVisibility(visibleButton: ScopeButton, visibleViewController: NSViewController) {
 			_fileTreeToolButton.selected		= visibleButton === _fileTreeToolButton
 			_issueListToolButton.selected		= visibleButton === _issueListToolButton
 			_debuggingToolButton.selected		= visibleButton === _debuggingToolButton
-			_fileNavigatorVC.view.hidden			= visibleViewController !== _fileNavigatorVC
+			_fileNavigatorVC.view.hidden		= visibleViewController !== _fileNavigatorVC
 			_issueNavigatorVC.view.hidden		= visibleViewController !== _issueNavigatorVC
 			_debuggingNavigatorUI.view.hidden	= visibleViewController !== _debuggingNavigatorUI
 		}
 
-		switch workspace.selectedNavigationPane {
-		case .File:
-			setVisibility(_fileTreeToolButton, visibleViewController: _fileNavigatorVC)
-		case .Issue:
-			setVisibility(_issueListToolButton, visibleViewController: _issueNavigatorVC)
-		case .Debug:
-			setVisibility(_debuggingToolButton, visibleViewController: _debuggingNavigatorUI)
+		if let workspace = workspace {
+			switch workspace.selectedNavigationPane {
+			case .File:
+				setVisibility(_fileTreeToolButton, visibleViewController: _fileNavigatorVC)
+			case .Issue:
+				setVisibility(_issueListToolButton, visibleViewController: _issueNavigatorVC)
+			case .Debug:
+				setVisibility(_debuggingToolButton, visibleViewController: _debuggingNavigatorUI)
+			}
 		}
 	}
 }

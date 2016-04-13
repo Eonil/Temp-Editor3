@@ -28,7 +28,9 @@ final class FileNavigatorViewController: CommonViewController {
 
 	weak var fileNavigator: FileNavigator? {
 		didSet {
+			guard fileNavigator !=== oldValue else { return }
 			render()
+			debugLog("fileNavigator = \(fileNavigator)")
 		}
 	}
 

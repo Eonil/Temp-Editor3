@@ -101,10 +101,7 @@ extension WorkspaceWindowController {
 }
 extension WorkspaceWindowController {
         private func render() {
-//              guard let window = window else { fatalErrorDueToInconsistentInternalStateWithReportingToDevelopers() }
-                guard let workspace = workspace else { return }
-                guard let workspaceViewController = workspaceViewController else { return }
-                workspaceViewController.workspace = workspace
+                workspaceViewController?.workspace = workspace
         }
 }
 

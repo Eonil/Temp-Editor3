@@ -19,7 +19,6 @@ final class WorkspaceViewController: CommonViewController {
 
         weak var workspace: Workspace? {
                 didSet {
-			navigatorViewController.workspace = workspace
                         render()
                 }
         }
@@ -39,10 +38,9 @@ final class WorkspaceViewController: CommonViewController {
 	private let consoleViewController = ConsoleViewController()
         private var installer = ViewInstaller()
         private func render() {
-                guard let workspace = workspace else { return }
 		installer.installIfNeeded {
-			assert(view.window!.appearance != nil)
-			assert(view.window!.appearance!.name == NSAppearanceNameVibrantDark)
+			assert(view.window == nil || view.window!.appearance != nil)
+			assert(view.window == nil || view.window!.appearance!.name == NSAppearanceNameVibrantDark)
 			view.wantsLayer							=	true
 			outerSplitViewController.paneSplitView.dividerThickness		=	0
 			outerSplitViewController.paneSplitView.dividerColor		=	NSColor.clearColor()
@@ -109,9 +107,11 @@ final class WorkspaceViewController: CommonViewController {
 			NotificationUtility.register(outerSplitViewController, NSSplitViewDidResizeSubviewsNotification) { [weak self] in
 				self?.process($0)
 			}
-                }
-                textEditorViewController.textEditor = workspace.textEditor
+		}
                 outerSplitViewController.view.frame = view.bounds
+
+		navigatorViewController.workspace = workspace
+		textEditorViewController.textEditor = workspace?.textEditor
         }
 }
 extension WorkspaceViewController: NSSplitViewDelegate {

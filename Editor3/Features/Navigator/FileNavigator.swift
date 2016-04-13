@@ -10,6 +10,7 @@ import Foundation
 import AppKit
 
 final class FileNavigator: OwnerfileNavigator {
+
 	weak var ownerWorkspace: OwnerWorkspace?
 	private var issues = Issues()
 //	private(set) var issues = [FileNavigatorIssue]() {

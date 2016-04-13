@@ -111,6 +111,8 @@
 		45CC90C91C3752F500B0BEC3 /* TextEditorTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CC90C81C3752F500B0BEC3 /* TextEditorTextView.swift */; };
 		45D678CC1CB439FF0057ECD9 /* EditorUIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D678CB1CB439FF0057ECD9 /* EditorUIController.swift */; };
 		45D678CE1CB8B66F0057ECD9 /* ObjectSetMutationEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D678CD1CB8B66F0057ECD9 /* ObjectSetMutationEvent.swift */; };
+		45D678D01CBC0BD60057ECD9 /* StateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D678CF1CBC0BD60057ECD9 /* StateController.swift */; };
+		45D678D21CBDF6650057ECD9 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 45D678D11CBDF6650057ECD9 /* README.md */; };
 		45E47A0B1C3E885500A81204 /* IssueNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E47A0A1C3E885500A81204 /* IssueNavigator.swift */; };
 		45E47A0D1C3E886000A81204 /* IssueNavigatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E47A0C1C3E886000A81204 /* IssueNavigatorViewController.swift */; };
 /* End PBXBuildFile section */
@@ -306,6 +308,8 @@
 		45CC90C81C3752F500B0BEC3 /* TextEditorTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextEditorTextView.swift; sourceTree = "<group>"; };
 		45D678CB1CB439FF0057ECD9 /* EditorUIController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorUIController.swift; sourceTree = "<group>"; };
 		45D678CD1CB8B66F0057ECD9 /* ObjectSetMutationEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectSetMutationEvent.swift; sourceTree = "<group>"; };
+		45D678CF1CBC0BD60057ECD9 /* StateController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateController.swift; sourceTree = "<group>"; };
+		45D678D11CBDF6650057ECD9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		45E47A0A1C3E885500A81204 /* IssueNavigator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IssueNavigator.swift; sourceTree = "<group>"; };
 		45E47A0C1C3E886000A81204 /* IssueNavigatorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IssueNavigatorViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -349,6 +353,7 @@
 		45296CC01C361AB900AB0A51 = {
 			isa = PBXGroup;
 			children = (
+				45D678D11CBDF6650057ECD9 /* README.md */,
 				45CC90A61C36A25600B0BEC3 /* NOTE.md */,
 				45296CCB1C361AB900AB0A51 /* Editor3 */,
 				4596BC4B1C46A89200C671CA /* LLDBWrapper.xcodeproj */,
@@ -532,6 +537,7 @@
 				45D678CD1CB8B66F0057ECD9 /* ObjectSetMutationEvent.swift */,
 				45CACA431C3660AF00A74463 /* DispatchUtility.swift */,
 				45CACA411C36608500A74463 /* Atomics.swift */,
+				45D678CF1CBC0BD60057ECD9 /* StateController.swift */,
 				45296D241C361EF200AB0A51 /* Notification */,
 				45296D121C361C2000AB0A51 /* ObjectSet.swift */,
 				45296D311C36226A00AB0A51 /* Reporting.swift */,
@@ -825,6 +831,7 @@
 				4523EFA11CB2A929003E32FD /* TextEditorExtensions.swift in Sources */,
 				45CACA3F1C36605600A74463 /* TOMLQueryTool.swift in Sources */,
 				45CACA3D1C36605600A74463 /* ShellTaskExecutionController.swift in Sources */,
+				45D678D01CBC0BD60057ECD9 /* StateController.swift in Sources */,
 				4504AF5E1C3C020F004A3261 /* SwiftExtensions.swift in Sources */,
 				452F5E9A1C384F2D00B3A5FB /* Builder.swift in Sources */,
 				45CC90AB1C36A56100B0BEC3 /* CodeCompletionWindowController.swift in Sources */,
@@ -857,6 +864,7 @@
 				45CACA421C36608500A74463 /* Atomics.swift in Sources */,
 				45296D0C1C361B8200AB0A51 /* Workspace.swift in Sources */,
 				452F5EEB1C39543300B3A5FB /* TransparentLayer.swift in Sources */,
+				45D678D21CBDF6650057ECD9 /* README.md in Sources */,
 				452F5ED51C3926B000B3A5FB /* CommonSignboardView.swift in Sources */,
 				45296D301C36220C00AB0A51 /* Driver.swift in Sources */,
 				45CACA3E1C36605600A74463 /* StringStreamProcessing.swift in Sources */,

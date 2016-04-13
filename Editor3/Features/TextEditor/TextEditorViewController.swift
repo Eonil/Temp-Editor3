@@ -72,7 +72,6 @@ extension TextEditorViewController {
                         view.addSubview(scrollView)
                         scrollView.documentView = textView
                         textView.delegate = self
-                        TextEditor.Event.Notification.reregisterAnyway(self, self.dynamicType.process)
                 }
 
 		issueSignboard.frame = view.bounds

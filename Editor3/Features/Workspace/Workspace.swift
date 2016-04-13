@@ -53,6 +53,10 @@ final class Workspace: OwnerWorkspace {
 	/// Anyway, workspace will be set to "error mode" if any error occured
 	/// in loading process.
 	var locationURL: NSURL? {
+		willSet {
+			assert(newValue == nil || ((try? newValue!.isExistingAsDirectoryFile()) ?? false))
+			//assert(newValue.isdi)
+		}
 		didSet {
 			guard locationURL != oldValue else { return }
 			fileNavigator.reloadFileList()
@@ -60,18 +64,12 @@ final class Workspace: OwnerWorkspace {
 		}
 	}
 
-        /// A `Workspace` will be created as a reaction of AppKit document management.
 	init() {
                 textEditor.ownerWorkspace = self
                 fileNavigator.ownerWorkspace = self
 		issueNavigator.ownerWorkspace = self
 		builder.ownerWorkspace = self
                 FileNavigator.Event.Notification.register(self, self.dynamicType.process)
-
-//		reloadFileTree()
-//                // Test.
-//                let u = NSURL(string: "file:///Users/Eonil/Temp/a2/a.txt")!
-//                try! textEditor.setEditingFileURL(u)
         }
         deinit {
                 FileNavigator.Event.Notification.deregister(self)

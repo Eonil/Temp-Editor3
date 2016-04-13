@@ -1,5 +1,4 @@
 
-This is 3rd re-architectured version of Editor.
 
 When you create and add a document to controller, don't forget this.
 Or just use `openUntitledDocumentAndDisplay`.
