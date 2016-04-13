@@ -131,29 +131,32 @@ extension TextEditorViewController: NSTextViewDelegate {
 //				.attributedSubstringFromRange(<#T##range: NSRange##NSRange#>)
 //		}
 	}
+	/// - Returns:
+	///	YES indicates that the delegate handled the command and the text view will not attempt to perform it; 
+	///	NO indicates that the delegate did not handle the command the text view will attempt to perform it.
 	@objc
 	func textView(textView: NSTextView, doCommandBySelector commandSelector: Selector) -> Bool {
 		assert(codeCompletionWindowController.codeCompletionViewController != nil)
 		guard let textEditor = textEditor else { return false }
-
 		debugLog(commandSelector)
 
 		switch commandSelector {
-		case #selector(NSResponder.insertNewline(_:)):
-			break
-		default:
-			break
-		}
-		if commandSelector == #selector(NSTextView.complete(_:)) {
+		case #selector(insertNewline(_:)):
+			return true
+
+		case #selector(complete(_:)):
 			textEditor.hideCompletion()
 			return true
+
+		default:
+			if textEditor.isCodeCompletionRunning {
+				guard codeCompletingCommands.contains(commandSelector) else { return false }
+				guard let codeCompletionViewController = codeCompletionWindowController
+					.codeCompletionViewController else { return false }
+				return codeCompletionViewController.tryToPerform(commandSelector, with: self)
+			}
+			return false
 		}
-		if textEditor.isCodeCompletionRunning {
-			guard codeCompletingCommands.contains(commandSelector) else { return false }
-			guard let codeCompletionViewController = codeCompletionWindowController.codeCompletionViewController else { return false }
-			return codeCompletionViewController.tryToPerform(commandSelector, with: self)
-		}
-		return false
         }
 }
 

@@ -60,6 +60,26 @@ final class CodeCompletion {
 	func removeAllCandidates() {
 		allCandidates.removeAll()
 	}
+	func moveUpSelection() {
+		guard filteredCandidates.count > 0 else { return }
+		func getNewIndex() -> Int {
+			guard let oldIndex = selectedCandidateIndex else { return filteredCandidates.startIndex }
+			let minAllowedIndex = filteredCandidates.startIndex + 0
+			guard oldIndex > minAllowedIndex else { return minAllowedIndex }
+			return oldIndex - 1
+		}
+		selectedCandidateIndex = getNewIndex()
+	}
+	func moveDownSelection() {
+		guard filteredCandidates.count > 0 else { return }
+		func getNewIndex() -> Int {
+			guard let oldIndex = selectedCandidateIndex else { return filteredCandidates.startIndex }
+			let maxAllowedIndex = filteredCandidates.endIndex - 1
+			guard oldIndex < maxAllowedIndex else { return maxAllowedIndex }
+			return oldIndex + 1
+		}
+		selectedCandidateIndex = getNewIndex()
+	}
 
 	/// - Parameter line:	0-based index.
 	/// - Parameter bytes:	0-based index.

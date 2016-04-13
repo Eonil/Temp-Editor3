@@ -21,7 +21,6 @@ final class CodeCompletionViewController: CommonViewController {
 
         weak var codeCompletion: CodeCompletion? {
                 didSet {
-                        installIfNeeded()
                         render()
                 }
         }
@@ -29,33 +28,28 @@ final class CodeCompletionViewController: CommonViewController {
 	// MARK: -
 	override func layoutSubcomponents() {
 		super.layoutSubcomponents()
-		installIfNeeded()
 		render()
 	}
         override func moveUp(sender: AnyObject?) {
-                // Do not call `super` because it does not have actual implementation.
-                let selidx = tableView.selectedRow
-                if selidx >= Int.min.successor() && selidx >= (0 + 1) {
-                        let idx = tableView.selectedRow - 1
-                        let idxs = NSIndexSet(index: idx)
-                        tableView.selectRowIndexes(idxs, byExtendingSelection: false)
-                }
+                // Do not call `super` because it does not have an actual implementation.
+		codeCompletion?.moveUpSelection()
         }
         override func moveDown(sender: AnyObject?) {
-                // Do not call `super` because it does not have actual implementation.
-                let selidx = tableView.selectedRow
-                if selidx <= Int.max.predecessor() {
-			let idx = tableView.selectedRow + 1
-                        let idxs = NSIndexSet(index: idx)
-                        tableView.selectRowIndexes(idxs, byExtendingSelection: false)
-                }
+                // Do not call `super` because it does not have an actual implementation.
+		codeCompletion?.moveDownSelection()
         }
 
         // MARK: -
         private let scrollView = NSScrollView()
         private let tableView = NSTableView()
         private var installer = ViewInstaller()
-        private func installIfNeeded() {
+
+	private func process(n: CodeCompletion.Event.Notification) {
+		guard n.sender ==== codeCompletion else { return }
+		render()
+	}
+
+	private func render() {
                 installer.installIfNeeded {
                         scrollView.hasHorizontalScroller		=	true
                         scrollView.hasVerticalScroller			=	true
@@ -77,24 +71,23 @@ final class CodeCompletionViewController: CommonViewController {
                         view.addSubview(scrollView)
                         scrollView.documentView = tableView
                 }
-        }
-}
-// MARK: -
-extension CodeCompletionViewController {
-        private func process(n: CodeCompletion.Event.Notification) {
-                guard n.sender ==== codeCompletion else { return }
-                render()
-        }
-}
-// MARK: -
-extension CodeCompletionViewController {
-        private func render() {
-                scrollView.frame = view.bounds
+
+		scrollView.frame = view.bounds
 		tableView.reloadData()
-                guard let window = view.window else { return }
-                window.makeFirstResponder(tableView)
+
+//		guard let window = view.window else { return }
+//		window.makeFirstResponder(tableView)
+
+		if let idx = codeCompletion?.selectedCandidateIndex {
+			let idxs = NSIndexSet(index: idx)
+			tableView.selectRowIndexes(idxs, byExtendingSelection: false)
+		}
+		else {
+			tableView.deselectAll(self)
+		}
         }
 }
+
 // MARK: -
 extension CodeCompletionViewController: NSTableViewDataSource {
 	@objc
