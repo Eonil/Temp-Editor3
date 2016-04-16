@@ -10,7 +10,6 @@ import Foundation
 import AppKit
 
 final class FileNavigator: OwnerfileNavigator {
-
 	weak var ownerWorkspace: OwnerWorkspace?
 	private var issues = Issues()
 //	private(set) var issues = [FileNavigatorIssue]() {
@@ -159,20 +158,33 @@ private extension FileNavigator {
 		// Do not throw errors out.
 		assert(canCreateNewFolder())
 		guard let parentNode = getFirstSelectedGroupNode() else { return reportToDevelopers() }
-		let newSubnode = FileNode(ownerFileNavigator: self, name: "folder0.rs", isGroup: true)
+		func getNewFolderName() throws -> String {
+			guard let parentFolderURL = parentNode.resolvePath().absoluteFileURLForWorkspace(ownerWorkspace) else {
+				let reason = "Cannot resolve URL of selected file item node in workspace."
+				throw FileNavigatorError.CannotCreateNewFolder(reason: reason)
+			}
+			for i in 0..<FileNavigationNewNameTrialMaxCount {
+				let newNameCandidate = "folder\(i)"
+				let newFolderURL = parentFolderURL.URLByAppendingPathComponent(newNameCandidate)
+				guard newFolderURL.isExistingAsAnyFile() == false else { continue }
+				return newNameCandidate
+			}
+			let reason = "Too many folders with default new folder name such as `folder0`."
+			throw FileNavigatorError.CannotCreateNewFolder(reason: reason)
+		}
+		let newSubnode = FileNode(ownerFileNavigator: self, name: "folder0", isGroup: true)
 		parentNode.appendSubnode(newSubnode)
 		persistFileList()
 
 		// It's an error once registered folder cannot actually be created by any reason.
 		guard let newFolderURL = newSubnode.resolvePath().absoluteFileURLForWorkspace(ownerWorkspace) else {
-			let error1 = FileNavigatorFileOperationError.CannotResolvePathOfNodeAtPath(newSubnode.resolvePath())
-			throw FileNavigatorError.ErrorsInPerformingMultipleFileOperations(errors: [error1])
+			throw FileNavigatorError.CannotResolvePathOfNodeAtPath(newSubnode.resolvePath())
 		}
 		do {
 			try NSFileManager.defaultManager().createDirectoryAtURL(newFolderURL, withIntermediateDirectories: false, attributes: nil)
 		}
 		catch let error as EditorCommonUIPresentableErrorType {
-			throw FileNavigatorFileOperationError.CannotCreateFolderAtURL(newFolderURL, reason: error)
+			throw FileNavigatorError.CannotCreateNewFolder(reason: error)
 		}
 	}
 	private func dropFilesAtURLsImpl(urls: [NSURL], ontoNode: FileNode) throws {
@@ -190,7 +202,7 @@ private extension FileNavigator {
 		persistFileList()
 		// Copy file contents.
 		// Do the best. Skip any errors, and throw them at last.
-		var errorsInFileOperations = [FileNavigatorFileOperationError]()
+		var errorsInFileOperations = [FileNavigatorError]()
 		for i in 0..<urls.count {
 			let oldURL = urls[i]
 			guard let newURL = appendedNodes[i].resolvePath().absoluteFileURLForWorkspace(ownerWorkspace) else { continue }
@@ -198,11 +210,11 @@ private extension FileNavigator {
 				try NSFileManager.defaultManager().copyItemAtURL(oldURL, toURL: newURL)
 			}
 			catch let error as EditorCommonUIPresentableErrorType {
-				errorsInFileOperations.append(FileNavigatorFileOperationError.CannotCopyFile(from: oldURL, to: newURL, reason: error))
+				errorsInFileOperations.append(FileNavigatorError.CannotCopyFile(from: oldURL, to: newURL, reason: error))
 			}
 		}
 		if errorsInFileOperations.count > 0 {
-			throw FileNavigatorError.ErrorsInPerformingMultipleFileOperations(errors: errorsInFileOperations)
+			throw FileNavigatorMultipleErrors(errors: errorsInFileOperations)
 		}
 	}
 	private func canDeleteImpl() -> Bool {

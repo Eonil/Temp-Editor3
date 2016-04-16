@@ -27,6 +27,11 @@ extension EditorCommonUIPresentableErrorType {
 // MARK: -
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+extension String: EditorCommonUIPresentableErrorType {
+	func localizedDescriptionForUI() -> String {
+		return self
+	}
+}
 extension NSError: EditorCommonUIPresentableErrorType {
 	func toUIPresentableError() -> NSError {
 		return self
