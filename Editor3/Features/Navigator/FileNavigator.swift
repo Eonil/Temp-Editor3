@@ -172,7 +172,7 @@ private extension FileNavigator {
 			let reason = "Too many folders with default new folder name such as `folder0`."
 			throw FileNavigatorError.CannotCreateNewFolder(reason: reason)
 		}
-		let newSubnode = FileNode(ownerFileNavigator: self, name: "folder0", isGroup: true)
+		let newSubnode = FileNode(ownerFileNavigator: self, name: try getNewFolderName(), isGroup: true)
 		parentNode.appendSubnode(newSubnode)
 		persistFileList()
 
