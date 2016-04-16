@@ -85,6 +85,7 @@ final class FileNavigatorViewController: CommonViewController {
 			scrollView.documentView = outlineView
 			outlineView.setDataSource(self)
 			outlineView.setDelegate(self)
+			outlineView.registerForDraggedTypes([NSFilenamesPboardType])
 		}
 		scrollView.frame = view.bounds
 //		let newOutlineViewEnabledSTate = fileNavigator != nil
@@ -181,45 +182,32 @@ extension FileNavigatorViewController: NSOutlineViewDataSource, NSOutlineViewDel
 
 	@objc
 	func outlineView(outlineView: NSOutlineView, validateDrop info: NSDraggingInfo, proposedItem item: AnyObject?, proposedChildIndex index: Int) -> NSDragOperation {
-		return	[.Copy]
+		return [.Copy]
 	}
 	@objc
 	func outlineView(outlineView: NSOutlineView, acceptDrop info: NSDraggingInfo, item: AnyObject?, childIndex index: Int) -> Bool {
 		assert(fileNavigator != nil)
 		assert(fileNavigator!.tree != nil)
 		assert(fileNavigator!.ownerWorkspace != nil)
-		assert(item is FileNode)
 		guard let fileNavigator = fileNavigator else { return false }
-		guard let ownerWorkspace = fileNavigator.ownerWorkspace else { return false }
-		guard let fileNode = item as? FileNode else { return false }
-		guard fileNode.isGroup == true else { return false } // You cannot drop onto a non-group node.
+		guard let droppingAcceptingFileNode = item as? FileNode else { return false }
+		guard droppingAcceptingFileNode.isGroup == true else { return false } // You cannot drop onto a non-group node.
 
 		let pasteboard = info.draggingPasteboard()
 		let files = pasteboard.propertyListForType(NSFilenamesPboardType)
 		guard let filePaths = files as? NSArray as? [String] else { return false } // Non-string paths are unsupported.
 
-//		var subnodes	=	[FileNodeModel]()
-//		for fileURL in fileURLs {
-//			guard let filePath = fileURL.path else {
-//				break
-//			}
-//			guard let fileName = fileURL.lastPathComponent else {
-//				break
-//			}
-//			var	isDir	=	false as ObjCBool
-//			let	ok	=	NSFileManager.defaultManager().fileExistsAtPath(filePath, isDirectory: &isDir)
-//			guard ok else {
-//				break
-//			}
-//			let	n	=	FileNodeModel(name: fileName, isGroup: false)
-//			subnodes.append(n)
-//		}
-//
-////		// Transactional commit.
-////		for i in 0..<subnodes.count {
-////			try? item.subnodes.insert(subnodes[i], at: index + i)
-////		}
-		return	false
+		let fileURLs = filePaths.map { NSURL(fileURLWithPath: $0) }
+		do {
+			try fileNavigator.dropFilesAtURLs(fileURLs, ontoNode: droppingAcceptingFileNode)
+		}
+		catch let error as EditorCommonUIPresentableErrorType {
+			presentError(error.toUIPresentableError())
+		}
+		catch let error {
+			reportToDevelopers(error)
+		}
+		return true
 	}
 }
 

@@ -57,7 +57,15 @@ final class MainMenuProcessor {
 				assertMenuExecutabilityByChecking(editor.mainWorkspace != nil)
 				assertMenuExecutabilityByChecking(editor.mainWorkspace!.fileNavigator.canCreateNewFolder())
 				guard let workspace = editor.mainWorkspace else { return }
-				workspace.fileNavigator.createNewFolder()
+				do {
+					try workspace.fileNavigator.createNewFolder()
+				}
+				catch let error {
+					reportToDevelopers(error)
+					if let error = error as? EditorCommonUIPresentableErrorType {
+						presentError(error.toUIPresentableError())
+					}
+				}
 			}
 
 		case ~~mainMenuController.fileDelete:
@@ -251,6 +259,10 @@ final class MainMenuProcessor {
 		// Because this switch is intended to `return` control flow
 		// for quick exit.
         }
+
+	private func presentError(error: NSError) {
+		NSApplication.sharedApplication().presentError(error)
+	}
 }
 
 

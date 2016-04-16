@@ -37,6 +37,7 @@ func reportToDevelopers(error: ErrorType) {
 }
 func reportToDevelopers(message: String = "") {
 	debugLog(message)
+//	assert(false, "Reporting some error to developer immediately in unoptimized build:\n\(message)")
 }
 
 

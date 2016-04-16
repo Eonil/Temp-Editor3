@@ -9,6 +9,19 @@
 import Foundation
 import AppKit
 
+enum NSURLExistence {
+	case None
+	case Data
+	case Directory
+}
+
+extension NSURL {
+	func getExistence() throws -> NSURLExistence {
+		if try isExistingAsDirectoryFile() == true { return .Directory }
+		if try isExistingAsDataFile() == true { return .Data }
+		return .None
+	}
+}
 public extension NSURL {
         public var displayName:String {
                 get {
@@ -35,9 +48,9 @@ public extension NSURL {
 	}
         public func isExistingAsDirectoryFile() throws -> Bool {
                 if isExistingAsAnyFile() {
-                        var	dir: AnyObject?	=	false as AnyObject?
+                        var dir: AnyObject? = false as AnyObject?
                         try self.getResourceValue(&dir, forKey: NSURLIsDirectoryKey)
-                        return	dir as! Bool == true
+                        return dir as! Bool == true
                 }
                 return	false
         }

@@ -12,20 +12,19 @@ import Foundation
 ///
 struct WorkspaceItemPath {
 
-        static let	root	=	WorkspaceItemPath(parts: [])
+        static let root = WorkspaceItemPath(parts: [])
 
         init(parts: [String]) {
                 assert(parts.filter({ $0 == "" }).count == 0, "Empty string cannot be a name part.")
                 assert(parts.map(WorkspaceItemPath._isPartValid).reduce(true, combine: { $0 && $1 }))
-
-                _parts	=	parts
+                _parts = parts
         }
 
         ///
 
 	var parts: [String] {
 		get {
-			return	_parts
+			return _parts
                 }
         }
 
@@ -40,11 +39,11 @@ struct WorkspaceItemPath {
         }
         func hasPrefix(prefixPath: WorkspaceItemPath) -> Bool {
                 guard prefixPath.parts.count <= _parts.count else {
-                        return	false
+                        return false
                 }
                 for i in 0..<prefixPath.parts.count {
                         guard parts[i] == prefixPath.parts[i] else {
-                                return	false
+                                return false
                         }
                 }
                 return	true
@@ -59,23 +58,23 @@ struct WorkspaceItemPath {
                 case PartContainsSlash
         }
         
-        private var	_parts	=	[String]()
+        private var _parts = [String]()
         
         private static func _isPartValid(part: String) -> Bool {
                 do {
                         try _validatePart(part)
-                        return	true
+                        return true
                 }
                 catch {
-                        return	false
+                        return false
                 }
         }
         private static func _validatePart(part: String) throws {
                 guard part != "" else {
-                        throw	_PartError.PartIsEmpty
+                        throw _PartError.PartIsEmpty
                 }
                 guard part.containsString("/") == false else {
-                        throw	_PartError.PartContainsSlash
+                        throw _PartError.PartContainsSlash
                 }
         }
 }
@@ -99,16 +98,16 @@ extension WorkspaceItemPath {
 	}
 	func firstPartDeleted() -> WorkspaceItemPath {
 		precondition(parts.count > 0)
-		return	WorkspaceItemPath(parts: Array(parts[parts.startIndex.successor()..<parts.endIndex]))
+		return WorkspaceItemPath(parts: Array(parts[parts.startIndex.successor()..<parts.endIndex]))
 	}
 	func lastPartDeleted() -> WorkspaceItemPath {
 		precondition(parts.count > 0)
-		return	WorkspaceItemPath(parts: Array(parts[parts.startIndex..<parts.endIndex.predecessor()]))
+		return WorkspaceItemPath(parts: Array(parts[parts.startIndex..<parts.endIndex.predecessor()]))
 	}
 	func lastPartAppended(part: String) -> WorkspaceItemPath {
 		assert(WorkspaceItemPath._isPartValid(part))
 		preconditionAndReportFailureToDevelopers(WorkspaceItemPath._isPartValid(part))
-		return	WorkspaceItemPath(parts: parts + [part])
+		return WorkspaceItemPath(parts: parts + [part])
 	}
 }
 
@@ -146,26 +145,26 @@ extension WorkspaceItemPath {
 extension WorkspaceItemPath: CustomStringConvertible {
         var description: String {
                 get {
-                        return	"(WorkspaceItemPath: \(_parts))"
+                        return "(WorkspaceItemPath: \(_parts))"
                 }
         }
 }
 extension WorkspaceItemPath: Equatable, Hashable {
         var hashValue: Int {
                 get {
-                        return	parts.last?.hashValue ?? 0
+                        return parts.last?.hashValue ?? 0
                 }
         }
 }
 func == (a: WorkspaceItemPath, b: WorkspaceItemPath) -> Bool {
-        return	a.parts == b.parts
+        return a.parts == b.parts
 }
 
 
 
 
 struct WorkspaceItemPathError: ErrorType {
-        let	message	:	String
+        let message: String
 }
 
 
