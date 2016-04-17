@@ -51,7 +51,7 @@ final class FileNavigator: OwnerfileNavigator {
 	func canDelete() -> Bool { return canDeleteImpl() }
 	func canShowInFinder() -> Bool { return canShowInFinderImpl() }
 	func canShowInTerminal() -> Bool { return canShowInTerminalImpl() }
-	func createNewFile() { return createNewFileImpl() }
+	func createNewFile() throws { return try createNewFileImpl() }
 	func createNewFolder() throws { return try createNewFolderImpl() }
 	func dropFilesAtURLs(urls: [NSURL], ontoNode: FileNode) throws { return try dropFilesAtURLsImpl(urls, ontoNode: ontoNode) }
 	func delete() { return deleteImpl() }
@@ -140,29 +140,52 @@ private extension FileNavigator {
 		guard node.rootNode() === tree else { return false }
 		return true
 	}
-	private func createNewFileImpl() {
-		// Catch errors and convert into issues.
-		// Do not throw errors out.
+	private func createNewFileImpl() throws {
 		assert(canCreateNewFile())
+		guard let ownerWorkspace = ownerWorkspace else { return }
 		guard let parentNode = getFirstSelectedGroupNode() else { return reportToDevelopers() }
-		let newSubnode = FileNode(ownerFileNavigator: self, name: "file0.rs")
+		guard let parentFolderURL = parentNode.resolvePath().absoluteFileURLForWorkspace(ownerWorkspace) else {
+			let reason = "Cannot resolve URL of selected file item node in workspace."
+			throw FileNavigatorError.CannotCreateNewFolder(reason: reason)
+		}
+		func getNewFileName() throws -> String {
+			for i in 0..<FileNavigationNewNameTrialMaxCount {
+				let newNameCandidate = "file\(i)"
+				let newFileURL = parentFolderURL.URLByAppendingPathComponent(newNameCandidate)
+				guard newFileURL.isExistingAsAnyFile() == false else { continue }
+				return newNameCandidate
+			}
+			let reason = "Too many folders with default new folder name such as `folder0`."
+			throw FileNavigatorError.CannotCreateNewFile(reason: reason)
+		}
+		let newSubnode = FileNode(ownerFileNavigator: self, name: try getNewFileName())
 		parentNode.appendSubnode(newSubnode)
 		persistFileList()
+
+		// It's an error if newly registered folder couldn't be created on file-system by any reason.
+		guard let newFileURL = newSubnode.resolvePath().absoluteFileURLForWorkspace(ownerWorkspace) else {
+			throw FileNavigatorError.CannotResolvePathOfNodeAtPath(newSubnode.resolvePath())
+		}
+		do {
+			guard let newFilePath = newFileURL.path else { throw FileNavigatorError.CannotCreateNewFile(reason: "Bad file location.") }
+			try NSFileManager.defaultManager().createFileAtPath(newFilePath, contents: nil, attributes: nil)
+		}
+		catch let error as EditorCommonUIPresentableErrorType {
+			throw FileNavigatorError.CannotCreateNewFile(reason: error)
+		}
 	}
 	private func canCreateNewFolderImpl() -> Bool {
 		return canCreateNewFile()
 	}
 	private func createNewFolderImpl() throws {
-		guard let ownerWorkspace = ownerWorkspace else { return }
-		// Catch errors and convert into issues.
-		// Do not throw errors out.
 		assert(canCreateNewFolder())
+		guard let ownerWorkspace = ownerWorkspace else { return }
 		guard let parentNode = getFirstSelectedGroupNode() else { return reportToDevelopers() }
+		guard let parentFolderURL = parentNode.resolvePath().absoluteFileURLForWorkspace(ownerWorkspace) else {
+			let reason = "Cannot resolve URL of selected file item node in workspace."
+			throw FileNavigatorError.CannotCreateNewFolder(reason: reason)
+		}
 		func getNewFolderName() throws -> String {
-			guard let parentFolderURL = parentNode.resolvePath().absoluteFileURLForWorkspace(ownerWorkspace) else {
-				let reason = "Cannot resolve URL of selected file item node in workspace."
-				throw FileNavigatorError.CannotCreateNewFolder(reason: reason)
-			}
 			for i in 0..<FileNavigationNewNameTrialMaxCount {
 				let newNameCandidate = "folder\(i)"
 				let newFolderURL = parentFolderURL.URLByAppendingPathComponent(newNameCandidate)
@@ -176,7 +199,7 @@ private extension FileNavigator {
 		parentNode.appendSubnode(newSubnode)
 		persistFileList()
 
-		// It's an error once registered folder cannot actually be created by any reason.
+		// It's an error if newly registered folder couldn't be created on file-system by any reason.
 		guard let newFolderURL = newSubnode.resolvePath().absoluteFileURLForWorkspace(ownerWorkspace) else {
 			throw FileNavigatorError.CannotResolvePathOfNodeAtPath(newSubnode.resolvePath())
 		}
@@ -187,6 +210,13 @@ private extension FileNavigator {
 			throw FileNavigatorError.CannotCreateNewFolder(reason: error)
 		}
 	}
+	/// Dropping file is 2 stage process.
+	/// 1. Register newly dropped file entries.
+	/// 2. Copy dropped files actually.
+	/// #1 is done synchronously because UI needs immediate result.
+	/// #2 can be done asynchronously. So a file can be under copying when user interact with the file.
+	/// For example, user may try to open a file under copying. Anyway that situation can happen at any time for any reason
+	/// so, it's the text-editor's job to deal with the situation, and file-navigator doesn't care about it.
 	private func dropFilesAtURLsImpl(urls: [NSURL], ontoNode: FileNode) throws {
 		guard let ownerWorkspace = ownerWorkspace else { return }
 		// Create file nodes.

@@ -49,7 +49,15 @@ final class MainMenuProcessor {
 				assertMenuExecutabilityByChecking(editor.mainWorkspace != nil)
 				assertMenuExecutabilityByChecking(editor.mainWorkspace!.fileNavigator.canCreateNewFile())
 				guard let workspace = editor.mainWorkspace else { return }
-				workspace.fileNavigator.createNewFile()
+				do {
+					try workspace.fileNavigator.createNewFile()
+				}
+				catch let error {
+					reportToDevelopers(error)
+					if let error = error as? EditorCommonUIPresentableErrorType {
+						presentError(error.toUIPresentableError())
+					}
+				}
 			}
 
 		case ~~mainMenuController.fileNewFolder:

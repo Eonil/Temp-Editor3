@@ -12,6 +12,7 @@ let FileNavigationNewNameTrialMaxCount		=	Int(1024)
 
 enum FileNavigatorError: ErrorType {
 	case CannotResolvePathOfNodeAtPath(WorkspaceItemPath)
+	case CannotCreateNewFile(reason: EditorCommonUIPresentableErrorType)
 	case CannotCreateNewFolder(reason: EditorCommonUIPresentableErrorType)
 	case CannotCopyFile(from: NSURL, to: NSURL, reason: EditorCommonUIPresentableErrorType?)
 }
@@ -45,6 +46,9 @@ extension FileNavigatorError: EditorCommonUIPresentableErrorType {
 		case .CannotCreateNewFolder(let reason):
 			return reason.localizedDescriptionForUI()
 //			return reason.localizedDescriptionForUI() ?? "Cannot create folder \"\(url.lastPathComponent)\"."
+
+		case .CannotCreateNewFile(let reason):
+			return reason.localizedDescriptionForUI()
 		}
 	}
 }
