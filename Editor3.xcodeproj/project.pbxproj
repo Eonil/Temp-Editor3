@@ -44,10 +44,6 @@
 		45296D551C36452200AB0A51 /* WorkspaceItemPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45296D541C36452200AB0A51 /* WorkspaceItemPath.swift */; };
 		45296D571C3647E700AB0A51 /* Markers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45296D561C3647E700AB0A51 /* Markers.swift */; };
 		45296D601C36511000AB0A51 /* MainMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45296D5B1C36511000AB0A51 /* MainMenuController.swift */; };
-		45296D621C36511000AB0A51 /* MainMenuProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45296D5D1C36511000AB0A51 /* MainMenuProcessor.swift */; };
-		45296D631C36511000AB0A51 /* MainMenuRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45296D5E1C36511000AB0A51 /* MainMenuRenderer.swift */; };
-		45296D641C36511000AB0A51 /* MenuShortcutKeyCombination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45296D5F1C36511000AB0A51 /* MenuShortcutKeyCombination.swift */; };
-		45296D661C36522200AB0A51 /* MenuItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45296D651C36522200AB0A51 /* MenuItemController.swift */; };
 		452F5E931C38333F00B3A5FB /* RacerMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F5E921C38333F00B3A5FB /* RacerMatch.swift */; };
 		452F5E951C38335500B3A5FB /* RacerOutputParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F5E941C38335500B3A5FB /* RacerOutputParser.swift */; };
 		452F5E971C383D8C00B3A5FB /* TextEditorLineColumnSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452F5E961C383D8C00B3A5FB /* TextEditorLineColumnSelection.swift */; };
@@ -117,6 +113,12 @@
 		45D678E81CC2A1E20057ECD9 /* EditorCommonUIPresentableErrorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D678E71CC2A1E20057ECD9 /* EditorCommonUIPresentableErrorType.swift */; };
 		45D678F01CC3380C0057ECD9 /* AlertUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D678EF1CC3380C0057ECD9 /* AlertUtility.swift */; };
 		45D678F21CC33B580057ECD9 /* AppKitExtensionsForAlertUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D678F11CC33B580057ECD9 /* AppKitExtensionsForAlertUtility.swift */; };
+		45D678F41CC34AB60057ECD9 /* ADHOC_EditorUIComponentResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D678F31CC34AB60057ECD9 /* ADHOC_EditorUIComponentResolver.swift */; };
+		45D678F61CC395D90057ECD9 /* ADHOC_OwnerDriver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D678F51CC395D90057ECD9 /* ADHOC_OwnerDriver.swift */; };
+		45D679001CC3BDE00057ECD9 /* Menu2UIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D678FF1CC3BDE00057ECD9 /* Menu2UIController.swift */; };
+		45D679021CC3C1F50057ECD9 /* Menu2Code.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D679011CC3C1F50057ECD9 /* Menu2Code.swift */; };
+		45D679041CC3DFFA0057ECD9 /* MenuItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D679031CC3DFFA0057ECD9 /* MenuItemController.swift */; };
+		45D679061CC3E0380057ECD9 /* MainMenuPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D679051CC3E0380057ECD9 /* MainMenuPalette.swift */; };
 		45E47A0B1C3E885500A81204 /* IssueNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E47A0A1C3E885500A81204 /* IssueNavigator.swift */; };
 		45E47A0D1C3E886000A81204 /* IssueNavigatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E47A0C1C3E886000A81204 /* IssueNavigatorViewController.swift */; };
 /* End PBXBuildFile section */
@@ -245,10 +247,6 @@
 		45296D541C36452200AB0A51 /* WorkspaceItemPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceItemPath.swift; sourceTree = "<group>"; };
 		45296D561C3647E700AB0A51 /* Markers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Markers.swift; sourceTree = "<group>"; };
 		45296D5B1C36511000AB0A51 /* MainMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuController.swift; sourceTree = "<group>"; };
-		45296D5D1C36511000AB0A51 /* MainMenuProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuProcessor.swift; sourceTree = "<group>"; };
-		45296D5E1C36511000AB0A51 /* MainMenuRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuRenderer.swift; sourceTree = "<group>"; };
-		45296D5F1C36511000AB0A51 /* MenuShortcutKeyCombination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuShortcutKeyCombination.swift; sourceTree = "<group>"; };
-		45296D651C36522200AB0A51 /* MenuItemController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuItemController.swift; sourceTree = "<group>"; };
 		452F5E921C38333F00B3A5FB /* RacerMatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RacerMatch.swift; sourceTree = "<group>"; };
 		452F5E941C38335500B3A5FB /* RacerOutputParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RacerOutputParser.swift; sourceTree = "<group>"; };
 		452F5E961C383D8C00B3A5FB /* TextEditorLineColumnSelection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextEditorLineColumnSelection.swift; sourceTree = "<group>"; };
@@ -319,6 +317,12 @@
 		45D678E71CC2A1E20057ECD9 /* EditorCommonUIPresentableErrorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorCommonUIPresentableErrorType.swift; sourceTree = "<group>"; };
 		45D678EF1CC3380C0057ECD9 /* AlertUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertUtility.swift; sourceTree = "<group>"; };
 		45D678F11CC33B580057ECD9 /* AppKitExtensionsForAlertUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppKitExtensionsForAlertUtility.swift; sourceTree = "<group>"; };
+		45D678F31CC34AB60057ECD9 /* ADHOC_EditorUIComponentResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ADHOC_EditorUIComponentResolver.swift; sourceTree = "<group>"; };
+		45D678F51CC395D90057ECD9 /* ADHOC_OwnerDriver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ADHOC_OwnerDriver.swift; sourceTree = "<group>"; };
+		45D678FF1CC3BDE00057ECD9 /* Menu2UIController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Menu2UIController.swift; sourceTree = "<group>"; };
+		45D679011CC3C1F50057ECD9 /* Menu2Code.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Menu2Code.swift; sourceTree = "<group>"; };
+		45D679031CC3DFFA0057ECD9 /* MenuItemController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuItemController.swift; sourceTree = "<group>"; };
+		45D679051CC3E0380057ECD9 /* MainMenuPalette.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuPalette.swift; sourceTree = "<group>"; };
 		45E47A0A1C3E885500A81204 /* IssueNavigator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IssueNavigator.swift; sourceTree = "<group>"; };
 		45E47A0C1C3E886000A81204 /* IssueNavigatorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IssueNavigatorViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -474,6 +478,7 @@
 			isa = PBXGroup;
 			children = (
 				45296D2F1C36220C00AB0A51 /* Driver.swift */,
+				45D678F51CC395D90057ECD9 /* ADHOC_OwnerDriver.swift */,
 				45296D061C361B6200AB0A51 /* Editor */,
 				45296D051C361B5500AB0A51 /* MainMenu */,
 				45296D041C361B4900AB0A51 /* Workspace */,
@@ -504,10 +509,10 @@
 			isa = PBXGroup;
 			children = (
 				45296D5B1C36511000AB0A51 /* MainMenuController.swift */,
-				45296D5E1C36511000AB0A51 /* MainMenuRenderer.swift */,
-				45296D5D1C36511000AB0A51 /* MainMenuProcessor.swift */,
-				45296D651C36522200AB0A51 /* MenuItemController.swift */,
-				45296D5F1C36511000AB0A51 /* MenuShortcutKeyCombination.swift */,
+				45D679051CC3E0380057ECD9 /* MainMenuPalette.swift */,
+				45D679031CC3DFFA0057ECD9 /* MenuItemController.swift */,
+				45D679011CC3C1F50057ECD9 /* Menu2Code.swift */,
+				45D678FF1CC3BDE00057ECD9 /* Menu2UIController.swift */,
 			);
 			path = MainMenu;
 			sourceTree = "<group>";
@@ -517,6 +522,7 @@
 			children = (
 				45296D091C361B7100AB0A51 /* Editor.swift */,
 				45D678CB1CB439FF0057ECD9 /* EditorUIController.swift */,
+				45D678F31CC34AB60057ECD9 /* ADHOC_EditorUIComponentResolver.swift */,
 				45296D521C36434E00AB0A51 /* OwnerChain.swift */,
 			);
 			path = Editor;
@@ -850,6 +856,7 @@
 				45296D3E1C362DBF00AB0A51 /* ViewInstaller.swift in Sources */,
 				45296D471C363C1F00AB0A51 /* CommonViewFactory.swift in Sources */,
 				45CACA461C3660C200A74463 /* Assertions.swift in Sources */,
+				45D678F41CC34AB60057ECD9 /* ADHOC_EditorUIComponentResolver.swift in Sources */,
 				4523EFA11CB2A929003E32FD /* TextEditorExtensions.swift in Sources */,
 				45CACA3F1C36605600A74463 /* TOMLQueryTool.swift in Sources */,
 				45D678E31CC283A90057ECD9 /* FileNavigatorEnums.swift in Sources */,
@@ -864,14 +871,12 @@
 				452F5ECF1C39013200B3A5FB /* NavigatorCommonViewFactory.swift in Sources */,
 				452F5EC91C38F0BB00B3A5FB /* WorkspaceItemSerialization.swift in Sources */,
 				451A25AD1C3E99A4006AC0F5 /* IssueNavigatorCellView.swift in Sources */,
-				45296D631C36511000AB0A51 /* MainMenuRenderer.swift in Sources */,
 				456362D51CA97CE200BAF10D /* DarkColoredWindowUtility.swift in Sources */,
 				45CACA3C1C36605600A74463 /* CommandLineTool.swift in Sources */,
 				459477781C3EB88400F08F10 /* ListMutationEvent.swift in Sources */,
 				45CC90B11C36B45E00B0BEC3 /* CodeCompletionCandidateView.swift in Sources */,
 				45CC90C01C36C51700B0BEC3 /* Box.swift in Sources */,
 				4523EF9F1CB2A7A3003E32FD /* TextEditorDataTypes.swift in Sources */,
-				45296D621C36511000AB0A51 /* MainMenuProcessor.swift in Sources */,
 				4504AF5C1C3C0167004A3261 /* Console.swift in Sources */,
 				45CACA271C365D5E00A74463 /* main.swift in Sources */,
 				4558E4831C43F39B000C5A65 /* IssueTypeImplementations.swift in Sources */,
@@ -887,6 +892,7 @@
 				45D678E81CC2A1E20057ECD9 /* EditorCommonUIPresentableErrorType.swift in Sources */,
 				45296D571C3647E700AB0A51 /* Markers.swift in Sources */,
 				45CACA421C36608500A74463 /* Atomics.swift in Sources */,
+				45D679021CC3C1F50057ECD9 /* Menu2Code.swift in Sources */,
 				45296D0C1C361B8200AB0A51 /* Workspace.swift in Sources */,
 				452F5EEB1C39543300B3A5FB /* TransparentLayer.swift in Sources */,
 				452F5ED51C3926B000B3A5FB /* CommonSignboardView.swift in Sources */,
@@ -895,6 +901,7 @@
 				451A25AF1C3E9E1F006AC0F5 /* Issue.swift in Sources */,
 				4504AF531C3C0007004A3261 /* CommonTextView.swift in Sources */,
 				452F5EE71C3946F300B3A5FB /* PaneSplitViewController.swift in Sources */,
+				45D678F61CC395D90057ECD9 /* ADHOC_OwnerDriver.swift in Sources */,
 				45CACA401C36605600A74463 /* RacerTool.swift in Sources */,
 				45296D361C36276F00AB0A51 /* WorkspaceWindowController.swift in Sources */,
 				452F5EE11C39323D00B3A5FB /* Line.swift in Sources */,
@@ -914,6 +921,7 @@
 				45CC90AD1C36A58A00B0BEC3 /* CommonWindowController.swift in Sources */,
 				452F5EC71C38E47400B3A5FB /* ShellCommandExecutor.swift in Sources */,
 				45296D291C361EF200AB0A51 /* Events.swift in Sources */,
+				45D679061CC3E0380057ECD9 /* MainMenuPalette.swift in Sources */,
 				45296D421C36367F00AB0A51 /* LayoutUtility.swift in Sources */,
 				45CC90C31C36C51C00B0BEC3 /* BoxType.swift in Sources */,
 				45CACA4C1C36849200A74463 /* NotificationUtility.swift in Sources */,
@@ -924,6 +932,7 @@
 				452F5EED1C3955C500B3A5FB /* ColorView.swift in Sources */,
 				452F5ED31C3924AC00B3A5FB /* TextEditorIssue.swift in Sources */,
 				45296D2A1C361EF200AB0A51 /* Multicasting.swift in Sources */,
+				45D679041CC3DFFA0057ECD9 /* MenuItemController.swift in Sources */,
 				4558E4851C43F3EA000C5A65 /* IssueTypes.swift in Sources */,
 				45D678DC1CC23E580057ECD9 /* WorkspaceUtility.swift in Sources */,
 				452F5E951C38335500B3A5FB /* RacerOutputParser.swift in Sources */,
@@ -934,7 +943,6 @@
 				452F5E931C38333F00B3A5FB /* RacerMatch.swift in Sources */,
 				452F5E9C1C384F4400B3A5FB /* BuildIssue.swift in Sources */,
 				45CC90C51C36C8C800B0BEC3 /* BoxTypeCoreGraphicsExtensions.swift in Sources */,
-				45296D661C36522200AB0A51 /* MenuItemController.swift in Sources */,
 				45296D551C36452200AB0A51 /* WorkspaceItemPath.swift in Sources */,
 				45296D2B1C361EF200AB0A51 /* Notification.swift in Sources */,
 				45CACA3B1C36605600A74463 /* CargoTool3.swift in Sources */,
@@ -944,12 +952,12 @@
 				45296D2E1C3620E100AB0A51 /* WorkspaceDocument.swift in Sources */,
 				45296D0A1C361B7100AB0A51 /* Editor.swift in Sources */,
 				45296D531C36434E00AB0A51 /* OwnerChain.swift in Sources */,
+				45D679001CC3BDE00057ECD9 /* Menu2UIController.swift in Sources */,
 				45296D3A1C362BD900AB0A51 /* CommonViewController.swift in Sources */,
 				45CC90A91C36A47900B0BEC3 /* CodeCompletion.swift in Sources */,
 				45296D381C362ABC00AB0A51 /* WorkspaceViewController.swift in Sources */,
 				45CACA481C36612F00A74463 /* FoundationExtensions.swift in Sources */,
 				452F5E971C383D8C00B3A5FB /* TextEditorLineColumnSelection.swift in Sources */,
-				45296D641C36511000AB0A51 /* MenuShortcutKeyCombination.swift in Sources */,
 				45296D601C36511000AB0A51 /* MainMenuController.swift in Sources */,
 				45296CCD1C361AB900AB0A51 /* AppDelegate.swift in Sources */,
 				452F5ED11C390F5400B3A5FB /* FileNavigatorIssue.swift in Sources */,

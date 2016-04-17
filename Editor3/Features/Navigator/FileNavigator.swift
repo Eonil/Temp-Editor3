@@ -11,6 +11,8 @@ import AppKit
 
 final class FileNavigator: OwnerfileNavigator {
 	weak var ownerWorkspace: OwnerWorkspace?
+        var onEvent: ((Event) -> ())?
+
 	private var issues = Issues()
 //	private(set) var issues = [FileNavigatorIssue]() {
 //		didSet {
@@ -20,7 +22,8 @@ final class FileNavigator: OwnerfileNavigator {
         private(set) var tree: FileNode? {
                 didSet {
                         guard tree !== oldValue else { return }
-			selection.removeAll()
+                        selection.removeAll()
+                        onEvent?(.DidChangeTree)
                         Event.Notification(sender: self, event: .DidChangeTree).broadcast()
                 }
         }
@@ -37,6 +40,7 @@ final class FileNavigator: OwnerfileNavigator {
 				return true
                         }
                         guard equalityOf(selection, oldValue) == false else { return }
+                        onEvent?(.DidChangeSelection)
                         Event.Notification(sender: self, event: .DidChangeSelection).broadcast()
                 }
 	}
@@ -54,7 +58,7 @@ final class FileNavigator: OwnerfileNavigator {
 	func createNewFile() throws { return try createNewFileImpl() }
 	func createNewFolder() throws { return try createNewFolderImpl() }
 	func dropFilesAtURLs(urls: [NSURL], ontoNode: FileNode) throws { return try dropFilesAtURLsImpl(urls, ontoNode: ontoNode) }
-	func delete() { return deleteImpl() }
+	func delete() throws { return try deleteImpl() }
 	func showInFinder() { return showInFinderImpl() }
 	func showInTerminal() { return showInTerminalImpl() }
 }
@@ -232,7 +236,7 @@ private extension FileNavigator {
 		persistFileList()
 		// Copy file contents.
 		// Do the best. Skip any errors, and throw them at last.
-		var errorsInFileOperations = [FileNavigatorError]()
+		var errorsInFileOperations = [EditorCommonUIPresentableErrorType]()
 		for i in 0..<urls.count {
 			let oldURL = urls[i]
 			guard let newURL = appendedNodes[i].resolvePath().absoluteFileURLForWorkspace(ownerWorkspace) else { continue }
@@ -244,17 +248,47 @@ private extension FileNavigator {
 			}
 		}
 		if errorsInFileOperations.count > 0 {
-			throw FileNavigatorMultipleErrors(errors: errorsInFileOperations)
+			throw EditorCommonMultipleErrors(errors: errorsInFileOperations)
 		}
 	}
 	private func canDeleteImpl() -> Bool {
 		guard selection.contains({ $0 === tree }) == false else { return false }
 		return selection.count > 0
 	}
-	private func deleteImpl() {
+	private func deleteImpl() throws {
 		assert(canDelete())
+		guard let ownerWorkspace = ownerWorkspace else { return }
+
+                let fileNodesToDelete = selection
+                // Remove deletions from selection.
+                selection = []
+
+		// Delete underlying file-system entries first.
+		// Just do the best to the end.
+		var errorsInFileSystemOperations = [EditorCommonUIPresentableErrorType]()
+		for node in fileNodesToDelete {
+			guard let fileURL = node.resolvePath().absoluteFileURLForWorkspace(ownerWorkspace) else {
+				errorsInFileSystemOperations.append(FileNavigatorError.CannotDeleteSelectedFiles(reason: "Bad file location."))
+				continue
+			}
+			do {
+                                // Skip if the file already been deleted.
+                                if fileURL.isExistingAsAnyFile() {
+                                        try NSFileManager.defaultManager().removeItemAtURL(fileURL)
+                                }
+			}
+			catch let error as NSError {
+				errorsInFileSystemOperations.append(error)
+			}
+		}
+		// Halt operation if there's any error.
+		if errorsInFileSystemOperations.count > 0 {
+			let underlyingErrors = EditorCommonMultipleErrors(errors: errorsInFileSystemOperations)
+			throw FileNavigatorError.CannotDeleteSelectedFiles(reason: underlyingErrors)
+		}
+
 		// Deletes top containers only.
-		for node in selection {
+		for node in fileNodesToDelete {
 			guard node !== tree else { continue } 			//< Cannot remove root node.
 			guard let supernode = node.supernode else { continue }
 			guard node.rootNode() === tree else { continue }	//< Cannot remove detached node.

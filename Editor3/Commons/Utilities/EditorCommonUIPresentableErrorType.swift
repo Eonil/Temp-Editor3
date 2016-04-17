@@ -11,6 +11,7 @@ import Foundation
 protocol EditorCommonUIPresentableErrorType: ErrorType {
 	func toUIPresentableError() -> NSError
 	func localizedDescriptionForUI() -> String
+	func getUnderlyingErrors() -> [EditorCommonUIPresentableErrorType]
 }
 extension EditorCommonUIPresentableErrorType {
 	func toUIPresentableError() -> NSError {
@@ -19,6 +20,19 @@ extension EditorCommonUIPresentableErrorType {
 			NSLocalizedDescriptionKey: localizedDescriptionForUI(),
 			])
 	}
+	func getUnderlyingErrors() -> [EditorCommonUIPresentableErrorType] {
+		return []
+	}
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// MARK: -
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+struct EditorCommonMultipleErrors: ErrorType {
+	var errors: [EditorCommonUIPresentableErrorType]
 }
 
 
@@ -40,3 +54,13 @@ extension NSError: EditorCommonUIPresentableErrorType {
 		return localizedDescription
 	}
 }
+extension EditorCommonMultipleErrors: EditorCommonUIPresentableErrorType {
+	func localizedDescriptionForUI() -> String {
+		return "Multiple errors are occured."
+	}
+	func getUnderlyingErrors() -> [EditorCommonUIPresentableErrorType] {
+		return errors
+	}
+}
+
+

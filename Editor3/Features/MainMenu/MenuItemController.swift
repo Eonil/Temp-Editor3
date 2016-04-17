@@ -1,159 +1,77 @@
 //
 //  MenuItemController.swift
-//  EditorUICommon
+//  Editor3
 //
-//  Created by Hoon H. on 2015/11/14.
-//  Copyright © 2015 Eonil. All rights reserved.
+//  Created by Hoon H. on 2016/04/18.
+//  Copyright © 2016 Eonil. All rights reserved.
 //
 
 import Foundation
 import AppKit
 
-/// Wraps `NSMenuItem` to provide a better interface.
-///
-/// - Gains ensure on instance behaviors. `NSMenuItem` implementation is
-///   total black-box. For example, we don't know how equality comparison
-///   would work, and so on.
-/// - Limits possible mutators. (though it's just an illusion...)
-/// - Provides convenient add submenu method.
-/// - Provides better debug description.
-///
-public class MenuItemController {
-	public func addSubmenuItems(subitemControllers: [MenuItemController]) {
-		guard _cocoaMenuItem.submenu != nil else {
-			fatalError("Current menu item is not intended to be a group. Please review the code.")
-		}
-		for itemController in subitemControllers {
-			_cocoaMenuItem.submenu!.addItem(itemController._cocoaMenuItem)
-		}
-		_subcontrollers.appendContentsOf(subitemControllers)
-	}
+final class MenuItemController: NSObject {
+        let code: Menu2Code
+        let item: NSMenuItem
+        var subcontrollers: [MenuItemController] {
+                willSet {
+                        item.submenu?.removeAllItems()
+                        item.submenu = nil
+                }
+                didSet {
+                        let m = NSMenu(title: code.getLabel())
+                        m.autoenablesItems = false
+                        for s in subcontrollers {
+                                m.addItem(s.item)
+                                item.submenu = m
+                        }
+                }
+        }
+        var onEvent: (Menu2Code->())?
 
-
-
-
-
-
-
-	///
-
-	public init(menuItem: NSMenuItem = NSMenuItem()) {
-		_cocoaMenuItem		=	menuItem
-		_cocoaMenuItem.enabled	=	false
-		_cocoaMenuAgent.owner	=	self
-		_cocoaMenuItem.target	=	_cocoaMenuAgent
-		_cocoaMenuItem.action	=	#selector(_MenuItemAgent.EDITOR_onClick(_:))
-	}
-	deinit {
-		_cocoaMenuItem.target	=	nil
-		_cocoaMenuItem.action	=	nil
-		_cocoaMenuAgent.owner	=	nil
-	}
-
-
-
-
-
-
-
-
-	///
-
-	public var menuItem: NSMenuItem {
-		get {
-			return	_cocoaMenuItem
-		}
-	}
-	public var enabled: Bool {
-		get {
-			return	_cocoaMenuItem.enabled
-		}
-		set {
-			_cocoaMenuItem.enabled	=	newValue
-		}
-	}
-	public var onClick: (() -> ())? {
-		get {
-			return	_onClick
-		}
-		set {
-			_onClick	=	newValue
-		}
-	}
-
-
-
-
-
-
-	///
-
-	private var	_onClick	:	(() -> ())?
-	private let	_cocoaMenuItem	:	NSMenuItem
-	private let	_cocoaMenuAgent	=	_MenuItemAgent()
-	private var	_subcontrollers	=	[MenuItemController]()
+        init(code: Menu2Code) {
+                self.code = code
+                switch code {
+                case .Separator:
+                        item = NSMenuItem.separatorItem()
+                        subcontrollers = []
+                        super.init()
+                default:
+                        item = NSMenuItem()
+                        subcontrollers = []
+                        super.init()
+                        item.enabled = false
+                        item.title = code.getLabel()
+                        item.keyEquivalentModifierMask = Int(bitPattern: code.getKeyModifiersAndEquivalentPair().keyModifier.rawValue)
+                        item.keyEquivalent = code.getKeyModifiersAndEquivalentPair().keyEquivalent
+                        item.target = self
+                        item.action = #selector(EDITOR_onClick(_:))
+                }
+        }
+        var enabled: Bool {
+                get {
+                        return item.enabled
+                }
+                set {
+                        item.enabled = newValue
+                }
+        }
+//        func putAllCodeToControllersIntoMapping(inout mapping: [Menu2Code: [MenuItemController]]) {
+//                var list = mapping[code] ?? []
+//                list.append(self)
+//                mapping[code] = list
+//                for s in subcontrollers {
+//                        s.putAllCodeToControllersIntoMapping(&mapping)
+//                }
+//        }
+        @objc
+        private func EDITOR_onClick(_: AnyObject?) {
+                assert(onEvent != nil)
+                onEvent?(code)
+        }
 }
-extension MenuItemController: CustomStringConvertible, CustomDebugStringConvertible {
-	public var description: String {
-		get {
-			var	names	=	[String]()
-			var	m	=	_cocoaMenuItem.menu
-			while let m1 = m {
-				names.insert(m1.title, atIndex: 0)
-				m	=	m?.supermenu
-			}
-			names.append(_cocoaMenuItem.title)
-			return	names.map({"[\($0)]"}).joinWithSeparator(" -> ")
-		}
-	}
-	public var debugDescription: String {
-		get {
-			return	description
-		}
-	}
+private extension Menu2Code {
+        private func makeItemController() -> MenuItemController {
+                return MenuItemController(code: self)
+        }
 }
-extension MenuItemController {
-	public static func groupMenuItem(title: String) -> MenuItemController {
-		let	sm		=	NSMenu(title: title)
-		sm.autoenablesItems	=	false
-
-		let	m		=	MenuItemController()
-		m.menuItem.enabled	=	true
-		m.menuItem.title	=	title
-		m.menuItem.submenu	=	sm
-		m.onClick		=	nil
-		return	m
-	}
-	public static func separatorMenuItemController() -> MenuItemController {
-		return	MenuItemController(menuItem: NSMenuItem.separatorItem())
-	}
-}
-
-
-@objc
-private class _MenuItemAgent: NSObject {
-	weak var owner: MenuItemController?
-	@objc
-	func EDITOR_onClick(sender: NSMenuItem?) {
-                checkAndReportFailureToDevelopers(owner != nil)
-                checkAndReportFailureToDevelopers(owner!.onClick != nil)
-		owner?._onClick?()
-	}
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

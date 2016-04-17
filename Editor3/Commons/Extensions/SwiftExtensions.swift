@@ -68,3 +68,11 @@ func !=== <T: AnyObject> (a: T?, b: T?) -> Bool {
 //	let b = B()
 //	let ok = a === b
 //}
+
+extension Array {
+        var entireRange: Range<Int> {
+                get {
+                        return startIndex..<endIndex
+                }
+        }
+}

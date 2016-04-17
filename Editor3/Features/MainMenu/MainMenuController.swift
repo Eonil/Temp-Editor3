@@ -9,144 +9,43 @@
 import AppKit
 
 final class MainMenuController {
-	typealias Notification = EventNotification<MenuItemController,()>
 
-        // MARK: -
-        init(editor: Editor) {
-                installMenuItems()
+        weak var editor: Editor? {
+                didSet {
+                        render()
+                }
+        }
+        weak var ADHOC_editorUIComponentResolver: ADHOC_EditorUIComponentResolver? {
+                didSet {
+                        render()
+                }
+        }
+
+        ////////////////////////////////////////////////////////////////
+
+        init() {
                 installMainMenu()
-                renderer = MainMenuRenderer(editor: editor, mainMenuController: self)
-                processor = MainMenuProcessor(editor: editor, mainMenuController: self)
+                Editor.Event.Notification.register      (self, self.dynamicType.process)
+                Workspace.Event.Notification.register	(self, self.dynamicType.process)
+                TextEditor.Event.Notification.register	(self, self.dynamicType.process)
+                Builder.Event.Notification.register	(self, self.dynamicType.process)
+                Debugger.Event.Notification.register	(self, self.dynamicType.process)
         }
         deinit {
+                Debugger.Event.Notification.deregister	(self)
+                Builder.Event.Notification.deregister	(self)
+                TextEditor.Event.Notification.deregister(self)
+                Workspace.Event.Notification.deregister	(self)
+                Editor.Event.Notification.deregister	(self)
                 deinstallMainMenu()
-                deinstallMenuItems()
         }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////
 
-        // MARK: -
-	// Keep menu item identifier length < 64.
-	let	file				=	_instantiateGroupMenuItem("File")
-	let	fileNew				=	_instantiateGroupMenuItem("New")
-	let	fileNewWorkspace		=	_instantiateCommandMenuItem("Worksace...",		Command+Control+"N"		)
-	let	fileNewFile			=	_instantiateCommandMenuItem("File...",			Command+"N"			)
-	let	fileNewFolder			=	_instantiateCommandMenuItem("Folder...",		Command+Alternate+"N"		)
-	let	fileOpen			=	_instantiateGroupMenuItem("Open")
-	let	fileOpenWorkspace		=	_instantiateCommandMenuItem("Workspace...", 		Command+"O"			)
-	let	fileOpenClearWorkspaceHistory	=	_instantiateCommandMenuItem("Clear Recent Workspaces",	nil	 			)
-	let	fileCloseCurrentFile		=	_instantiateCommandMenuItem("Close File",		Command+Shift+"W"		)
-	let	fileCloseCurrentWorkspace	=	_instantiateCommandMenuItem("Close Workspace",		Command+"W"			)
-	let	fileDelete			=	_instantiateCommandMenuItem("Delete",			Command+Delete			)
-	let	fileShowInFinder		=	_instantiateCommandMenuItem("Show in Finder", 		nil				)
-	let	fileShowInTerminal		=	_instantiateCommandMenuItem("Show in Terminal",		nil				)
+        private let palette = MenuItemPalette()
 
-	let	view				=	_instantiateGroupMenuItem("View")
-	let	viewEditor			=	_instantiateCommandMenuItem("Editor",			Command+"\n"			)
-	let	viewNavigators			=	_instantiateGroupMenuItem("Navigators")
-	let	viewShowProjectNavivator	=	_instantiateCommandMenuItem("Show File Navigator",	Command+"1"			)
-	let	viewShowIssueNavivator		=	_instantiateCommandMenuItem("Show Issue Navigator",	Command+"2"			)
-	let	viewShowDebugNavivator		=	_instantiateCommandMenuItem("Show Debug Navigator",	Command+"3"			)
-	let	viewHideNavigator		=	_instantiateCommandMenuItem("Hide Navigator", 		Command+"0"			)
-	let	viewConsole			=	_instantiateCommandMenuItem("Logs", 			Command+Shift+"C"		)
-	let	viewFullscreen			=	_instantiateCommandMenuItem("Toggle Full Screen",	Command+Control+"F"		)
+        ////////////////////////////////////////////////////////////////
 
-        let	editor				=	_instantiateGroupMenuItem("Editor")
-        let	editorShowCompletions		=	_instantiateCommandMenuItem("Show Completions", 	Command+" ")
-
-	let	product				=	_instantiateGroupMenuItem("Product")
-	let	productRun			=	_instantiateCommandMenuItem("Run",			Command+"R"			)
-	let	productBuild			=	_instantiateCommandMenuItem("Build",			Command+"B"			)
-	let	productClean			=	_instantiateCommandMenuItem("Clean",			Command+Shift+"K"		)
-	let	productStop			=	_instantiateCommandMenuItem("Stop",			Command+"."			)
-
-	let	debug				=	_instantiateGroupMenuItem("Debug")
-	let	debugPause			=	_instantiateCommandMenuItem("Pause",			Command+Control+"Y"		)
-	let	debugResume			=	_instantiateCommandMenuItem("Resume",			Command+Control+"Y"		)
-	let	debugHalt			=	_instantiateCommandMenuItem("Halt",			nil				)
-
-	let	debugStepInto			=	_instantiateCommandMenuItem("Step Into",		_legacyFunctionKeyShortcut(NSF6FunctionKey))
-	let	debugStepOut			=	_instantiateCommandMenuItem("Step Out",			_legacyFunctionKeyShortcut(NSF7FunctionKey))
-	let	debugStepOver			=	_instantiateCommandMenuItem("Step Over",		_legacyFunctionKeyShortcut(NSF8FunctionKey))
-
-	let	debugClearConsole		=	_instantiateCommandMenuItem("Clear Console", 		Command+"K"			)
-
-
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        // MARK: -
-        private var renderer: MainMenuRenderer?
-        private var processor: MainMenuProcessor?
-	private func installMenuItems() {
-		file.addSubmenuItems([
-			fileNew,
-			fileOpen,
-			_instantiateSeparatorMenuItem(),
-			fileCloseCurrentFile,
-			fileCloseCurrentWorkspace,
-			_instantiateSeparatorMenuItem(),
-			fileDelete,
-			fileShowInFinder,
-			fileShowInTerminal,
-			])
-		fileNew.addSubmenuItems([
-			fileNewWorkspace,
-			fileNewFile,
-			fileNewFolder,
-			])
-		fileOpen.addSubmenuItems([
-			fileOpenWorkspace,
-			fileOpenClearWorkspaceHistory,
-			])
-
-		view.addSubmenuItems([
-			viewEditor,
-			viewNavigators,
-			viewConsole,
-			_instantiateSeparatorMenuItem(),
-			viewFullscreen,
-			])
-		viewNavigators.addSubmenuItems([
-			viewShowProjectNavivator,
-			viewShowIssueNavivator,
-			viewShowDebugNavivator,
-			_instantiateSeparatorMenuItem(),
-			viewHideNavigator,
-			])
-
-                editor.addSubmenuItems([
-                        editorShowCompletions,
-                        ])
-
-		product.addSubmenuItems([
-			productRun,
-			productBuild,
-			productClean,
-			_instantiateSeparatorMenuItem(),
-			productStop,
-			])
-
-		debug.addSubmenuItems([
-			debugPause,
-			debugResume,
-			debugHalt,
-			_instantiateSeparatorMenuItem(),
-			debugStepInto,
-			debugStepOut,
-			debugStepOver,
-			_instantiateSeparatorMenuItem(),
-			debugClearConsole,
-			])
-	}
-	private func deinstallMenuItems() {
-	}
-	private func deinstallMainMenu() {
-		assert(NSApplication.sharedApplication().mainMenu != nil, "Main menu is not yet set.")
-		NSApplication.sharedApplication().mainMenu = nil
-	}
         private func installMainMenu() {
                 assert(NSApplication.sharedApplication().mainMenu == nil, "Main menu already been set.")
 
@@ -168,7 +67,7 @@ final class MainMenuController {
                                 }())
                         appMenu.addItemWithTitle("Show All", action: #selector(NSApplication.unhideAllApplications(_:)), keyEquivalent: "")
                         appMenu.addItem(NSMenuItem.separatorItem())
-                        appMenu.addItemWithTitle("Services", action: nil, keyEquivalent: "")!.submenu	=	appServicesMenu
+                        appMenu.addItemWithTitle("Services", action: nil, keyEquivalent: "")!.submenu = appServicesMenu
                         appMenu.addItem(NSMenuItem.separatorItem())
                         appMenu.addItemWithTitle("Quit \(appName)", action: #selector(NSApplication.terminate), keyEquivalent: "q")
 
@@ -181,82 +80,365 @@ final class MainMenuController {
                 mainMenu.addItem(mainAppMenuItem)
                 // `title` really doesn't matter.
                 mainAppMenuItem.submenu = getApplicationMenu()
-		mainMenu.addItem(file.menuItem)
-		mainMenu.addItem(view.menuItem)
-                mainMenu.addItem(editor.menuItem)
-		mainMenu.addItem(product.menuItem)
-		mainMenu.addItem(debug.menuItem)
-
+                for c in palette.topLevelMenuItemControllers() {
+                        mainMenu.addItem(c.item)
+                }
 		NSApplication.sharedApplication().mainMenu = mainMenu
 	}
-}
+        private func deinstallMainMenu() {
+                assert(NSApplication.sharedApplication().mainMenu != nil, "Main menu is not yet set.")
+                NSApplication.sharedApplication().mainMenu = nil
+        }
 
+        ////////////////////////////////////////////////////////////////
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-private func _legacyFunctionKeyShortcut(utf16CodeUnit: Int) -> MenuShortcutKeyCombination {
-	return	MenuShortcutKeyCombination(legacyUTF16CodeUnit: unichar(utf16CodeUnit))
-}
-
-private func _instantiateGroupMenuItem(title: String) -> MenuItemController {
-	let	sm		=	NSMenu(title: title)
-	sm.autoenablesItems	=	false
-
-	let	m		=	MenuItemController()
-	m.menuItem.enabled	=	true
-	m.menuItem.title	=	title
-	m.menuItem.submenu	=	sm
-	m.onClick		=	nil
-	return	m
-}
-
-private func _instantiateCommandMenuItem(title: String, _ shortcut: MenuShortcutKeyCombination?) -> MenuItemController {
-	let	m		=	MenuItemController()
-	m.menuItem.title	=	title
-
-	if let shortcut = shortcut {
-		m.menuItem.keyEquivalent			=	shortcut.plainTextKeys
-		m.menuItem.keyEquivalentModifierMask	=	Int(bitPattern: shortcut.modifierMask)
+        private func process(n: Editor.Event.Notification) {
+                render()
+        }
+        private func process(n: Workspace.Event.Notification) {
+                renderFileMenu()
+                renderViewMenu()
+                renderProductMenu()
+        }
+        private func process(n: TextEditor.Event.Notification) {
+                renderFileMenu()
+                renderEditorMenu()
+        }
+	private func process(n: Builder.Event.Notification) {
+                renderFileMenu()
+                renderProductMenu()
 	}
-	m.onClick = { [weak m] in
-		guard let m = m else {
-			return
-		}
-		EventNotification<MenuItemController,()>(sender: m, event: ()).broadcast()
+        private func process(n: Debugger.Event.Notification) {
+                guard n.sender ==== editor?.mainWorkspace?.debugger else { return }
+                renderDebuggingMenu()
+                renderProductMenu()
+        }
+
+        private func processUserClickingOfMenuForCode(code: Menu2Code) {
+                guard let editor = editor else { return }
+                switch code {
+                case .FileNewWorkspace: do {
+			let newWorkspace = Workspace()
+			editor.addWorkspace(newWorkspace)
+//                        NSDocumentController.sharedDocumentController().newDocument(self)
+//                        Dialogue.runSavingWorkspace { [weak self] in
+//                                guard self != nil else {
+//                                        return
+//                                }
+//                                if let u = $0 {
+//                                        try! self!.model!.createAndOpenWorkspaceAtURL(u)
+//                                }
+//                        }
+                        }
+
+                case .FileNewFolder:
+                        assert(editor.mainWorkspace != nil)
+                        assert(editor.mainWorkspace!.fileNavigator.canCreateNewFolder())
+                        guard let workspace = editor.mainWorkspace else { return }
+                        do {
+                                try workspace.fileNavigator.createNewFolder()
+                        }
+                        catch let error {
+                                reportToDevelopers(error)
+                                if let error = error as? EditorCommonUIPresentableErrorType { presentError(error, inWindowForWorkspace: workspace) }
+                        }
+
+                case .FileNewFile:
+                        assert(editor.mainWorkspace != nil)
+                        assert(editor.mainWorkspace!.fileNavigator.canCreateNewFile())
+                        guard let workspace = editor.mainWorkspace else { return }
+                        do {
+                                try workspace.fileNavigator.createNewFile()
+                        }
+                        catch let error {
+                                reportToDevelopers(error)
+                                if let error = error as? EditorCommonUIPresentableErrorType { presentError(error, inWindowForWorkspace: workspace) }
+                        }
+
+		case .FileDelete:
+                        assert(editor.mainWorkspace != nil)
+                        assert(editor.mainWorkspace!.fileNavigator.canDelete())
+                        checkAndReportFailureToDevelopers(editor.mainWorkspace != nil)
+                        guard let workspace = editor.mainWorkspace else { return }
+                        guard let workspaceDocument = ADHOC_editorUIComponentResolver?.findWorkspaceDocumentForWorkspace(workspace) else { return }
+                        guard let window = workspaceDocument.workspaceWindowController.window else { return }
+                        let message = workspace.fileNavigator.selection.count == 1
+                                ? "Do you want to delete this file?"
+                                : "Do you want to delete these files?"
+                        let information = workspace.fileNavigator.selection.map({ $0.name }).joinWithSeparator("\n")
+                        let proceed = { [weak workspace, weak window] in
+                                do {
+                                        try workspace?.fileNavigator.delete()
+                                }
+                                catch let error {
+                                        reportToDevelopers(error)
+                                        if let error = error as? EditorCommonUIPresentableErrorType {
+                                                window?.presentError(error.toUIPresentableError())
+                                        }
+                                }
+                        }
+                        window.runConfirmWithMessageText(message,
+                                                         informativeText: information,
+                                                         proceedButtonTitle: "Delete",
+                                                         onProceed: proceed)
+
+		case .FileShowInFinder:
+                        assert(editor.mainWorkspace != nil)
+                        assert(editor.mainWorkspace!.fileNavigator.canShowInFinder())
+                        checkAndReportFailureToDevelopers(editor.mainWorkspace != nil)
+                        guard let workspace = editor.mainWorkspace else { return }
+                        workspace.fileNavigator.showInFinder()
+
+		case .FileShowInTerminal:
+                        assert(editor.mainWorkspace != nil)
+                        assert(editor.mainWorkspace!.fileNavigator.canShowInTerminal())
+                        checkAndReportFailureToDevelopers(editor.mainWorkspace != nil)
+                        guard let workspace = editor.mainWorkspace else { return }
+                        workspace.fileNavigator.showInTerminal()
+
+//                case .FileOpenWorkspace:
+//                        Dialogue.runOpeningWorkspace() { [weak self] in
+//                                guard self != nil else {
+//                                        return
+//                                }
+//                                if let u = $0 {
+//                                        self!.model!.openWorkspaceAtURL(u)
+//                                }
+//                        }
+//
+                case .FileCloseWorkspace:
+                        assert(editor.mainWorkspace != nil)
+                        guard let workspace = editor.mainWorkspace else { return }
+                        editor.removeWorkspace(workspace)
+
+//                case .FileCloseFile:
+
+
+//                case .ViewEditor:
+//                        editor.keyWorkspace!.overallUIState.paneSelection = .Editor
+//
+//                case .ViewShowProjectNavivator:
+//                        editor.keyWorkspace!.overallUIState.mutate {
+//                                $0.navigationPaneVisibility	=	true
+//                                $0.paneSelection		=	WorkspaceUIState.Pane.Navigation(.Project)
+//                        }
+//
+//                case ~~mainMenuController.viewShowIssueNavivator: do {
+//                        editor.keyWorkspace!.overallUIState.mutate {
+//                                $0.navigationPaneVisibility	=	true
+//                                $0.paneSelection		=	WorkspaceUIState.Pane.Navigation(.Issue)
+//                        }
+//                        }
+//                case ~~mainMenuController.viewShowDebugNavivator: do {
+//                        editor.keyWorkspace!.overallUIState.mutate {
+//                                $0.navigationPaneVisibility	=	true
+//                                $0.paneSelection		=	WorkspaceUIState.Pane.Navigation(.Debug)
+//                        }
+//                        }
+//                case ~~mainMenuController.viewHideNavigator: do {
+//                        editor.keyWorkspace!.overallUIState.mutate {
+//                                $0.navigationPaneVisibility	=	false
+//                                ()
+//                        }
+//                        }
+//                case ~~mainMenuController.viewConsole: do {
+//                        editor.keyWorkspace!.overallUIState.mutate {
+//                                $0.consolePaneVisibility	=	true
+//                                ()
+//                        }
+//                        }
+//                case ~~mainMenuController.viewFullscreen: do {
+//                        NSApplication.sharedApplication().mainWindow?.toggleFullScreen(self)
+//                        }
+
+		case .EditorShowCompletions:
+                        assert(editor.mainWorkspace != nil, "This menu must be disabled when inappropriate.")
+                        guard let workspace = editor.mainWorkspace else { return }
+                        do {
+                                try workspace.textEditor.showCompletion()
+                        }
+                        catch let error {
+                                debugLog(error)
+                        }
+
+//                case ~~mainMenuController.productRun: do {
+//                        assert(editor.keyWorkspace!.build.busy == false)
+//                        guard let workspace = editor.keyWorkspace else {
+//                                fatalError()
+//                        }
+//                        if let target = workspace.debug.currentTarget {
+//                                if target.execution != nil {
+//                                        target.halt()
+//                                }
+//                                workspace.debug.deselectTarget(target)
+//                        }
+//                        if workspace.debug.targets.count == 0 {
+//                                MARK_unimplemented("We need to query `Cargo.toml` file to get proper executable location.")
+//                                if let u = workspace.location {
+//                                        let	n	=	u.lastPathComponent!
+//                                        let	u1	=	u.URLByAppendingPathComponent("target").URLByAppendingPathComponent("debug").URLByAppendingPathComponent(n)
+//                                        workspace.debug.createTargetForExecutableAtURL(u1)
+//                                }
+//                        }
+//                        
+//                        workspace.debug.selectTarget(workspace.debug.targets.first!)
+//                        workspace.debug.currentTarget!.launch(NSURL(fileURLWithPath: "."))
+//                        }
+//                        
+                case .ProductBuild:
+                        assert(editor.mainWorkspace != nil)
+                        assert(editor.mainWorkspace!.builder.state != .Running)
+                        guard let workspace = editor.mainWorkspace else { return }
+                        guard workspace.builder.state != .Running else { return }
+                        workspace.builder.runBuilding()
+
+                case .ProductClean:
+                        assert(editor.mainWorkspace != nil)
+                        assert(editor.mainWorkspace!.builder.state != .Running)
+                        guard let workspace = editor.mainWorkspace else { return }
+                        guard workspace.builder.state != .Running else { return }
+                        workspace.builder.runCleaning()
+                        
+                case .ProductStop:
+                        assert(editor.mainWorkspace != nil)
+                        assert(editor.mainWorkspace!.builder.state == .Running)
+                        guard let workspace = editor.mainWorkspace else { return }
+                        guard workspace.builder.state == .Running else { return }
+                        workspace.builder.cancelRunningAnyway()
+//                        assert(editor.keyWorkspace!.build.busy == false)
+//                        editor.keyWorkspace!.debug.currentTarget!.halt()
+//                        editor.keyWorkspace!.build.stop()
+
+                        
+                        
+                        
+//                case ~~mainMenuController.debugPause: do {
+//                        editor.keyWorkspace!.debug.currentTarget!.execution!.runCommand(.Pause)
+//                        }
+//                        
+//                case ~~mainMenuController.debugResume: do {
+//                        editor.keyWorkspace!.debug.currentTarget!.execution!.runCommand(.Resume)
+//                        }
+//                        
+//                case ~~mainMenuController.debugHalt: do {
+//                        editor.keyWorkspace!.debug.currentTarget!.execution!.runCommand(.Halt)
+//                        }
+//                        
+//                case ~~mainMenuController.debugStepInto: do {
+//                        editor.keyWorkspace!.debug.currentTarget!.execution!.runCommand(.StepInto)
+//                        }
+//                        
+//                case ~~mainMenuController.debugStepOut: do {
+//                        editor.keyWorkspace!.debug.currentTarget!.execution!.runCommand(.StepOut)
+//                        }
+//                        
+//                case ~~mainMenuController.debugStepOver: do {
+//                        editor.keyWorkspace!.debug.currentTarget!.execution!.runCommand(.StepOver)
+//                        }
+//                        
+//                case ~~mainMenuController.debugClearConsole: do {
+//                        editor.keyWorkspace!.console.clear()
+//                        }
+//                        q
+//                case ~~mainMenuController.DEV_test1: do {
+//                        
+//                        }
+
+                default:
+                        MARK_unimplemented()
+                        fatalError()
+                }
+        }
+        private func presentError(error: EditorCommonUIPresentableErrorType, inWindowForWorkspace workspace: Workspace) {
+                func getNearestResponder() -> NSResponder {
+                        return ADHOC_editorUIComponentResolver?
+                                .findWorkspaceDocumentForWorkspace(workspace)?
+                                .workspaceWindowController
+                                ?? NSApplication.sharedApplication()
+                }
+                getNearestResponder().presentError(error.toUIPresentableError())
+        }
+
+        ////////////////////////////////////////////////////////////////
+
+        private var installer = ViewInstaller()
+        private func render() {
+                installer.installIfNeeded {
+                        func setEventHandlerOfControllerRecursively(c: MenuItemController, handler: (Menu2Code)->()) {
+                                c.onEvent = handler
+                                for s in c.subcontrollers {
+                                        setEventHandlerOfControllerRecursively(s, handler: handler)
+                                }
+                        }
+                        for c in palette.topLevelMenuItemControllers() {
+                                setEventHandlerOfControllerRecursively(c) { [weak self] in
+                                        guard let S = self else { return }
+                                        S.processUserClickingOfMenuForCode($0)
+                                }
+                        }
+                }
+                renderFileMenu()
+                renderViewMenu()
+                renderEditorMenu()
+                renderProductMenu()
+                renderDebuggingMenu()
+        }
+        private func renderFileMenu() {
+                guard let editor = editor else { fatalErrorDueToInconsistentInternalStateWithReportingToDevelopers() }
+                palette.file.enabled                            =       true
+                palette.fileNew.enabled                         =       true
+		palette.fileNewWorkspace.enabled		=	true
+		palette.fileNewFile.enabled			=	editor.mainWorkspace?.fileNavigator.canCreateNewFile() ?? false
+		palette.fileNewFolder.enabled                   =	editor.mainWorkspace?.fileNavigator.canCreateNewFolder() ?? false
+		palette.fileOpenWorkspace.enabled		=	true
+		palette.fileCloseWorkspace.enabled              =	editor.mainWorkspace != nil
+		palette.fileDelete.enabled			=	(editor.mainWorkspace?.fileNavigator.selection.count ?? 0) > 0
+		palette.fileShowInFinder.enabled		=	editor.mainWorkspace?.fileNavigator.canShowInFinder() ?? false
+		palette.fileShowInTerminal.enabled		=	editor.mainWorkspace?.fileNavigator.canShowInTerminal() ?? false
 	}
-	return	m
+	private func renderViewMenu() {
+                guard let editor = editor else { fatalErrorDueToInconsistentInternalStateWithReportingToDevelopers() }
+		let hasKeyWorkspace				=	editor.mainWorkspace != nil
+                palette.view.enabled                            =       true
+		palette.viewEditor.enabled			=	(editor.mainWorkspace?.fileNavigator.selection.count ?? 0) > 0
+                palette.viewNavigators.enabled                  =       true
+		palette.viewShowProjectNavigator.enabled	=	hasKeyWorkspace
+		palette.viewShowIssueNavigator.enabled          =	hasKeyWorkspace
+		palette.viewShowDebugNavigator.enabled          =	hasKeyWorkspace
+		palette.viewHideNavigator.enabled		=	hasKeyWorkspace
+		palette.viewConsole.enabled			=	hasKeyWorkspace
+		palette.viewFullScreen.enabled                  =	hasKeyWorkspace
+	}
+        private func renderEditorMenu() {
+                guard let editor = editor else { fatalErrorDueToInconsistentInternalStateWithReportingToDevelopers() }
+                palette.editor.enabled                          =       true
+                palette.editorShowCompletions.enabled           =	editor.mainWorkspace?.textEditor.editingFileURL != nil
+        }
+
+        private func renderProductMenu() {
+                guard let editor = editor else { fatalErrorDueToInconsistentInternalStateWithReportingToDevelopers() }
+                let isBuilding = editor.mainWorkspace?.builder.state == Optional(.Running)
+                let isDebugging = editor.mainWorkspace?.debugger.state == Optional(.Running)
+                palette.product.enabled                         =       true
+		palette.productRun.enabled			=	isBuilding == false
+		palette.productBuild.enabled			=	isBuilding == false
+		palette.productClean.enabled			=	isBuilding == false
+		palette.productStop.enabled			=	isBuilding || isDebugging
+	}
+        private func renderDebuggingMenu() {
+//                guard let editor = editor else { fatalErrorDueToInconsistentInternalStateWithReportingToDevelopers() }
+//                guard let mainMenuController = mainMenuController else { fatalErrorDueToInconsistentInternalStateWithReportingToDevelopers() }
+//		let cmds = editor.mainWorkspace?.debug.currentTarget?.execution?.runnableCommands ?? []
+//		palette.debugPause.enabled			=	cmds.contains(.Pause)
+//		palette.debugResume.enabled			=	cmds.contains(.Resume)
+//		palette.debugHalt.enabled			=	cmds.contains(.Halt)
+//		palette.debugStepInto.enabled		=	cmds.contains(.StepInto)
+//		palette.debugStepOut.enabled		=	cmds.contains(.StepOut)
+//		palette.debugStepOver.enabled		=	cmds.contains(.StepOver)
+//		palette.debugClearConsole.enabled		=	true
+        }
 }
 
-private func _instantiateSeparatorMenuItem() -> MenuItemController {
-	let	m		=	MenuItemController(menuItem: NSMenuItem.separatorItem())
-	return	m
-}
 
 
 
@@ -294,25 +476,6 @@ private func _instantiateSeparatorMenuItem() -> MenuItemController {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-//private let	Delete		=	String(Character(UnicodeScalar(NSDeleteCharacter)))
-private let	Delete		=	"\u{0008}"
-
-private let	Command		=	MenuShortcutKeyCombination.Command
-private let	Control		=	MenuShortcutKeyCombination.Control
-private let	Alternate	=	MenuShortcutKeyCombination.Alternate
-private let	Shift		=	MenuShortcutKeyCombination.Shift
 
 
 

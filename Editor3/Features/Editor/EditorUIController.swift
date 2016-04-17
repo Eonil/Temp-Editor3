@@ -194,6 +194,8 @@ final class EditorUIController {
 		}
 	}
 }
+extension EditorUIController: ADHOC_EditorUIComponentResolver {
+}
 
 
 

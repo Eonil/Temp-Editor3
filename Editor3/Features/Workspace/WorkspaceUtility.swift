@@ -10,14 +10,6 @@ import Foundation
 import AppKit
 
 struct WorkspaceUtility {
-	static func findWorkspaceDocumentForWorkspace(workspace: Workspace) -> WorkspaceDocument? {
-		for document in NSDocumentController.sharedDocumentController().documents {
-			guard let workspaceDocument = document as? WorkspaceDocument else { continue }
-			guard workspaceDocument.workspace ==== workspace else { continue }
-			return workspaceDocument
-		}
-		return nil
-	}
 	static func resolvePathInWorkspace(workspace: OwnerWorkspace, ofURL: NSURL) -> WorkspaceItemPath? {
 		guard let workspaceLocationURL = workspace.locationURL else { return nil }
 		var u = ofURL

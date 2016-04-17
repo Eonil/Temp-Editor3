@@ -14,10 +14,8 @@ enum FileNavigatorError: ErrorType {
 	case CannotResolvePathOfNodeAtPath(WorkspaceItemPath)
 	case CannotCreateNewFile(reason: EditorCommonUIPresentableErrorType)
 	case CannotCreateNewFolder(reason: EditorCommonUIPresentableErrorType)
+	case CannotDeleteSelectedFiles(reason: EditorCommonUIPresentableErrorType)
 	case CannotCopyFile(from: NSURL, to: NSURL, reason: EditorCommonUIPresentableErrorType?)
-}
-struct FileNavigatorMultipleErrors: ErrorType {
-	var errors: [FileNavigatorError]
 }
 
 
@@ -26,14 +24,6 @@ struct FileNavigatorMultipleErrors: ErrorType {
 // MARK: -
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-extension FileNavigatorMultipleErrors: EditorCommonUIPresentableErrorType {
-	func localizedDescriptionForUI() -> String {
-		if errors.count == 1 {
-			return errors[0].localizedDescriptionForUI()
-		}
-		return "Cannot complete file operations. Multiple errors are occured."
-	}
-}
 extension FileNavigatorError: EditorCommonUIPresentableErrorType {
 	func localizedDescriptionForUI() -> String {
 		switch self {
@@ -48,6 +38,9 @@ extension FileNavigatorError: EditorCommonUIPresentableErrorType {
 //			return reason.localizedDescriptionForUI() ?? "Cannot create folder \"\(url.lastPathComponent)\"."
 
 		case .CannotCreateNewFile(let reason):
+			return reason.localizedDescriptionForUI()
+
+		case .CannotDeleteSelectedFiles(let reason):
 			return reason.localizedDescriptionForUI()
 		}
 	}

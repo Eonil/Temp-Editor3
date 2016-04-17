@@ -69,10 +69,27 @@ final class Workspace: OwnerWorkspace {
                 fileNavigator.ownerWorkspace = self
 		issueNavigator.ownerWorkspace = self
 		builder.ownerWorkspace = self
+                fileNavigator.onEvent = { [weak self] in self?.processFileNavigatorEvent($0) }
                 FileNavigator.Event.Notification.register(self, self.dynamicType.process)
         }
         deinit {
+                fileNavigator.onEvent = nil
                 FileNavigator.Event.Notification.deregister(self)
+        }
+
+        private func processFileNavigatorEvent(e: FileNavigator.Event) {
+                switch e {
+                case .DidChangeTree:
+                        break
+
+                case .DidChangeSelection:
+                        if fileNavigator.selection.count == 0 {
+                                textEditor.editingFileURL = nil
+                        }
+
+                case .DidChangeIssues:
+                        break
+                }
         }
 
 }

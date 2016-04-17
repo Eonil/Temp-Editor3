@@ -43,13 +43,16 @@ final class WorkspaceWindowController: NSWindowController {
                 fatalError("IB/SB are unsupported.")
         }
 
-        // MARK: -
+	////////////////////////////////////////////////////////////////
+
         weak var workspace: Workspace? {
                 didSet {
 			debugLog("WorkspaceWindowController.workspace = \(workspace?.locationURL)")
                         render()
                 }
         }
+
+	////////////////////////////////////////////////////////////////
 
         // MARK: -
         private weak var workspaceViewController: WorkspaceViewController?

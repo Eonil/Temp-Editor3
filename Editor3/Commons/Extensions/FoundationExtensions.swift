@@ -40,9 +40,9 @@ public extension NSURL {
 	}
 	public func isExistingAsDataFile() throws -> Bool {
 		if isExistingAsAnyFile() {
-			var	dir: AnyObject?	=	false as AnyObject?
+			var dir: AnyObject?	= false as AnyObject?
 			try self.getResourceValue(&dir, forKey: NSURLIsDirectoryKey)
-			return	dir as! Bool == false
+			return dir as! Bool == false
 		}
 		return	false
 	}

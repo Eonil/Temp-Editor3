@@ -9,21 +9,15 @@
 import Foundation
 import AppKit
 
+/// The root manager of whole program.
 final class Driver {
 
-	////////////////////////////////////////////////////////////////
-
-        static private(set) weak var theDriver: Driver?
-
-	////////////////////////////////////////////////////////////////
-
         init() {
-                mainMenuController = MainMenuController(editor: editor)
+                mainMenuController.editor = editor
                 editorUIController.editor = editor
-                Driver.theDriver = self
+                mainMenuController.ADHOC_editorUIComponentResolver = editorUIController
         }
         deinit {
-                Driver.theDriver = nil
 		editorUIController.editor = nil
         }
 
@@ -31,8 +25,9 @@ final class Driver {
 
         let editor = Editor()
 	let editorUIController = EditorUIController()
-        let mainMenuController: MainMenuController
+        let mainMenuController = MainMenuController()
 }
+
 
 
 
