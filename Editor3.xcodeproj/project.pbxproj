@@ -115,6 +115,8 @@
 		45D678DC1CC23E580057ECD9 /* WorkspaceUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D678DB1CC23E580057ECD9 /* WorkspaceUtility.swift */; };
 		45D678E31CC283A90057ECD9 /* FileNavigatorEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D678E21CC283A90057ECD9 /* FileNavigatorEnums.swift */; };
 		45D678E81CC2A1E20057ECD9 /* EditorCommonUIPresentableErrorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D678E71CC2A1E20057ECD9 /* EditorCommonUIPresentableErrorType.swift */; };
+		45D678F01CC3380C0057ECD9 /* AlertUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D678EF1CC3380C0057ECD9 /* AlertUtility.swift */; };
+		45D678F21CC33B580057ECD9 /* AppKitExtensionsForAlertUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D678F11CC33B580057ECD9 /* AppKitExtensionsForAlertUtility.swift */; };
 		45E47A0B1C3E885500A81204 /* IssueNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E47A0A1C3E885500A81204 /* IssueNavigator.swift */; };
 		45E47A0D1C3E886000A81204 /* IssueNavigatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E47A0C1C3E886000A81204 /* IssueNavigatorViewController.swift */; };
 /* End PBXBuildFile section */
@@ -315,6 +317,8 @@
 		45D678DB1CC23E580057ECD9 /* WorkspaceUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceUtility.swift; sourceTree = "<group>"; };
 		45D678E21CC283A90057ECD9 /* FileNavigatorEnums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileNavigatorEnums.swift; sourceTree = "<group>"; };
 		45D678E71CC2A1E20057ECD9 /* EditorCommonUIPresentableErrorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorCommonUIPresentableErrorType.swift; sourceTree = "<group>"; };
+		45D678EF1CC3380C0057ECD9 /* AlertUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertUtility.swift; sourceTree = "<group>"; };
+		45D678F11CC33B580057ECD9 /* AppKitExtensionsForAlertUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppKitExtensionsForAlertUtility.swift; sourceTree = "<group>"; };
 		45E47A0A1C3E885500A81204 /* IssueNavigator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IssueNavigator.swift; sourceTree = "<group>"; };
 		45E47A0C1C3E886000A81204 /* IssueNavigatorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IssueNavigatorViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -539,6 +543,7 @@
 		45296D111C361C1A00AB0A51 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				45D678EE1CC338000057ECD9 /* (UI) */,
 				459477771C3EB88400F08F10 /* ListMutationEvent.swift */,
 				45D678CD1CB8B66F0057ECD9 /* ObjectSetMutationEvent.swift */,
 				45CACA431C3660AF00A74463 /* DispatchUtility.swift */,
@@ -551,8 +556,6 @@
 				45296D561C3647E700AB0A51 /* Markers.swift */,
 				45CACA451C3660C200A74463 /* Assertions.swift */,
 				45CACA491C36614400A74463 /* Logging.swift */,
-				456362D41CA97CE200BAF10D /* DarkColoredWindowUtility.swift */,
-				45D678E71CC2A1E20057ECD9 /* EditorCommonUIPresentableErrorType.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -648,6 +651,17 @@
 				45CC90BF1C36C51700B0BEC3 /* SilentBox.swift */,
 			);
 			path = LayoutBox;
+			sourceTree = "<group>";
+		};
+		45D678EE1CC338000057ECD9 /* (UI) */ = {
+			isa = PBXGroup;
+			children = (
+				456362D41CA97CE200BAF10D /* DarkColoredWindowUtility.swift */,
+				45D678E71CC2A1E20057ECD9 /* EditorCommonUIPresentableErrorType.swift */,
+				45D678EF1CC3380C0057ECD9 /* AlertUtility.swift */,
+				45D678F11CC33B580057ECD9 /* AppKitExtensionsForAlertUtility.swift */,
+			);
+			name = "(UI)";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -844,6 +858,7 @@
 				4504AF5E1C3C020F004A3261 /* SwiftExtensions.swift in Sources */,
 				452F5E9A1C384F2D00B3A5FB /* Builder.swift in Sources */,
 				45CC90AB1C36A56100B0BEC3 /* CodeCompletionWindowController.swift in Sources */,
+				45D678F21CC33B580057ECD9 /* AppKitExtensionsForAlertUtility.swift in Sources */,
 				452F5EDB1C39309500B3A5FB /* CommonView.swift in Sources */,
 				45296D131C361C2000AB0A51 /* ObjectSet.swift in Sources */,
 				452F5ECF1C39013200B3A5FB /* NavigatorCommonViewFactory.swift in Sources */,
@@ -885,6 +900,7 @@
 				452F5EE11C39323D00B3A5FB /* Line.swift in Sources */,
 				45CACA441C3660AF00A74463 /* DispatchUtility.swift in Sources */,
 				45E47A0D1C3E886000A81204 /* IssueNavigatorViewController.swift in Sources */,
+				45D678F01CC3380C0057ECD9 /* AlertUtility.swift in Sources */,
 				45296D101C361BCB00AB0A51 /* TextEditor.swift in Sources */,
 				45CC90C11C36C51700B0BEC3 /* SilentBox.swift in Sources */,
 				45CACA2A1C365E9700A74463 /* Debugging.swift in Sources */,

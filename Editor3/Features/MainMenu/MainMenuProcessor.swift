@@ -82,7 +82,16 @@ final class MainMenuProcessor {
 				assertMenuExecutabilityByChecking(editor.mainWorkspace!.fileNavigator.canDelete())
 				checkAndReportFailureToDevelopers(editor.mainWorkspace != nil)
 				guard let workspace = editor.mainWorkspace else { return }
-				workspace.fileNavigator.delete()
+				guard let workspaceDocument = WorkspaceUtility.findWorkspaceDocumentForWorkspace(workspace) else { return }
+				guard let window = workspaceDocument.workspaceWindowController.window else { return }
+				let message = workspace.fileNavigator.selection.count == 1
+					? "Do you want to delete this file?"
+					: "Do you want to delete these files?"
+				let information = workspace.fileNavigator.selection.map({ $0.name }).joinWithSeparator("\n")
+				window.runConfirmWithMessageText(message,
+				                                 informativeText: information,
+				                                 proceedButtonTitle: "Delete",
+				                                 onProceed: { workspace.fileNavigator.delete() })
 			}
 
 		case ~~mainMenuController.fileShowInFinder:
