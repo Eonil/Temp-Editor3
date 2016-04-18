@@ -28,8 +28,11 @@ struct WorkspaceItemPath {
                 }
         }
 
+        func pathByPrependingLastComponent(part: String) -> WorkspaceItemPath {
+                return firstPartPrepended(part)
+        }
         func pathByAppendingLastComponent(part: String) -> WorkspaceItemPath {
-		return lastPartAppended(part)
+                return lastPartAppended(part)
         }
         func pathByDeletingFirstComponent() -> WorkspaceItemPath {
 		return firstPartDeleted()
@@ -103,7 +106,12 @@ extension WorkspaceItemPath {
 	func lastPartDeleted() -> WorkspaceItemPath {
 		precondition(parts.count > 0)
 		return WorkspaceItemPath(parts: Array(parts[parts.startIndex..<parts.endIndex.predecessor()]))
-	}
+        }
+        func firstPartPrepended(part: String) -> WorkspaceItemPath {
+                assert(WorkspaceItemPath._isPartValid(part))
+                preconditionAndReportFailureToDevelopers(WorkspaceItemPath._isPartValid(part))
+                return WorkspaceItemPath(parts: [part] + parts)
+        }
 	func lastPartAppended(part: String) -> WorkspaceItemPath {
 		assert(WorkspaceItemPath._isPartValid(part))
 		preconditionAndReportFailureToDevelopers(WorkspaceItemPath._isPartValid(part))

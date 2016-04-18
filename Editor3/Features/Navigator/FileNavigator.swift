@@ -223,23 +223,50 @@ private extension FileNavigator {
 	/// so, it's the text-editor's job to deal with the situation, and file-navigator doesn't care about it.
 	private func dropFilesAtURLsImpl(urls: [NSURL], ontoNode: FileNode) throws {
 		guard let ownerWorkspace = ownerWorkspace else { return }
+                var errorsInFileOperations = [EditorCommonUIPresentableErrorType]()
+                typealias DiscoveredItem = (pickedRootURL: NSURL, absoluteURL: NSURL, relativeItemPath: WorkspaceItemPath)
+                var discoveredItems = [DiscoveredItem]()
+                for pickedRootURL in urls {
+                        let propertyKeys = [NSURLNameKey, NSURLIsDirectoryKey]
+                        let options = NSDirectoryEnumerationOptions.SkipsHiddenFiles
+                        let maybeWalker = NSFileManager
+                                .defaultManager()
+                                .enumeratorAtURL(pickedRootURL,
+                                                 includingPropertiesForKeys: propertyKeys,
+                                                 options: options,
+                                                 errorHandler: { (u: NSURL, e: NSError) -> Bool in
+                                                        errorsInFileOperations.append(e)
+                                                        return true })
+                        guard let walker = maybeWalker else { continue }
+                        discoveredItems.append((pickedRootURL, pickedRootURL, WorkspaceItemPath(parts: [])))
+                        for discoveredURL in walker {
+                                guard let discoveredURL = discoveredURL as? NSURL else { continue }
+                                guard let relativeItemPath = WorkspaceUtility.relativeItemPathToURL(discoveredURL, fromRootURL: pickedRootURL) else { continue }
+                                discoveredItems.append((pickedRootURL, discoveredURL, relativeItemPath))
+                        }
+                }
+
 		// Create file nodes.
 		// Just add all files regardless of actual existence.
 		var appendedNodes = [FileNode]()
-		for u in urls {
-			let isNewNodeGroup = ((try? u.getExistence()) == .Directory) // Assumes as data-file if unknown.
-			guard let newNodeName = u.lastPathComponent else { continue }
+		for discoveredItem in discoveredItems {
+                        let isNewNodeGroup = ((try? discoveredItem.absoluteURL.getExistence()) == .Directory) // Assumes as data-file if unknown.
+                        guard let pickedRootName = discoveredItem.pickedRootURL.lastPathComponent else { continue }
+			guard let newNodeName = discoveredItem.absoluteURL.lastPathComponent else { continue }
 			let newNode = FileNode(ownerFileNavigator: self, name: newNodeName, isGroup: isNewNodeGroup)
-			getFirstSelectedGroupNode()?.appendSubnode(newNode)
+                        let relativePathOfContainerNode = discoveredItem.relativeItemPath.firstPartPrepended(pickedRootName).lastPartDeleted()
+                        guard let containerNode = tree?.searchSubnodeWithPath(relativePathOfContainerNode) else { continue }
+                        containerNode.appendSubnode(newNode)
 			appendedNodes.append(newNode)
 		}
 		persistFileList()
+
 		// Copy file contents.
 		// Do the best. Skip any errors, and throw them at last.
-		var errorsInFileOperations = [EditorCommonUIPresentableErrorType]()
 		for i in 0..<urls.count {
 			let oldURL = urls[i]
 			guard let newURL = appendedNodes[i].resolvePath().absoluteFileURLForWorkspace(ownerWorkspace) else { continue }
+                        guard oldURL != newURL else { continue } // Skip moving to same location.
 			do {
 				try NSFileManager.defaultManager().copyItemAtURL(oldURL, toURL: newURL)
 			}
